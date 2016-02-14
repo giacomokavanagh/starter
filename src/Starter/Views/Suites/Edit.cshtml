@@ -1,0 +1,53 @@
+@model Starter.Controllers.LibraryAndSectionAndSuite
+
+@{
+    ViewData["Title"] = "Edit Suite: " + Model.Suite.Name;
+}
+
+<div>
+    <div class="headertwo">
+        <h2>@ViewData["Title"]</h2>
+    </div>
+
+    <form asp-action="Edit">
+        <div class="form-horizontal">
+            <div asp-validation-summary="ValidationSummary.ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Suite.SuiteID" />
+            <div class="form-group">
+                <label asp-for="Suite.Name" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="Suite.Name" class="form-control" />
+                    <span asp-validation-for="Suite.Name" class="text-danger" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Suite.Description" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <textarea asp-for="Suite.Description" class="form-control textarea" rows="5" />@Model.Suite.Description</textarea>
+                    <span asp-validation-for="Suite.Description" class="text-danger" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Suite.SectionID" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <select asp-for="@Model.Suite.SectionID" asp-items="ViewBag.Sections" class="chosen"></select>
+                    <span asp-validation-for="@Model.Suite.SectionID" class="text-danger" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <hr />
+
+    <div>
+        <p>
+            <a class="Actions" asp-action="Details" asp-route-id="@Model.Suite.SuiteID">Back to Suite: @Model.Suite.Name</a>
+        </p>
+        @Html.Partial("_BackToParentSection", Model.Section)
+    </div>
+</div>

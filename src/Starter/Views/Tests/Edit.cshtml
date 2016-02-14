@@ -1,0 +1,75 @@
+@model Starter.Controllers.LibraryAndSectionAndSuiteAndTest
+
+@{
+    ViewData["Title"] = "Edit Test: " + Model.Test.Name;
+}
+
+<div>
+    <div class="headertwo">
+        <h2>@ViewData["Title"]</h2>
+    </div>
+
+    <form asp-action="Edit" enctype="multipart/form-data">
+        <div class="form-horizontal">
+            <div asp-validation-summary="ValidationSummary.ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Test.TestID" />
+            <div class="form-group">
+                <label asp-for="Test.Name" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="Test.Name" class="form-control" />
+                    <span asp-validation-for="Test.Name" class="text-danger" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Test.Description" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <textarea asp-for="Test.Description" class="form-control textarea" rows="5" />@Model.Test.Description</textarea>
+                    <span asp-validation-for="Test.Description" class="text-danger" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Test.TestDataSource" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <select asp-for="@Model.Test.TestDataSource" class="form-control">
+                        <option value="Starter">Starter</option>
+                        <option value="Excel">Excel</option>
+                    </select>
+                    <span asp-validation-for="@Model.Test.TestDataSource" class="text-danger" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">Current Test File</label>
+                <div class="col-md-10">
+                    <a asp-controller="Tests" asp-action="ReturnTestFile" asp-route-id="@Model.Test.TestID">@Model.Test.ExcelFilePath</a>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">New Test File</label>
+                <div class="col-md-10">
+                    <input type="file" name="file" class="form-control" id="ExcelFileSelected" />
+                </div>
+            </div>
+            <input asp-for="@Model.Test.ExcelFilePath" class="form-control" type="hidden" readonly="readonly" value="@Model.Test.ExcelFilePath" />
+            <div class="form-group">
+                <label class="col-md-2 control-label">Suite Name</label>
+                <div class="col-md-10">
+                    <select asp-for="@Model.Test.SuiteID" asp-items="ViewBag.Suites" class="chosen"></select>
+                    <span asp-validation-for="@Model.Test.SuiteID" class="text-danger" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+
+    <hr />
+
+    <div>
+        @Html.Partial("_BackToParentSuite", Model.Suite)
+    </div>
+</div>

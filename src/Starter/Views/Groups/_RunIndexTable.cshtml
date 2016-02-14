@@ -1,0 +1,73 @@
+﻿@model IEnumerable<Starter.Models.Run>
+
+<div class='panel-group'>
+    <div class='panel panel-default'>
+        <div class='panel-heading'>
+            <h3 class='panel-title'>
+                <a data-toggle='collapse' id='Toggle' href='#collapseRuns'>Runs</a>
+            </h3>
+        </div>
+
+        @if (Model.Any())
+        {
+            <div id='collapseRuns' class='panel-collapse collapsed collapse in'>
+                <div class='panel-body'>
+                    <table id="3ColumnDataTable" class="table table-striped">
+                        <thead id="greyTableheader">
+                            <tr>
+                                <th>
+                                    ID
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Description)
+                                </th>
+                                <th class="Actions">
+                                    Actions
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="RightClickTable">
+
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <p class="TableParagraph">@item.RunID</p>
+                                    </td>
+                                    <td>
+                                        <p class="TableParagraph">
+                                            <a asp-controller="Runs" asp-action="Details" asp-route-id="@item.RunID" class="Actions">@item.Name</a>
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p class="TableParagraph">
+                                            @Html.DisplayFor(modelItem => item.Description)
+                                        </p>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+
+        else
+        {
+            <div id='collapseRuns' class='panel-collapse collapsed collapse in'>
+                <div class='panel-body'>
+                    <p>
+                        There are currently no runs
+                    </p>
+                </div>
+            </div>
+        }
+
+    </div>
+</div>
+
+<ul id="contextMenu" class="dropdown-menu" role="menu" style="display:none">
+    <li><a tabindex="-1" href="#" name="Runs">Edit</a></li>
+    <li><a tabindex="-1" href="#" name="Runs">Details</a></li>
+    <li><a tabindex="-1" href="#" name="Runs">Delete</a></li>
+</ul>

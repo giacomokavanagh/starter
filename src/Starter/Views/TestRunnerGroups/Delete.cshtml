@@ -1,0 +1,34 @@
+@model Starter.Models.TestRunnerGroup
+
+@{
+    ViewData["Title"] = "Delete Test Runner group: " + Model.Name;
+}
+
+<div>
+    <div class="headertwo">
+        <h2 class="Delete">@ViewData["Title"]</h2>
+    </div>
+    <div>
+        <h3>Are you sure you want to delete this?</h3>
+    </div>
+
+    <hr />
+
+    <div>
+        @Html.Partial("_TestRunnerGroupDetailsTable", Model)
+
+        <form asp-action="Delete" multiple="multiple">
+            <div class="form-actions no-color">
+                <input type="submit" value="Delete" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+
+    <hr />
+
+    <div>
+        <p>
+            <a asp-controller="TestRunnerGroups" asp-action="Index">Machines - for storing machine information for use when running tests</a>
+        </p>
+    </div>
+</div>

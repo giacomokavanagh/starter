@@ -1,0 +1,109 @@
+@model Starter.Controllers.TestRunnerGroupsAndNewTestRunnerGroupAndProjectsAndFoldersAndGroupsAndRuns
+
+@{
+    ViewData["Title"] = "Test Runner Groups";
+}
+
+<div>
+    <div class="headertwo">
+        <h2>Manage @ViewData["Title"]</h2>
+    </div>
+
+    @if (ViewData["Message"] != null)
+    {
+        <div>
+            <p class="message">
+                @ViewData["Message"]
+            </p>
+        </div>
+    }
+
+    @if (Model.TestRunnerGroups.Any())
+    {
+        <div class="headertwo">
+            <h2>Test Runner Groups</h2>
+        </div>
+        <table id="TestRunnerGroupDataTable" class="table table-striped">
+            <thead id="greyTableheader">
+                <tr>
+                    <th>
+                        ID
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TestRunnerGroup.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TestRunnerGroup.Description)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TestRunnerGroup.Projects)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TestRunnerGroup.Folders)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TestRunnerGroup.Groups)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TestRunnerGroup.Runs)
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="RightClickTable">
+                @foreach (var trg in Model.TestRunnerGroups)
+                {
+                    <tr>
+                        <td>
+                            <p class="TableParagraph">@trg.TestRunnerGroupID</p>
+                        </td>
+                        <td>
+                            <p>
+                                <a class="Actions" asp-action="Details" asp-route-id="@trg.TestRunnerGroupID">@trg.Name</a>
+                            </p>
+                        </td>
+                        <td>@trg.Description</td>
+                        <td>
+                            <p class="TableParagraph">
+                                @String.Join(", ", Model.Projects.Where(t => t.TestRunnerGroupID == trg.TestRunnerGroupID).Select(t => t.Name))
+                            </p>
+                        </td>
+                        <td>
+                            <p class="TableParagraph">
+                                @String.Join(", ", Model.Folders.Where(t => t.TestRunnerGroupID == trg.TestRunnerGroupID).Select(t => t.Name))
+                            </p>
+                        </td>
+                        <td>
+                            <p class="TableParagraph">
+                                @String.Join(", ", Model.Groups.Where(t => t.TestRunnerGroupID == trg.TestRunnerGroupID).Select(t => t.Name))
+                            </p>
+                        </td>
+                        <td>
+                            <p class="TableParagraph">
+                                @String.Join(", ", Model.Runs.Where(t => t.TestRunnerGroupID == trg.TestRunnerGroupID).Select(t => t.Name))
+                            </p>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div>
+            <div>
+                <p>
+                    There are currently no Test Runner Groups
+                </p>
+            </div>
+        </div>
+    }
+
+    @Html.Partial("_CreateTestRunnerGroup", Model.TestRunnerGroup)
+
+</div>
+
+<ul id="contextMenu" class="dropdown-menu" role="menu" style="display:none">
+    <li><a tabindex="-1" href="#" name="TestRunnerGroups">Edit</a></li>
+    <li><a tabindex="-1" href="#" name="TestRunnerGroups">Details</a></li>
+    <li><a tabindex="-1" href="#" name="TestRunnerGroups">Delete</a></li>
+</ul>

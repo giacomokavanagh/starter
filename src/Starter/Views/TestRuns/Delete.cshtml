@@ -1,0 +1,32 @@
+@model Starter.Models.TestRun
+
+@{
+    ViewData["Title"] = "Delete Test Run for " + @Model.Test.Name + " in " + @Model.Run.Name;
+}
+
+<div>
+    <div class="headertwo">
+        <h2 class="Delete">@ViewData["Title"]</h2>
+    </div>
+    <div>
+        <h3>Are you sure you want to delete this?</h3>
+    </div>
+
+    <hr />
+
+    <div>
+        @Html.Partial("_TestRunDetailsTable", Model)
+
+        <form asp-action="Delete">
+            <div class="form-actions no-color">
+                <input type="submit" value="Delete" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+
+    <hr />
+    <p>
+        <a class="Actions" asp-controller="Runs" asp-action="Details" asp-route-id="@Model.RunID">Back to Run: @Model.Run.Name</a>
+    </p>
+
+</div>

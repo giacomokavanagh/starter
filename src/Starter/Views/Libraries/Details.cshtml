@@ -1,0 +1,41 @@
+@model Starter.Controllers.LibraryAndSection
+
+@{
+    ViewData["Title"] = "Library: " + Model.Library.Name;
+}
+
+<div>
+    <div class="headertwo">
+        <h2>@ViewData["Title"]</h2>
+    </div>
+
+    @if (ViewData["Message"] != null)
+    {
+        <div>
+            <p class="message">
+                @ViewData["Message"]
+            </p>
+        </div>
+    }
+
+    @Html.Partial("_LibraryDetailsTable", Model.Library)
+
+    <hr />
+
+    @Html.Partial("_SectionIndexTable", Model.Sections)
+
+    @Html.Partial("_CreateSection", Model)
+
+    <div>
+        <hr />
+        <p>
+            <a asp-action="Edit" asp-route-id="@Model.Library.LibraryID" class="Actions">Edit</a>
+        </p>
+        <p>
+            <a asp-action="Delete" asp-route-id="@Model.Library.LibraryID" class="Actions">Delete</a>
+        </p>
+        <p>
+            <a asp-action="Index" class="Actions">Back to Libraries</a>
+        </p>
+    </div>
+</div>

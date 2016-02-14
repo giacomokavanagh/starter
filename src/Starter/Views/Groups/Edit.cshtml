@@ -1,0 +1,72 @@
+@model Starter.Controllers.ProjectAndFolderAndGroup
+
+@{
+    ViewData["Title"] = "Edit Group: " + Model.Group.Name;
+}
+
+<div>
+    <div class="headertwo">
+        <h2>@ViewData["Title"]</h2>
+    </div>
+
+    <form asp-action="Edit">
+        <div class="form-horizontal">
+            <div asp-validation-summary="ValidationSummary.ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Group.GroupID" />
+            <div class="form-group">
+                <label asp-for="Group.Name" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="Group.Name" class="form-control" />
+                    <span asp-validation-for="Group.Name" class="text-danger" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Group.Description" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <textarea asp-for="Group.Description" class="form-control textarea" rows="5">@Model.Group.Description</textarea>
+                    <span asp-validation-for="Group.Description" class="text-danger" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Group.TestRunnerGroupID" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <select asp-for="@Model.Group.TestRunnerGroupID" data-placeholder="Choose Test Runner Group" class="chosen">
+                        <option></option>
+                        @foreach (var item in ViewBag.TestRunnerGroups)
+                        {
+                            @if (item.Value == Model.Group.TestRunnerGroupID.ToString())
+                            {
+                                <option value="@item.Value" selected="selected">@item.Text</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+                        }
+                    </select>
+                    <span asp-validation-for="@Model.Group.TestRunnerGroupID" class="text-danger" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Group.FolderID" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <select asp-for="@Model.Group.FolderID" asp-items="ViewBag.Folders" class="chosen"></select>
+                    <span asp-validation-for="@Model.Group.FolderID" class="text-danger" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <hr />
+
+    <div>
+        <a class="Actions" asp-action="Details" asp-route-id="@Model.Group.GroupID">Back to Environment: @Model.Group.Name</a>
+
+        @Html.Partial("_BackToParentFolder", Model.Folder)
+    </div>
+</div>

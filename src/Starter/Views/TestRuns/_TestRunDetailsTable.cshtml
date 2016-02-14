@@ -1,0 +1,94 @@
+﻿@model Starter.Models.TestRun
+
+<div>
+    <dl class="dl-horizontal doublewidth">
+        <dt class="dtTable doublewidth">
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+        <dd>
+            <p class="TableParagraph">
+                @Html.DisplayFor(model => model.Status)
+            </p>
+        </dd>
+        <dt class="dtTable doublewidth">
+            Test Name
+        </dt>
+        <dd>
+            <p class="TableParagraph">
+                @Html.DisplayFor(model => model.Test.Name)
+            </p>
+        </dd>
+        <dt class="dtTable doublewidth">
+            Run Name
+        </dt>
+        <dd>
+            <p class="TableParagraph">
+                @Html.DisplayFor(model => model.Run.Name)
+            </p>
+        </dd>
+        <dt class="dtTable doublewidth">
+            Test Environment Name
+        </dt>
+        <dd>
+            <p class="TableParagraph">
+                @Html.DisplayFor(model => model.TestEnvironment.Name)
+            </p>
+        </dd>
+        <dt class="dtTable doublewidth">
+            @Html.DisplayNameFor(model => model.Browser)
+        </dt>
+        <dd>
+            <p class="TableParagraph">
+                @Html.DisplayFor(model => model.Browser)
+            </p>
+        </dd>
+        <dt class="dtTable doublewidth">
+            @Html.DisplayNameFor(model => model.StartTime)
+        </dt>
+        <dd>
+            <p class="TableParagraph">
+                @Html.DisplayFor(model => model.StartTime)
+            </p>
+        </dd>
+        <dt class="dtTable doublewidth">
+            @Html.DisplayNameFor(model => model.EndTime)
+        </dt>
+        <dd>
+            <p class="TableParagraph">
+                @Html.DisplayFor(model => model.EndTime)
+            </p>
+        </dd>
+        <dt class="dtTable doublewidth">
+            Dependency Group
+        </dt>
+        <dd>
+            <p class="TableParagraph">
+                @Html.DisplayFor(model => model.DependencyGroup.Name)
+            </p>
+        </dd>
+        <dt class="dtTable doublewidth">
+            @Html.DisplayNameFor(model => model.ResultFile)
+        </dt>
+        <dd>
+            <p class="TableParagraph">
+                @Html.DisplayFor(model => model.ResultFile)
+            </p>
+        </dd>
+        <dt class="dtTable doublewidth">
+            @Html.DisplayNameFor(model => model.Retries)
+        </dt>
+        <dd>
+            <p class="TableParagraph">
+                @Html.DisplayFor(model => model.Retries)
+            </p>
+        </dd>
+        <dt class="dtTable doublewidth">
+            @Html.DisplayNameFor(model => model.RetriesLeft)
+        </dt>
+        <dd>
+            <p class="TableParagraph">
+                @Html.DisplayFor(model => model.RetriesLeft)
+            </p>
+        </dd>
+    </dl>
+</div>

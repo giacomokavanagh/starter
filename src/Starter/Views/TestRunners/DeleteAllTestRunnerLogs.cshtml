@@ -1,0 +1,34 @@
+@model Starter.Models.TestRunner
+
+@{
+    ViewData["Title"] = "Delete All Test Runner Logs for: " + Model.Name;
+}
+
+<div>
+    <div class="headertwo">
+        <h2 class="Delete">@ViewData["Title"]</h2>
+    </div>
+    <div>
+        <h3>Are you sure you want to delete ALL the Test Runner Logs for @Model.Name?</h3>
+    </div>
+
+    <hr />
+
+    <div>
+        @Html.Partial("_TestRunnerDetailsTable", Model)
+
+        <form asp-controller="TestRunners" asp-action="ConfirmDeleteAllTestRunnerLogs" asp-route-id="@Model.TestRunnerID">
+            <div class="form-actions no-color">
+                <input type="submit" value="Delete" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+
+    <hr />
+
+    <div>
+        <p>
+            <a asp-controller="TestRunnerGroups" asp-action="Index">Back to Test Runner Groups</a>
+        </p>
+    </div>
+</div>

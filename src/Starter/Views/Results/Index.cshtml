@@ -1,0 +1,90 @@
+@model IEnumerable<Starter.Models.Result>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <tr>
+
+        <th>
+            @Html.DisplayNameFor(model => model.ResultFileName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ResultFilePath)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ResultPath)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ScreenshotDetailsListID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StartTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TestDataFileName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TestEnvironmentFileName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TestEnvironmentName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TestName)
+        </th>
+        <th></th>
+    </tr>
+    
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.EndTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ResultFileName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ResultFilePath)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ResultPath)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ScreenshotDetailsListID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.StartTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Status)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TestDataFileName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TestEnvironmentFileName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TestEnvironmentName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TestName)
+        </td>
+        <td>
+            <a asp-action="Edit" asp-route-id="@item.ResultID">Edit</a> |
+            <a asp-action="Details" asp-route-id="@item.ResultID">Details</a> |
+            <a asp-action="Delete" asp-route-id="@item.ResultID">Delete</a>
+        </td>
+    </tr>
+}
+</table>

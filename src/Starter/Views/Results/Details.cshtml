@@ -1,0 +1,165 @@
+@model Starter.Controllers.ResultWithAllStepsAndScreenshotsAndTestRun
+
+@{
+    ViewData["Title"] = "Result: " + Model.Result.ResultName;
+}
+
+<div>
+    <div class="headertwo">
+        <h2>@ViewData["Title"]</h2>
+    </div>
+
+    @if (ViewData["Message"] != null)
+    {
+        <div>
+            <p class="message">
+                @ViewData["Message"]
+            </p>
+        </div>
+    }
+
+    @Html.Partial("_ResultDetailsTable", Model.Result)
+
+    <hr />
+</div>
+
+<div>
+    <div>
+
+        @foreach (var item in Model.StoredStepDetailsList)
+        {
+            var stepIDItem = "collapseStep" + item.StoredStepDetailsID;
+            var hashItem = "#" + stepIDItem;
+            var result = item.StoredStepStatus;
+            var propertyName = "PropertyName" + result;
+            var propertyValue = "PropertyValue" + result;
+
+            <div class="panel-group">
+                <div class="panel panel-default" id="@Model.Result.StoredStatus">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <a data-toggle="collapse" id="Toggle" href="@hashItem" class="toggle">Step ID: @item.StepID</a>
+                        </h3>
+                    </div>
+                    <div id="@stepIDItem" class="panel-collapse collapsed collapse in">
+                        <div class="panel-body">
+                            <div class="table">
+                                <div class="PropertiesTableCell">
+                                    <TABLE class="PropertiesTable">
+
+                                        @if (item.Method != "")
+                                        {
+                                            <TR>
+                                                <TD class="@propertyName">Method</TD>
+                                                <TD class="@propertyValue">@item.Method</TD>
+                                            </TR>
+                                        }
+
+                                        @if (item.Attribute != "")
+                                        {
+                                            <TR>
+                                                <TD class="@propertyName">Attribute</TD>
+                                                <TD class="@propertyValue">@item.Attribute</TD>
+                                            </TR>
+                                        }
+
+                                        @if (item.Value != "")
+                                        {
+                                            <TR>
+                                                <TD class="@propertyName">Value</TD>
+                                                <TD class="@propertyValue">@item.Value</TD>
+                                            </TR>
+                                        }
+
+                                        @if (item.Input != "")
+                                        {
+                                            <TR>
+                                                <TD class="@propertyName">Input</TD>
+                                                <TD class="@propertyValue">@item.Input</TD>
+                                            </TR>
+                                        }
+
+                                        @if (item.StepStartTime != "")
+                                        {
+                                            <TR>
+                                                <TD class="@propertyName">Step Start Time</TD>
+                                                <TD class="@propertyValue">@item.StepStartTime</TD>
+                                            </TR>
+                                        }
+
+                                        @if (item.StepEndTime != "")
+                                        {
+                                            <TR>
+                                                <TD class="@propertyName">Step End Time</TD>
+                                                <TD class="@propertyValue">@item.StepEndTime</TD>
+                                            </TR>
+                                        }
+
+                                        @if (item.CatastrophicFailure)
+                                        {
+                                            <TR>
+                                                <TD class="@propertyName">Catastrophic Failure?</TD>
+                                                <TD class="@propertyValue">Yes</TD>
+                                            </TR>
+                                        }
+                                    </TABLE>
+                                </div>
+
+                                @{
+                                    var matchingScreenshots = Model.StoredScreenshotDetailsList.Where(t => t.Order == item.Order);
+
+                                    if (matchingScreenshots.Any())
+                                    {
+                                        var actualScreenshot = matchingScreenshots.First();
+                                        var actualScreenshotFilePath = actualScreenshot.StoredScreenshotFilePath + ".png";
+                                        string str = actualScreenshotFilePath.Substring(actualScreenshotFilePath.IndexOf("wwwroot") + 7);
+                                        <div class="ScreenshotCell">
+                                            <a href="@str">
+                                                <img class="ScreenshotMini" src="@str">
+                                            </a>
+                                        </div>
+                                    }
+                                }
+                            </div>
+
+                            @if (item.listTestExceptionDetails != null)
+                            {
+                                foreach (var exception in item.listTestExceptionDetails)
+                                {
+                                    <div>
+                                        <TABLE class="ExceptionTable">
+                                            <TR class="ExceptionDetails">
+                                                <TD class="ExceptionType">Exception Type</TD>
+                                                <TD class="ExceptionMessage">@exception.ExceptionType</TD>
+                                            </TR>
+                                            <TR class="ExceptionDetails">
+                                                <TD class="ExceptionType">Exception Message</TD>
+                                                <TD class="ExceptionMessage">@exception.ExceptionMessage</TD>
+                                            </TR>
+                                            <TR class="ExceptionHeader"></TR>
+                                        </TABLE>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<div>
+    <div>
+        <hr />
+        <p>
+            <a class="Actions" asp-controller="Results" asp-action="ResultsForTestRun" asp-route-id="@Model.Result.TestRunID">Back to Test Run: @Model.Result.TestRunID</a>
+        </p>
+        <p>
+            <a class="Actions" asp-controller="Runs" asp-action="Details" asp-route-id="@Model.TestRun.RunID">Back to Run: @Model.TestRun.Run.Name</a>
+        </p>
+        <p>
+            <a class="Actions" asp-controller="Tests" asp-action="Details" asp-route-id="@Model.TestRun.TestID">Back to Test: @Model.TestRun.Test.Name</a>
+        </p>
+    </div>
+</div>
+

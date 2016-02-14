@@ -1,0 +1,70 @@
+@model Starter.Controllers.GroupAndRun
+
+@{
+    ViewData["Title"] = "Edit Run: " + Model.Run.Name;
+}
+
+<div>
+    <div class="headertwo">
+        <h2>@ViewData["Title"]</h2>
+    </div>
+
+    <form asp-action="Edit">
+        <div class="form-horizontal">
+            <div asp-validation-summary="ValidationSummary.ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Run.RunID" />
+            <div class="form-Run">
+                <label asp-for="Run.Name" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="Run.Name" class="form-control" />
+                    <span asp-validation-for="Run.Name" class="text-danger" />
+                </div>
+            </div>
+            <div class="form-Run">
+                <label asp-for="Run.Description" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <textarea asp-for="Run.Description" class="form-control textarea" rows="5" />@Model.Run.Description</textarea>
+                    <span asp-validation-for="Run.Description" class="text-danger" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Run.TestRunnerGroupID" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <select asp-for="@Model.Run.TestRunnerGroupID" data-placeholder="Choose Test Runner Group" class="chosen">
+                        <option></option>
+                        @foreach (var item in ViewBag.TestRunnerGroups)
+                        {
+                            @if (item.Value == Model.Run.TestRunnerGroupID.ToString())
+                            {
+                                <option value="@item.Value" selected="selected">@item.Text</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+                        }
+                    </select>
+                    <span asp-validation-for="@Model.Run.TestRunnerGroupID" class="text-danger" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Run.GroupID" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <select asp-for="@Model.Run.GroupID" asp-items="ViewBag.Groups" class="chosen"></select>
+                    <span asp-validation-for="@Model.Run.GroupID" class="text-danger" />
+                </div>
+            </div>
+            <div class="form-Run">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <hr />
+
+    <div>
+        @Html.Partial("_BackToParentGroup", Model.Group)
+    </div>
+</div>

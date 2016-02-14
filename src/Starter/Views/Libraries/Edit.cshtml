@@ -1,0 +1,45 @@
+@model Starter.Models.Library
+
+@{
+    ViewData["Title"] = "Edit Library: " + Model.Name;
+}
+<div>
+    <div class="headertwo">
+        <h2>@ViewData["Title"]</h2>
+    </div>
+
+    <form asp-action="Edit">
+        <div class="form-horizontal">
+            <div asp-validation-summary="ValidationSummary.ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="LibraryID" />
+            <div class="form-group">
+                <label asp-for="Name" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <textarea asp-for="Description" class="form-control textarea" rows="5">@Model.Description</textarea>
+                    <span asp-validation-for="Description" class="text-danger" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <hr />
+
+    <div>
+        <p>
+            <a class="Actions" asp-action="Details" asp-route-id="@Model.LibraryID">Back to Library: @Model.Name</a>
+            <a class="Actions" asp-action="Index">Back to Libraries</a>
+        </p>
+    </div>
+</div>

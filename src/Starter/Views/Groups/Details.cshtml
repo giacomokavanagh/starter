@@ -1,0 +1,46 @@
+@model Starter.Controllers.ProjectAndFolderAndGroupAndRun
+
+@{
+    ViewData["Title"] = "Group: " + Model.Group.Name;
+}
+
+<div>
+    <div class="headertwo">
+        <h2>@ViewData["Title"]</h2>
+    </div>
+
+    @if (ViewData["Message"] != null)
+    {
+        <div>
+            <p class="message">
+                @ViewData["Message"]
+            </p>
+        </div>
+    }
+
+    @Html.Partial("_GroupDetailsTable", Model.Group)
+
+    <hr />
+
+    @Html.Partial("_RunIndexTable", Model.Runs)
+
+    @Html.Partial("_CreateRun", Model)
+
+    <div>
+        <hr />
+        <p>
+            <a class="Actions" asp-action="Edit" asp-route-id="@Model.Group.GroupID" class="Actions">Edit</a>
+        </p>
+        <p>
+            <a class="Actions" asp-action="Delete" asp-route-id="@Model.Group.GroupID" class="Actions">Delete</a>
+        </p>
+
+        @Html.Partial("_BackToParentFolder", Model.Folder)
+
+        @Html.Partial("_BackToParentProject", Model.Project)
+
+        <p>
+            <a class="Actions" asp-controller="Projects" asp-action="Index" class="Actions">Back to Projects</a>
+        </p>
+    </div>
+</div>

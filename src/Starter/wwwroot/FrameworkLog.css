@@ -1,0 +1,144 @@
+﻿body {
+    font-family: "Lucida Console", Monaco, monospace;
+    font-size: 13px;
+}
+
+table, th, td {
+    border: 1px solid black;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    table-layout: fixed;
+    word-wrap: break-word;
+}
+
+caption{
+    display: table-caption;
+    text-align: center;
+    font-size: 18px;
+}
+
+td {
+    text-align: left;
+    vertical-align: top;
+    padding: 2px;
+}
+
+td.PropertyName {
+    background-color: black;
+    color: #E3AE57;
+    width: 30%;
+}
+
+td.LogTableHeaders {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+td.Begin {
+    background-color: #1FDA9A;
+    color: black;
+    width: 100%;
+    table-layout: fixed;
+    word-wrap: break-word;
+    font-weight: bold;
+    font-size: 14px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+#DateTime {
+    background-color: black;
+    color: #1FDA9A;
+    width: 8%;
+    table-layout: fixed;
+    word-wrap: break-word;
+}
+
+#Class {
+    background-color: #1FDA9A;
+    color: black;
+    width: 14%;
+    table-layout: fixed;
+    word-wrap: break-word;
+    font-weight: bold;
+}
+
+#Method {
+    background-color: black;
+    color: #1FDA9A;
+    width: 21%;
+    table-layout: fixed;
+    word-wrap: break-word;
+}
+
+#Properties {
+    background-color: white;
+    color: #1FDA9A;
+    width: 57%;
+    table-layout: fixed;
+    word-wrap: break-word;
+    vertical-align: middle;
+} 
+
+#PropertyName {
+    background-color: #E3AE57;
+    color: black;
+    width: 25%;
+    table-layout: fixed;
+    word-wrap: break-word;
+}
+
+#PropertyValue {
+    background-color: black;
+    color: #E3AE57;
+    width: 75%;
+    table-layout: fixed;
+    word-wrap: break-word;
+}  
+
+td.ExceptionHeader {
+    background-color: #DC3D24;
+    color: black;
+    font-size: 16px;
+    text-align: center;
+    width: 100%;
+}
+
+td.NoTestsReadyHeader {
+    background-color: #1FDA9A;
+    color: black;
+    font-size: 16px;
+    text-align: center;
+    width: 100%;
+}
+
+tr.ExceptionDetails {
+    background-color: black;
+    color: #DC3D24;
+    font-size: 12px;
+    width: 50%;
+    table-layout: fixed;
+    word-wrap: break-word;
+}
+
+td.ExceptionType {
+    background-color: black;
+    color: #DC3D24;
+    font-size: 12px;
+    width: 30%;
+    table-layout: fixed;
+    word-wrap: break-word;
+}
+
+td.ExceptionDetails {
+    background-color: black;
+    color: #DC3D24;
+    font-size: 12px;
+    width: 70%;
+    table-layout: fixed;
+    word-wrap: break-word;
+}
+

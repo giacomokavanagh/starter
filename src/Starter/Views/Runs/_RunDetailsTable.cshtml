@@ -1,0 +1,22 @@
+﻿@model Starter.Models.Run
+
+<div>
+    <dl class="dl-horizontal doublewidth">
+        <dt class="dtTable doublewidth">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd>
+            <p class="TableParagraph">
+                @Html.DisplayFor(model => model.Description)
+            </p>
+        </dd>
+        <dt class="dtTable doublewidth">
+            Test Runner Group 
+        </dt>
+        <dd>
+            <p class="TableParagraph">
+                @ViewBag.TestRunnerGroupDescription: @ViewBag.TestRunnerGroupName
+            </p>
+        </dd>
+    </dl>
+</div>

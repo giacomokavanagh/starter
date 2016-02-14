@@ -1,0 +1,41 @@
+@model Starter.Controllers.ProjectAndFolder
+
+@{
+    ViewData["Title"] = "Project: " + Model.Project.Name;
+}
+
+<div>
+    <div class="headertwo">
+        <h2>@ViewData["Title"]</h2>
+    </div>
+
+    @if (ViewData["Message"] != null)
+    {
+        <div>
+            <p class="message">
+                @ViewData["Message"]
+            </p>
+        </div>
+    }
+
+    @Html.Partial("_ProjectDetailsTable", Model.Project)
+
+    <hr />
+    
+    @Html.Partial("_FolderIndexTable", Model.Folders)
+
+    @Html.Partial("_CreateFolder", Model)
+
+    <div>
+        <hr />
+        <p>
+            <a asp-action="Edit" asp-route-id="@Model.Project.ID" class="Actions">Edit</a>
+        </p>
+        <p>
+            <a asp-action="Delete" asp-route-id="@Model.Project.ID" class="Actions">Delete</a>
+        </p>
+        <p>
+            <a asp-action="Index" class="Actions">Back to Projects</a>
+        </p>
+    </div>
+</div>

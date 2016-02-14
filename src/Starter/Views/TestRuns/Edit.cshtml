@@ -1,0 +1,83 @@
+@model Starter.Models.TestRun
+
+@{
+    ViewData["Title"] = "Edit Test Run for " + @Model.Test.Name + " in " + @Model.Run.Name;
+}
+
+<div>
+    <div class="headertwo">
+        <h2>@ViewData["Title"]</h2>
+    </div>
+
+    <form asp-action="Edit">
+        <div class="form-horizontal">
+            <div asp-validation-summary="ValidationSummary.ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="TestRunID" />
+            <input type="hidden" asp-for="RunID" />
+            <input type="hidden" asp-for="TestID" />
+            <input type="hidden" asp-for="EndTime" />
+            <div class="form-group">
+                <label asp-for="TestEnvironmentID" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <select asp-for="TestEnvironmentID" asp-items="ViewBag.testEnvironments" class="chosen"></select>
+                    <span asp-validation-for="TestEnvironmentID" class="text-danger" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Browser" class="control-label col-md-2"></label>
+                <div class="col-md-10">
+                    <select asp-for="Browser" asp-items="ViewBag.browsers" class="chosen"></select>
+                    <span asp-validation-for="Browser" class="text-danger" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="StartTime" class="control-label col-md-2"></label>
+                <div class="col-md-10">
+                    <div class="input-group date datetimepicker" id="wideDateTimePicker">
+                        <input id="wideDateTimePicker" type="text" class="form-control-short datetimepicker" value="StartTime" />
+                    </div>
+
+                    <span asp-validation-for="StartTime" class="text-danger" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Status" class="control-label col-md-2"></label>
+                <div class="col-md-10">
+                    <select asp-for="Status" asp-items="ViewBag.statuses" class="chosen"></select>
+                    <span asp-validation-for="Status" class="text-danger" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="DependencyGroupID" class="control-label col-md-2"></label>
+                <div class="col-md-10">
+                    <select asp-for="DependencyGroupID" asp-items="ViewBag.dependencyGroups" class="chosen">
+                        <option value="0">None</option>
+                    </select>
+                    <span asp-validation-for="DependencyGroupID" class="text-danger" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="TestRunnerGroupID" class="control-label col-md-2"></label>
+                <div class="col-md-10">
+                    <select asp-for="TestRunnerGroupID" asp-items="ViewBag.TestRunnerGroups" class="chosen">
+                        <option value="-1">None</option>
+                    </select>
+                    <span asp-validation-for="TestRunnerGroupID" class="text-danger" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <hr />
+
+    <div>
+        <p>
+            <a class="Actions" asp-controller="Runs" asp-action="Details" asp-route-id="@Model.RunID">Back to Run: @Model.Run.Name</a>
+        </p>
+    </div>
+</div>

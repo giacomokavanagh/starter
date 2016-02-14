@@ -1,0 +1,50 @@
+@model Starter.Models.TestRunner
+
+@{
+    ViewData["Title"] = "Test Runner: " + Model.Name;
+}
+
+<div>
+    <div class="headertwo">
+        <h2>@ViewData["Title"]</h2>
+    </div>
+
+    @if (ViewData["Message"] != null)
+    {
+        <div>
+            <p class="message">
+                @ViewData["Message"]
+            </p>
+        </div>
+    }
+
+    @Html.Partial("_TestRunnerDetailsTable", Model)
+
+    <div class="ActionButtonDiv">
+        <form asp-action="DeleteAllTestRunnerLogs" asp-controller="TestRunners" asp-route-id="@Model.TestRunnerID">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Delete All Logs" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+
+    <hr/>
+
+    @Html.Partial("_TestRunnerLogIndexTable", Model.TestRunnerLogs)
+
+    <div>
+        <hr />
+        <p>
+            <a asp-action="Edit" asp-route-id="@Model.TestRunnerID" class="Actions">Edit</a>
+        </p>
+        <p>
+            <a asp-action="Delete" asp-route-id="@Model.TestRunnerID" class="Actions">Delete</a>
+        </p>
+        <p>
+            <a asp-controller="TestRunnerGroups" asp-action="Details" asp-route-id="@Model.TestRunnerGroupID" class="Actions">Back to Test Runner Group: @Model.TestRunnerGroup.Name</a>
+        </p>
+        <p>
+            <a asp-controller="TestRunnerGroups" asp-action="Index" class="Actions">Back to Test Runner Groups</a>
+        </p>
+    </div>
+</div>

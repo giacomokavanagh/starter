@@ -1,0 +1,32 @@
+@model Starter.Controllers.LibraryAndSection
+
+@{
+    ViewData["Title"] = "Delete Section: " + Model.Section.Name;
+}
+
+<div>
+    <div class="headertwo">
+        <h2 class="Delete">@ViewData["Title"]</h2>
+    </div>
+    <div>
+        <h3>Are you sure you want to delete this?</h3>
+    </div>
+
+    <hr />
+
+    <div>
+        @Html.Partial("_SectionDetailsTable", Model.Section)
+
+        <form asp-action="Delete">
+            <div class="form-actions no-color">
+                <input type="submit" value="Delete" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+
+    <hr />
+
+    <div>
+        @Html.Partial("_BackToParentLibrary", Model.Library)
+    </div>
+</div>

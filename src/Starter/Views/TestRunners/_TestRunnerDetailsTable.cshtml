@@ -1,0 +1,24 @@
+﻿@model Starter.Models.TestRunner
+
+<div>
+    <div>
+        <dl class="dl-horizontal doublewidth">
+            <dt class="dtTable doublewidth">
+                @Html.DisplayNameFor(model => model.ConfigurationDetails)
+            </dt>
+            <dd>
+                <p class="TableParagraph">
+                    @Html.DisplayFor(model => model.ConfigurationDetails)
+                </p>
+            </dd>
+            <dt class="dtTable doublewidth">
+                @Html.DisplayNameFor(model => model.ClearRemoteLogOnNextAccess)
+            </dt>
+            <dd>
+                <p class="TableParagraph">
+                    @Html.DisplayFor(model => model.ClearRemoteLogOnNextAccess)
+                </p>
+            </dd>
+        </dl>
+    </div>
+</div>

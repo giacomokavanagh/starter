@@ -1,0 +1,35 @@
+@model Starter.Models.TestEnvironment
+
+@{
+    ViewData["Title"] = "Environment: " + Model.Name;
+}
+
+<div>
+    <div class="headertwo">
+        <h2>@ViewData["Title"]</h2>
+    </div>
+
+    @if (ViewData["Message"] != null)
+    {
+        <div>
+            <p class="message">
+                @ViewData["Message"]
+            </p>
+        </div>
+    }
+
+    @Html.Partial("_TestEnvironmentDetailsTable", Model)
+
+    <div>
+        <hr />
+        <p>
+            <a class="Actions" asp-action="Delete" asp-route-id="@Model.TestEnvironmentID">Delete</a>
+        </p>
+        <p>
+            <a class="Actions" asp-action="Edit" asp-route-id="@Model.TestEnvironmentID">Edit</a>
+        </p>
+        <p>
+            <a class="Actions" asp-action="Index">Back to Environments</a>
+        </p>
+    </div>
+</div>

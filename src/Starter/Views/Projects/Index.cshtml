@@ -1,0 +1,92 @@
+@model Starter.Controllers.ProjectsAndNewProject
+
+@{
+    ViewData["Title"] = "Projects";
+}
+
+<div>
+    <div class="headertwo">
+        <h2>Manage @ViewData["Title"]</h2>
+    </div>
+
+    @if (ViewData["Message"] != null)
+    {
+        <div>
+            <p class="message">
+                @ViewData["Message"]
+            </p>
+        </div>
+    }
+
+    <div class='panel-group'>
+        <div class='panel panel-default'>
+            <div class='panel-heading'>
+                <h3 class='panel-title'>
+                    <a data-toggle='collapse' id='Toggle' href='#collapseProjects'>Projects</a>
+                </h3>
+            </div>
+            @if (Model.Projects.Any())
+            {
+                <div id='collapseProjects' class='panel-collapse collapsed collapse in'>
+                    <div class='panel-body'>
+                        <table id="3ColumnDataTable" class="table table-striped">
+                            <thead id="greyTableheader">
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Project.ID)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Project.Name)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Project.Description)
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody id="RightClickTable">
+
+                                @foreach (var item in Model.Projects)
+                                {
+                                    <tr>
+                                        <td>
+                                            <p class="TableParagraph">@item.ID</p>
+                                        </td>
+                                        <td>
+                                            <p class="TableParagraph">
+                                                <a class="Actions" asp-controller="Projects" asp-route-id="@item.ID" asp-action="Details">@item.Name</a>
+                                            </p>
+                                        </td>
+                                        <td>
+                                            <p class="TableParagraph">
+                                                @Html.DisplayFor(modelItem => item.Description)
+                                            </p>
+                                        </td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div id='collapseProjects' class='panel-collapse collapsed collapse in'>
+                    <div class='panel-body'>
+                        <p>
+                            There are currently no Projects
+                        </p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    @Html.Partial("_CreateProject", Model.Project)
+</div>
+
+<ul id="contextMenu" class="dropdown-menu" role="menu" style="display:none">
+    <li><a tabindex="-1" href="#" name="Projects">Edit</a></li>
+    <li><a tabindex="-1" href="#" name="Projects">Details</a></li>
+    <li><a tabindex="-1" href="#" name="Projects">Delete</a></li>
+</ul>

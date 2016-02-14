@@ -1,0 +1,128 @@
+@model Starter.Models.TestRunnerGroup
+
+@{
+    ViewData["Title"] = "Edit Test Runner Group: " + Model.Name;
+}
+
+<div>
+    <div class="headertwo">
+        <h2>@ViewData["Title"]</h2>
+    </div>
+
+    <form asp-action="Edit">
+        <div class="form-horizontal">
+            <h4>TestRunnerGroup</h4>
+            <hr />
+            <div asp-validation-summary="ValidationSummary.ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="TestRunnerGroupID" />
+            <div class="form-group">
+                <label asp-for="Name" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="Description" class="form-control" />
+                    <span asp-validation-for="Description" class="text-danger" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Projects" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <select asp-for="@Model.Projects" class="chosen" multiple="multiple">
+                    @{  List<int> selectedProjects = ViewBag.SelectedProjectIDs;
+                        @foreach(var item in ViewBag.AllProjects)
+                        {
+                            if (selectedProjects.Any(t => t == item.ID))
+                            {
+                                <option value="@item.ID" selected="selected">@item.Name</option>
+                            }
+                            else
+                            { 
+                                <option value="@item.ID">@item.Name</option>
+                            }
+                        }
+                    }
+                    </select>
+                    <span asp-validation-for="@Model.Projects" class="text-danger" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="@Model.Folders" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <select asp-for="@Model.Folders" class="chosen" multiple="multiple">
+                        @{  List<int> selectedFolders = ViewBag.SelectedFolderIDs;
+                            @foreach (var item in ViewBag.AllFolders)
+                            {
+                                if (selectedFolders.Any(t => t == item.FolderID))
+                                {
+                                    <option value="@item.FolderID" selected="selected">@item.Name</option>
+                                }
+                                else
+                                {
+                                    <option value="@item.FolderID">@item.Name</option>
+                                }
+                            }
+                        }
+                    </select>
+                    <span asp-validation-for="@Model.Folders" class="text-danger" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Groups" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <select asp-for="@Model.Groups" class="chosen" multiple="multiple">
+                        @{  List<int> selectedGroups = ViewBag.SelectedGroupIDs;
+                            @foreach (var item in ViewBag.AllGroups)
+                            {
+                                if (selectedGroups.Any(t => t == item.GroupID))
+                                {
+                                    <option value="@item.GroupID" selected="selected">@item.Name</option>
+                                }
+                                else
+                                {
+                                    <option value="@item.GroupID">@item.Name</option>
+                                }
+                            }
+                        }
+                    </select>
+                    <span asp-validation-for="@Model.Groups" class="text-danger" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Runs" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <select asp-for="@Model.Runs" class="chosen" multiple="multiple">
+                        @{  List<int> selectedRuns = ViewBag.SelectedRunIDs;
+                            @foreach (var item in ViewBag.AllRuns)
+                            {
+                                if (selectedRuns.Any(t => t == item.RunID))
+                                {
+                                    <option value="@item.RunID" selected="selected">@item.Name</option>
+                                }
+                                else
+                                {
+                                    <option value="@item.RunID">@item.Name</option>
+                                }
+                            }
+                        }
+                    </select>
+                    <span asp-validation-for="@Model.Runs" class="text-danger" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+</div>

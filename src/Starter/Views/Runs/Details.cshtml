@@ -1,0 +1,263 @@
+@model Starter.Controllers.ProjectAndFolderAndGroupAndRunAndTestsAndTestRun
+
+@{
+    ViewData["Title"] = "Run: " + Model.Run.Name;
+}
+
+<div>
+    <div class="headertwo">
+        <h2>@ViewData["Title"]</h2>
+    </div>
+
+    @if (ViewData["Message"] != null)
+    {
+        <div>
+            <p class="message">
+                @ViewData["Message"]
+            </p>
+        </div>
+    }
+    <div>
+        <p class="messagehidden">
+
+        </p>
+    </div>
+
+    @Html.Partial("_RunDetailsTable", Model.Run)
+
+    <table class="RunOrStopAllTests">
+        <tr>
+            <td class="RunOrStopAllTests">
+                <form method="post" asp-action="RunAllTestsNow" asp-controller="TestRuns">
+                    <input type="hidden" value="@ViewData["AllTestRunIDs"]" name="AllTestRunIDs" />
+                    <input type="hidden" value="@Model.Run.RunID" name="id" />
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Run All Tests" class="btn btn-default" />
+                    </div>
+                </form>
+            </td>
+            <td class="RunOrStopAllTests">
+                <form method="post" asp-action="StopAllTestsNow" asp-controller="TestRuns">
+                    <input type="hidden" value="@ViewData["AllTestRunIDs"]" name="AllTestRunIDs" />
+                    <input type="hidden" value="@Model.Run.RunID" name="id" />
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Stop All Tests" class="btn btn-default" />
+                    </div>
+                </form>
+            </td>
+            <td class="RunOrStopAllTests">
+                <form method="post" asp-action="RunRemainingTestsNow" asp-controller="TestRuns">
+                    <input type="hidden" value="@ViewData["AllTestRunIDs"]" name="AllTestRunIDs" />
+                    <input type="hidden" value="@Model.Run.RunID" name="id" />
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Run Remaining Tests" class="btn btn-default" />
+                    </div>
+                </form>
+            </td>
+        </tr>
+    </table>
+
+    <hr />
+
+    @if (Model.Run.TestRuns != null)
+            {
+        <table id="TestRunDataTable" class="table table-striped">
+            <thead id="greyTableheader">
+                <tr>
+                    <th>ID</th>
+                    <th></th>
+                    <th>Status</th>
+                    <th>Test Name</th>
+                    <th>Test Environment</th>
+                    <th>Browser</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Results</th>
+                    <th>Dependency Group</th>
+                    <th>Retries</th>
+                    <th>Retries Left</th>
+                    <th>Test Runner Group</th>
+                </tr>
+            </thead>
+            <tbody id="TestRunDataRows">
+                @foreach (TestRun testRun in Model.Run.TestRuns)
+                {
+                    var TestStatusID = "TestStatus" + testRun.TestRunID;
+                    var RunTestsID = "RunTestHidden";
+                    var StopTestsID = "StopTest";
+                    var RunTestDivName = "RunTestDiv" + testRun.TestRunID;
+                    var StopTestDivName = "StopTestDiv" + testRun.TestRunID;
+                    var RetriesID = "Retries" + testRun.TestRunID;
+                    var RetriesLeftID = "RetriesLeftTD" + testRun.TestRunID;
+                    <tr>
+                        <td name="TestRunID">@testRun.TestRunID</td>
+                        <td>
+                            @if (testRun.Status == "Ready" || testRun.Status == "Waiting" || testRun.Status == "Running")
+                            {
+                                RunTestsID = "RunTestHidden";
+                                StopTestsID = "StopTest";
+                            }
+                            else
+                            {
+                                RunTestsID = "RunTest";
+                                StopTestsID = "StopTestHidden";
+                            }
+                            <div id="@RunTestsID" name="@RunTestDivName">
+                                <input type="submit" class="btn btn-sm RunTestsButton" value="Run Test" id="RunTest" name="@testRun.TestRunID" />
+                            </div>
+                            <div id="@StopTestsID" name="@StopTestDivName">
+                                <input type="submit" class="btn btn-sm StopTestsButton" value="Stop Test" id="StopTest" name="@testRun.TestRunID" />
+                            </div>
+                        </td>
+                        <td id="@TestStatusID" class="@testRun.Status">@testRun.Status</td>
+                        <td>@testRun.Test.Name</td>
+                        <td>
+                            @if (testRun.TestEnvironment != null)
+                            { @testRun.TestEnvironment.Name }
+                        </td>
+                        <td>@testRun.Browser</td>
+                        <td class="datetimepickertd">
+                            <div class="input-group date datetimepickerdiv">
+                                <input type="text" class="form-control-short datetimepickerinput" value="@testRun.StartTime" id="@testRun.TestRunID" />
+                            </div>
+                        </td>
+                        <td>@testRun.EndTime</td>
+                        
+                        @if (testRun.Result == null)
+                        {
+                            <td>None</td>
+                        }
+                        else
+                        {
+                            <td><a asp-controller="Results" asp-action="ResultsForTestRun" asp-route-id="@testRun.TestRunID">Latest</a></td>
+                        }
+
+                        <td id="dependencygrouptd">
+                            @{
+                                if (testRun.DependencyGroup != null)
+                                {
+                                    <ul id="dependencygrouppopup">
+                                        <li>
+                                            <a class="TestRunTableActions" href="#">@testRun.DependencyGroup.Name</a>
+                                            <ul>
+                                                <li>
+                                                    <div class="dependencygroupdiv">
+                                                        <div id="dependencygroupheader">
+                                                            <a class="Actions Title" asp-controller="DependencyGroups" asp-action="Details" asp-route-id="@testRun.DependencyGroupID">@testRun.DependencyGroup.Name</a>
+                                                            <form asp-controller="TestRuns" asp-action="ClearDependencyGroup" asp-route-id="@testRun.TestRunID">
+                                                                <input type="submit" class="btn btn-default" value="Clear Dependency Group" />
+                                                            </form>
+                                                        </div>
+
+                                                        <table id="dependencygrouptable">
+                                                            <thead class="greytableheader">
+                                                                <tr>
+                                                                    <th class="dependencyid">Test Run ID</th>
+                                                                    <th class="dependencystatus">Status</th>
+                                                                    <th class="dependencypath">Path</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach (var dependency in testRun.DependencyGroup.Dependencies)
+                                                                {
+                                                                    var DependencyNavLinkList = (List<Starter.Controllers.NavigationLink>)ViewData["DependencyNavLinkList" + @dependency.DependencyID];
+
+                                                                    <tr>
+                                                                        <td>@dependency.TestRunID</td>
+                                                                        <td>@dependency.TestRun.Status</td>
+                                                                        <td>
+                                                                            @foreach (var item in DependencyNavLinkList)
+                                                                            {
+                                                                                <a class="dependencygrouplinks" asp-controller="@item.Controller" asp-action="@item.Action" asp-route-id="@item.RouteID">@item.Text</a>
+                                                                                <p class="dependencygroupseparator">></p>
+                                                                            }
+                                                                        </td>
+                                                                    </tr>
+                                                                }
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                }
+                                else
+                                {
+
+                                    if (testRun.ValidDependencyGroups != null)
+                                    {
+                                        SelectList ValidDependencyGroupsSelect = new SelectList(testRun.ValidDependencyGroups, "DependencyGroupID", "Name");
+                                        <div class="dependencygroupselectdiv">
+                                            <select id="@testRun.TestRunID" asp-for="@testRun.DependencyGroupID" asp-items="@ValidDependencyGroupsSelect" data-placeholder="Choose a Dependency Group" class="chosensmalldependencygroup">
+                                                <option value="-1">None</option>
+                                            </select>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <p>No Dependency Groups available</p>
+                                    }
+                                }
+                            }
+                        </td>
+                        <td class="Retriestd">
+                            <div class="Retriesdiv">
+                                <input type="number" min="0" class="Retriesinput" name="@testRun.TestRunID" value="@testRun.Retries" id="@RetriesID" />
+                            </div>
+                        </td>
+                        <td id="@RetriesLeftID">@testRun.RetriesLeft</td>
+                        <td>
+                            @if (testRun.TestRunnerGroupID != null)
+                            {
+                                @testRun.TestRunnerGroup.Name
+                            }
+                            else
+                            {
+                                @ViewBag.TestRunnerGroupName
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    }
+
+    <hr />
+
+    @Html.Partial("_LinkTestsToRuns", Model)
+
+    <div>
+        <hr />
+        <p>
+            <a asp-action="Edit" asp-route-id="@Model.Run.RunID" class="Actions">Edit</a>
+        </p>
+        <p>
+            <a asp-action="Delete" asp-route-id="@Model.Run.RunID" class="Actions">Delete</a>
+        </p>
+
+        @Html.Partial("_BackToParentGroup", Model.Group)
+
+        @Html.Partial("_BackToParentFolder", Model.Folder)
+
+        @Html.Partial("_BackToParentProject", Model.Project)
+
+        <p>
+            <a asp-controller="Projects" asp-action="Index" class="Actions">Back to Projects</a>
+        </p>
+    </div>
+</div>
+
+
+<ul id="contextMenu" class="dropdown-menu" role="menu" style="display:none">
+    <li><a tabindex="-1" href="#">Edit</a></li>
+    <li><a tabindex="-1" href="#">Copy</a></li>
+
+    <li class="divider"></li>
+    <li><a tabindex="-1" href="#">Delete</a></li>
+</ul>
+
+
+
+

@@ -1,0 +1,131 @@
+@model Starter.Models.Result
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<form asp-action="Create">
+    <div class="form-horizontal">
+        <h4>Result</h4>
+        <hr />
+        <div asp-validation-summary="ValidationSummary.ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="EndTime" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="EndTime" class="form-control" />
+                <span asp-validation-for="EndTime" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ResultFileName" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ResultFileName" class="form-control" />
+                <span asp-validation-for="ResultFileName" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ResultFilePath" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ResultFilePath" class="form-control" />
+                <span asp-validation-for="ResultFilePath" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ResultPath" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ResultPath" class="form-control" />
+                <span asp-validation-for="ResultPath" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ScreenshotDetailsListID" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ScreenshotDetailsListID" class="form-control" />
+                <span asp-validation-for="ScreenshotDetailsListID" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="StartTime" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="StartTime" class="form-control" />
+                <span asp-validation-for="StartTime" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Status" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Status" class="form-control" />
+                <span asp-validation-for="Status" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="TestDataFileName" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="TestDataFileName" class="form-control" />
+                <span asp-validation-for="TestDataFileName" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="TestEnvironmentFileName" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="TestEnvironmentFileName" class="form-control" />
+                <span asp-validation-for="TestEnvironmentFileName" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="TestEnvironmentID" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="TestEnvironmentID" class ="form-control"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="TestEnvironmentName" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="TestEnvironmentName" class="form-control" />
+                <span asp-validation-for="TestEnvironmentName" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="TestID" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="TestID" class ="form-control"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="TestName" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="TestName" class="form-control" />
+                <span asp-validation-for="TestName" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="TestRunID" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="TestRunID" class ="form-control"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="TestRunnerID" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="TestRunnerID" class ="form-control"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}

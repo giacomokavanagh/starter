@@ -1,0 +1,35 @@
+@model Starter.Models.TestEnvironment
+
+@{
+    ViewData["Title"] = "Delete Environment: " + Model.Name;
+}
+
+<div>
+    <div class="headertwo">
+        <h2 class="Delete">@ViewData["Title"]</h2>
+    </div>
+    <div>
+        <h3>Are you sure you want to delete this?</h3>
+    </div>
+
+    <hr />
+
+    <div>
+        @Html.Partial("_TestEnvironmentDetailsTable", Model)
+
+        <form asp-action="Delete">
+            <div class="form-actions no-color">
+                <input type="submit" value="Delete" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+
+    <hr />
+    <p>
+        <a class="Actions" asp-action="Details" asp-route-id="@Model.TestEnvironmentID">Back to @Model.Name</a>
+    </p>
+    <p>
+        <a class="Actions" asp-action="Index">Back to Environments</a>
+    </p>
+    
+</div>

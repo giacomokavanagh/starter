@@ -1,0 +1,33 @@
+﻿@model Starter.Models.Test
+
+<div>
+    <dl class="dl-horizontal">
+        <dt class="dtTable">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd>
+            <p class="TableParagraph">
+                @Html.DisplayFor(model => model.Description)
+            </p>
+        </dd>
+        <dt class="dtTable">
+            @Html.DisplayNameFor(model => model.TestDataSource)
+        </dt>
+        <dd>
+            <p class="TableParagraph">
+                @Html.DisplayFor(model => model.TestDataSource)
+            </p>
+        </dd>
+        @if (Model.TestDataSource == "Excel" && Model.ExcelFilePath != null)
+        {
+            <dt class="dtTable">
+                @Html.DisplayNameFor(model => model.ExcelFilePath)
+            </dt>
+            <dd>
+                <p class="TableParagraph">
+                    <a asp-controller="Tests" asp-action="ReturnTestFile" asp-route-id="@Model.TestID">@Model.ExcelFilePath</a>
+                </p>
+            </dd>
+        }
+    </dl>
+</div>

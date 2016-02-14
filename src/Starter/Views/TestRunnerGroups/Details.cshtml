@@ -1,0 +1,41 @@
+@model Starter.Controllers.TestRunnerGroupAndTestRunnersAndNewTestRunner
+
+@{
+    ViewData["Title"] = "Test Runner Group: " + Model.TestRunnerGroup.Name;
+}
+
+<div>
+    <div class="headertwo">
+        <h2>@ViewData["Title"]</h2>
+    </div>
+
+    @if (ViewData["Message"] != null)
+    {
+        <div>
+            <p class="message">
+                @ViewData["Message"]
+            </p>
+        </div>
+    }
+
+    @Html.Partial("_TestRunnerGroupDetailsTable", Model.TestRunnerGroup)
+
+    <hr />
+
+    @Html.Partial("_TestRunnerIndexTable", Model.TestRunners)
+
+    @Html.Partial("_CreateTestRunner", Model)
+
+    <div>
+        <hr />
+        <p>
+            <a asp-action="Edit" asp-route-id="@Model.TestRunnerGroup.TestRunnerGroupID" class="Actions">Edit</a>
+        </p>
+        <p>
+            <a asp-action="Delete" asp-route-id="@Model.TestRunnerGroup.TestRunnerGroupID" class="Actions">Delete</a>
+        </p>
+        <p>
+            <a asp-controller="TestRunnerGroups" asp-action="Index" class="Actions">Back to Test Runner Groups</a>
+        </p>
+    </div>
+</div>

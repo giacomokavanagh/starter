@@ -1,0 +1,41 @@
+﻿@model Starter.Controllers.ProjectAndFolderAndGroupAndRun
+
+<form asp-action="Create" asp-controller="Runs">
+    <div class='panel-group'>
+        <div class='panel panel-default'>
+            <div class='panel-heading'>
+                <h3 class='panel-title'>
+                    <a data-toggle='collapse' id='Toggle' href='#collapse'>Create Run</a>
+                </h3>
+            </div>
+            <div id='collapse' class='panel-collapse collapsed collapse'>
+                <div class='panel-body'>
+                    <div class="form-horizontal">
+                        <div asp-validation-summary="ValidationSummary.ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="@Model.Run.Name" class="col-md-2 control-label"></label>
+                            <div class="col-md-10">
+                                <input asp-for="@Model.Run.Name" class="form-control" />
+                                <span asp-validation-for="@Model.Run.Name" class="text-danger" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="@Model.Run.Description" class="col-md-2 control-label"></label>
+                            <div class="col-md-10">
+                                <textarea asp-for="@Model.Run.Description" class="form-control textarea" rows="5"></textarea>
+                                <span asp-validation-for="@Model.Run.Description" class="text-danger" />
+                            </div>
+                        </div>
+                        <input asp-for="@Model.Run.GroupID" class="form-control" type="hidden" readonly="readonly" value="@Model.Group.GroupID" />
+                        <span asp-validation-for="@Model.Run.GroupID" class="text-danger" />
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" value="Create" class="btn btn-default" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

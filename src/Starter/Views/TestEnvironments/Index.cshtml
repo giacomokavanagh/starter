@@ -1,0 +1,88 @@
+@model Starter.Controllers.TestEnvironmentsAndNewTestEnvironment
+
+@{
+    ViewData["Title"] = "Environments";
+}
+
+<div>
+    <div class="headertwo">
+        <h2>Manage @ViewData["Title"]</h2>
+    </div>
+
+    @if (ViewData["Message"] != null)
+    {
+        <div>
+            <p class="message">
+                @ViewData["Message"]
+            </p>
+        </div>
+    }
+
+    @if (Model.TestEnvironments.Any())
+    {
+        <div class="headertwo">
+            <h2>Environments</h2>
+        </div>
+        <table id="4ColumnDataTable" class="table table-striped">
+            <thead id="greyTableheader">
+                <tr>
+                    <th>
+                        ID
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TestEnvironment.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TestEnvironment.Description)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TestEnvironment.XMLFilePath)
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="RightClickTable">
+                @foreach (Starter.Models.TestEnvironment env in Model.TestEnvironments)
+                {
+                    <tr>
+                        <td>
+                            <p class="TableParagraph">@env.TestEnvironmentID</p>
+                        </td>
+                        <td>
+                            <p class="TableParagraph">
+                                <a asp-controller="TestEnvironments" asp-action="Details" asp-route-id="@env.TestEnvironmentID" class="Actions">@env.Name</a>
+                            </p>
+                        </td>
+                        <td>
+                            <p class="TableParagraph">
+                                @Html.DisplayFor(modelItem => env.Description)
+                            </p>
+                        <td>
+                            <p class="TableParagraph">
+                                <a asp-controller="TestEnvironments" asp-action="ReturnTestEnvironmentsFile" asp-route-id="@env.TestEnvironmentID">@env.XMLFilePath</a>
+                            </p>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div>
+            <div>
+                <p>
+                    There are currently no Environments saved
+                </p>
+            </div>
+        </div>
+    }
+
+    @Html.Partial("_CreateTestEnvironment", Model.TestEnvironment)
+
+</div>
+
+<ul id="contextMenu" class="dropdown-menu" role="menu" style="display:none">
+    <li><a tabindex="-1" href="#" name="TestEnvironments">Edit</a></li>
+    <li><a tabindex="-1" href="#" name="TestEnvironments">Details</a></li>
+    <li><a tabindex="-1" href="#" name="TestEnvironments">Delete</a></li>
+</ul>

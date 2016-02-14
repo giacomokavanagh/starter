@@ -1,0 +1,72 @@
+﻿@model IEnumerable<Starter.Models.TestRunnerLog>
+
+<div class='panel-group'>
+    <div class='panel panel-default'>
+        <div class='panel-heading'>
+            <h3 class='panel-title'>
+                <a data-toggle='collapse' id='Toggle' href='#collapseTestRunnerLog'>Test Runner Logs</a>
+            </h3>
+        </div>
+
+        @if (Model != null)
+        {
+            <div id='collapseTestRunnerLog' class='panel-collapse collapsed collapse in'>
+                <div class='panel-body'>
+                    <table id="3ColumnDataTable" class="table table-striped">
+                        <thead id="greyTableheader">
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.First().TestRunnerLogID)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.First().Filename)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.First().DateTime)
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="RightClickTable">
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <p class="TableParagraph">
+                                            @Html.DisplayFor(modelItem => item.TestRunnerLogID)
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p class="TableParagraph">
+                                            <a asp-controller="TestRunners" asp-action="ReturnTestRunnerLogFile" asp-route-id="@item.TestRunnerLogID" class="Actions">@item.Filename</a>
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p class="TableParagraph">
+                                           @Html.DisplayFor(modelItem => item.DateTime)
+                                        </p>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+
+        else
+        {
+            <div id='collapseTestRunnerLog' class='panel-collapse collapsed collapse in'>
+                <div class='panel-body'>
+                    <p>
+                        There are currently no Test Runner Logs for this Test Runner
+                    </p>
+                </div>
+            </div>
+        }
+
+    </div>
+</div>
+
+<ul id="contextMenu" class="dropdown-menu" role="menu" style="display:none">
+    <li><a tabindex="-1" href="#" name="TestRunners">Delete Log</a></li>
+</ul>

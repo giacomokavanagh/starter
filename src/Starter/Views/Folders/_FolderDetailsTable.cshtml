@@ -1,0 +1,22 @@
+﻿@model Starter.Models.Folder
+
+<div>
+    <dl class="dl-horizontal doublewidth">
+        <dt class="dtTable doublewidth">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd>
+            <p class="TableParagraph">
+                @Html.DisplayFor(model => model.Description)
+            </p>
+        </dd>
+        <dt class="dtTable doublewidth">
+            Test Runner Group @Html.DisplayNameFor(model => model.TestRunnerGroup.Name)
+        </dt>
+        <dd>
+            <p class="TableParagraph">
+                @Html.DisplayFor(model => model.TestRunnerGroup.Name)
+            </p>
+        </dd>
+    </dl>
+</div>

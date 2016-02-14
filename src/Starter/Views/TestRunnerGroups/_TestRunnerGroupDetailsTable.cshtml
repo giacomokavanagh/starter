@@ -1,0 +1,48 @@
+﻿@model Starter.Models.TestRunnerGroup
+
+<div>
+    <div>
+        <dl class="dl-horizontal">
+            <dt class="dtTable">
+                @Html.DisplayNameFor(model => model.Description)
+            </dt>
+            <dd>
+                <p class="TableParagraph">
+                    @Html.DisplayFor(model => model.Description)
+                </p>
+            </dd>
+            <dt class="dtTable">
+                @Html.DisplayNameFor(model => model.Projects)
+            </dt>
+            <dd>
+                <p class="TableParagraph">
+                    @ViewBag.ProjectsDisplayString
+                </p>
+            </dd>
+            <dt class="dtTable">
+                @Html.DisplayNameFor(model => model.Folders)
+            </dt>
+            <dd>
+                <p class="TableParagraph">
+                    @ViewBag.FoldersDisplayString
+                </p>
+            </dd>
+            <dt class="dtTable">
+                @Html.DisplayNameFor(model => model.Groups)
+            </dt>
+            <dd>
+                <p class="TableParagraph">
+                    @ViewBag.GroupsDisplayString
+                </p>
+            </dd>
+            <dt class="dtTable">
+                @Html.DisplayNameFor(model => model.Runs)
+            </dt>
+            <dd>
+                <p class="TableParagraph">
+                    @ViewBag.RunsDisplayString
+                </p>
+            </dd>
+        </dl>
+    </div>
+</div>

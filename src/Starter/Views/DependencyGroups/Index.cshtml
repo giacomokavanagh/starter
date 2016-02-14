@@ -1,0 +1,79 @@
+@model Starter.Controllers.DependencyGroupsAndNewDependencyGroup
+
+@{
+    ViewData["Title"] = "Dependency Groups";
+}
+
+<div>
+    <div class="headertwo">
+        <h2>Manage @ViewData["Title"]</h2>
+    </div>
+
+    @if (ViewData["Message"] != null)
+    {
+        <div>
+            <p class="message">
+                @ViewData["Message"]
+            </p>
+        </div>
+    }
+
+    @Html.Partial("_CreateDependencyGroup", Model.DependencyGroup)
+
+    <hr />
+
+    @if (Model.DependencyGroups.Any())
+    {
+        <div class="headertwo">
+            <h2>Dependency Groups</h2>
+        </div>
+        <table id="3ColumnDataTable" class="table table-striped">
+            <thead id="greyTableheader">
+                <tr>
+                    <th>
+                        ID
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DependencyGroup.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DependencyGroup.Description)
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="RightClickTable">
+                @foreach (var dg in Model.DependencyGroups)
+                {
+                    <tr>
+                        <td>
+                            <p class="TableParagraph">@dg.DependencyGroupID</p>
+                        </td>
+                        <td>
+                            <p>
+                                <a class="Actions" asp-action="Details" asp-route-id="@dg.DependencyGroupID">@dg.Name</a>
+                            </p>
+                        </td>
+                        <td>@dg.Description</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div>
+            <div>
+                <p>
+                    There are currently no Dependency Groups
+                </p>
+            </div>
+        </div>
+    }
+
+</div>
+
+<ul id="contextMenu" class="dropdown-menu" role="menu" style="display:none">
+    <li><a tabindex="-1" href="#" name="DependencyGroups">Edit</a></li>
+    <li><a tabindex="-1" href="#" name="DependencyGroups">Details</a></li>
+    <li><a tabindex="-1" href="#" name="DependencyGroups">Delete</a></li>
+</ul>

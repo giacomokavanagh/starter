@@ -1,0 +1,50 @@
+@model Starter.Controllers.LibraryAndSection
+
+@{
+    ViewData["Title"] = "Edit Section: " + Model.Section.Name;
+}
+
+<div>
+    <div class="headertwo">
+        <h2>@ViewData["Title"]</h2>
+    </div>
+
+    <form asp-action="Edit">
+        <div class="form-horizontal">
+            <div asp-validation-summary="ValidationSummary.ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Section.SectionID" />
+            <div class="form-group">
+                <label asp-for="Section.Name" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="Section.Name" class="form-control" />
+                    <span asp-validation-for="Section.Name" class="text-danger" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Section.Description" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <textarea asp-for="Section.Description" class="form-control textarea" rows="5" />@Model.Section.Description</textarea>
+                    <span asp-validation-for="Section.Description" class="text-danger" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Section.LibraryID" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <select asp-for="@Model.Section.LibraryID" asp-items="ViewBag.Libraries" class="chosen"></select>
+                    <span asp-validation-for="@Model.Section.LibraryID" class="text-danger" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <hr />
+
+    <div>
+        @Html.Partial("_BackToParentLibrary", Model.Library)
+    </div>
+</div>

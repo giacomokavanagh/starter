@@ -1,0 +1,142 @@
+﻿@model Starter.Controllers.ResultsForTestRun
+
+<div>
+    <div class="headertwo">
+        <h2>@ViewData["TestRunPageTitle"]</h2>
+    </div>
+
+    @if (ViewData["Message"] != null)
+    {
+        <div>
+            <p class="message">
+                @ViewData["Message"]
+            </p>
+        </div>
+    }
+
+    <div>
+        <dl class="dl-horizontal doublewidth">
+            <dt class="dtTable doublewidth">
+                @Html.DisplayNameFor(model => model.Result.TestRunID)
+            </dt>
+            <dd>
+                <p class="TableParagraph">
+                    @ViewData["TestRunID"]
+                </p>
+            </dd>
+            <dt class="dtTable doublewidth">
+                @Html.DisplayNameFor(model => model.Result.StoredTestID)
+            </dt>
+            <dd>
+                <p class="TableParagraph">
+                    @ViewData["TestID"]
+                </p>
+            </dd>
+            <dt class="dtTable doublewidth">
+                Run ID
+            </dt>
+            <dd>
+                <p class="TableParagraph">
+                    @ViewData["RunID"]
+                </p>
+            </dd>
+        </dl>
+    </div>
+
+    <div class='panel-group fullwidth'>
+        <div class='panel panel-default'>
+            <div class='panel-heading'>
+                <h3 class='panel-title'>
+                    <a data-toggle='collapse' id='Toggle' href='#collapseRuns'>Results</a>
+                </h3>
+            </div>
+
+            @if (Model.Results.Any())
+            {
+                <div id='collapseRuns' class='panel-collapse collapsed collapse in'>
+                    <div class='panel-body'>
+                        <table id="ResultsDataTable" class="table table-striped">
+                            <thead id="greyTableheader">
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Result.ResultID)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Result.StoredStatus)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Result.ResultName)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Result.StoredStartTime)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Result.StoredEndTime)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Result.StoredTestDataFileName)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Result.StoredTestEnvironmentName)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Result.StoredTestRunnerName)
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody id="RightClickTable">
+
+                                @foreach (var item in Model.Results)
+                                {
+                                    <tr>
+                                        <td>@item.ResultID</td>
+                                        <td class="@item.StoredStatus">@item.StoredStatus</td>
+                                        <td>
+                                            <a asp-controller="Results" asp-action="Details" asp-route-id="@item.ResultID">@item.ResultName</a>
+                                        </td>
+                                        <td>@item.StoredStartTime</td>
+                                        <td>@item.StoredEndTime</td>
+                                        <td>
+                                            <a asp-controller="Results" asp-action="ReturnStoredTestFile" asp-route-id="@item.ResultID">@item.StoredTestDataFileName</a>
+                                        </td>
+                                        <td>
+                                            <a asp-controller="Results" asp-action="ReturnStoredTestEnvironmentsFile" asp-route-id="@item.ResultID">@item.StoredTestEnvironmentFileName</a>
+                                        </td>
+                                        <td>@item.StoredTestRunnerName</td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            }
+
+            else
+            {
+                <div id='collapseRuns' class='panel-collapse collapsed collapse in'>
+                    <div class='panel-body'>
+                        <p>
+                            There are currently no results for this test run.
+                        </p>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+
+    <div>
+        <hr />
+        <p>
+            <a class="Actions" asp-controller="Runs" asp-action="Details" asp-route-id="@Model.TestRun.RunID" >Back to Run: @Model.TestRun.RunID</a>
+        </p>
+        <p>
+            <a class="Actions" asp-controller="Projects" asp-action="Index">Back to Projects</a>
+        </p>
+    </div>
+</div>
+
+<ul id="contextMenu" class="dropdown-menu" role="menu" style="display:none">
+    <li><a tabindex="-1" href="#" name="Results">Delete</a></li>
+</ul>

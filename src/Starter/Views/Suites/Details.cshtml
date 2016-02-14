@@ -1,0 +1,46 @@
+@model Starter.Controllers.LibraryAndSectionAndSuiteAndTest
+
+@{
+    ViewData["Title"] = "Suite: " + Model.Suite.Name;
+}
+
+<div>
+    <div class="headertwo">
+        <h2>@ViewData["Title"]</h2>
+    </div>
+
+    @if (ViewData["Message"] != null)
+    {
+        <div>
+            <p class="message">
+                @ViewData["Message"]
+            </p>
+        </div>
+    }
+
+    @Html.Partial("_SuiteDetailsTable", Model.Suite)
+
+    <hr />
+
+    @Html.Partial("_TestIndexTable", Model.Tests)
+
+    @Html.Partial("_CreateTest", Model)
+
+    <div>
+        <hr />
+        <p>
+            <a asp-action="Edit" asp-route-id="@Model.Suite.SuiteID" class="Actions">Edit</a>
+        </p>
+        <p>
+            <a asp-action="Delete" asp-route-id="@Model.Suite.SuiteID" class="Actions">Delete</a>
+        </p>
+
+        @Html.Partial("_BackToParentSection", Model.Section)
+
+        @Html.Partial("_BackToParentLibrary", Model.Library)
+
+        <p>
+            <a asp-controller="Libraries" asp-action="Index" class="Actions">Back to Libraries</a>
+        </p>
+    </div>
+</div>

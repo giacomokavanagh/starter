@@ -1,0 +1,19 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="body-content">
+    <div>
+        <div>
+            <a asp-controller="Projects" asp-action="Index">Projects - for running tests</a>
+            <hr />
+            <a asp-controller="Libraries" asp-action="Index">Libraries - for building and storing tests</a>
+            <hr />
+            <a asp-controller="TestEnvironments" asp-action="Index">Environments - for storing environment xml files for use when running tests</a>
+            <hr />
+            <a asp-controller="TestRunnerGroups" asp-action="Index">Machines - for storing machine information for use when running tests</a>
+            <hr />
+            <a asp-controller="DependencyGroups" asp-action="Index">Dependency Groups - Tell one test run to follow another</a>
+        </div>
+    </div>
+</div>

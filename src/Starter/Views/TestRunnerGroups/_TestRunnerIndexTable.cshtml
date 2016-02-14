@@ -1,0 +1,72 @@
+﻿@model IEnumerable<Starter.Models.TestRunner>
+
+<div class='panel-group'>
+    <div class='panel panel-default'>
+        <div class='panel-heading'>
+            <h3 class='panel-title'>
+                <a data-toggle='collapse' id='Toggle' href='#collapseTestRunners'>Test Runners</a>
+            </h3>
+        </div>
+
+        @if (Model != null)
+        {
+            <div id='collapseTestRunners' class='panel-collapse collapsed collapse in'>
+                <div class='panel-body'>
+                    <table id="3ColumnDataTable" class="table table-striped">
+                        <thead id="greyTableheader">
+                            <tr>
+                                <th>
+                                    ID
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Name)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.ConfigurationDetails)
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="RightClickTable">
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <p class="TableParagraph">@item.TestRunnerID</p>
+                                    </td>
+                                    <td>
+                                        <p class="TableParagraph">
+                                            <a asp-controller="TestRunners" asp-action="Details" asp-route-id="@item.TestRunnerID" class="Actions">@item.Name</a>
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p class="TableParagraph">
+                                            @Html.DisplayFor(modelItem => item.ConfigurationDetails)
+                                        </p>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+
+        else
+        {
+            <div id='collapseTests' class='panel-collapse collapsed collapse in'>
+                <div class='panel-body'>
+                    <p>
+                        There are currently no Test Runners in this Test Runner Group
+                    </p>
+                </div>
+            </div>
+        }
+
+    </div>
+</div>
+
+<ul id="contextMenu" class="dropdown-menu" role="menu" style="display:none">
+    <li><a tabindex="-1" href="#" name="TestRunners">Edit</a></li>
+    <li><a tabindex="-1" href="#" name="TestRunners">Details</a></li>
+    <li><a tabindex="-1" href="#" name="TestRunners">Delete</a></li>
+</ul>

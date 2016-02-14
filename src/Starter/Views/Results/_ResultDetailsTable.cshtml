@@ -1,0 +1,97 @@
+﻿@model Starter.Models.Result
+
+<div class='panel-group'>
+    <div class='panel panel-default' id="@Model.StoredStatus">
+        <div class='panel-heading'>
+            <h3 class='panel-title'>
+                <a data-toggle='collapse' id='Toggle' href='#collapseResultDetails'>Test Details</a>
+            </h3>
+        </div>
+        <div id='collapseResultDetails' class='panel-collapse collapsed collapse in'>
+            <div class='panel-body'>
+                <dl class="dl-horizontal doublewidth">
+                    <dt class="dtTable doublewidth">
+                        @Html.DisplayNameFor(model => model.ResultID)
+                    </dt>
+                    <dd>
+                        <p class="TableParagraph">
+                            @Html.DisplayFor(model => model.ResultID)
+                        </p>
+                    </dd>
+                    <dt class="dtTable doublewidth">
+                        @Html.DisplayNameFor(model => model.ResultName)
+                    </dt>
+                    <dd>
+                        <p class="TableParagraph">
+                            @Html.DisplayFor(model => model.ResultName)
+                        </p>
+                    </dd>
+                    <dt class="dtTable doublewidth">
+                        @Html.DisplayNameFor(model => model.StoredStatus)
+                    </dt>
+                    <dd>
+                        <p class="TableParagraph">
+                            @Html.DisplayFor(model => model.StoredStatus)
+                        </p>
+                    </dd>
+                    <dt class="dtTable doublewidth">
+                        @Html.DisplayNameFor(model => model.StepsPassed)
+                    </dt>
+                    <dd>
+                        <p class="TableParagraph">
+                            @Html.DisplayFor(model => model.StepsPassed)
+                        </p>
+                    </dd>
+                    <dt class="dtTable doublewidth">
+                        @Html.DisplayNameFor(model => model.StepsFailed)
+                    </dt>
+                    <dd>
+                        <p class="TableParagraph">
+                            @Html.DisplayFor(model => model.StepsFailed)
+                        </p>
+                    </dd>
+                    <dt class="dtTable doublewidth">
+                        @Html.DisplayNameFor(model => model.StepsBlocked)
+                    </dt>
+                    <dd>
+                        <p class="TableParagraph">
+                            @Html.DisplayFor(model => model.StepsBlocked)
+                        </p>
+                    </dd>
+                    <dt class="dtTable doublewidth">
+                        @Html.DisplayNameFor(model => model.StoredStartTime)
+                    </dt>
+                    <dd>
+                        <p class="TableParagraph">
+                            @Html.DisplayFor(model => model.StoredStartTime)
+                        </p>
+                    </dd>
+                    <dt class="dtTable doublewidth">
+                        @Html.DisplayNameFor(model => model.StoredEndTime)
+                    </dt>
+                    <dd>
+                        <p class="TableParagraph">
+                            @Html.DisplayFor(model => model.StoredEndTime)
+                        </p>
+                    </dd>
+                    <dt class="dtTable doublewidth">
+                        @Html.DisplayNameFor(model => model.Duration)
+                    </dt>
+                    <dd>
+                        <p class="TableParagraph">
+                            @Html.DisplayFor(model => model.Duration)
+                        </p>
+                    </dd>
+                    <dt class="dtTable doublewidth">
+                        @Html.DisplayNameFor(model => model.StoredBrowser)
+                    </dt>
+                    <dd>
+                        <p class="TableParagraph">
+                            @Html.DisplayFor(model => model.StoredBrowser)
+                        </p>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
