@@ -15,14 +15,7 @@ namespace Starter.Controllers
 
         public IActionResult About()
         {
-            ViewData["Message"] = "Control multiple Selenium C# servers from one location.";
-
-            return View();
-        }
-
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Some help would be available to those that know where to look.";
+            ViewData["Message"] = "Organise your automation.";
 
             return View();
         }

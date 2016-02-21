@@ -1,7 +1,7 @@
 @model Starter.Models.TestRun
 
 @{
-    ViewData["Title"] = "Edit Test Run for " + @Model.Test.Name + " in " + @Model.Run.Name;
+    ViewData["Title"] = "Edit Test Run ID: " + @Model.TestRunID + " for Test: " + @Model.Test.Name + " in Run: " + @Model.Run.Name;
 }
 
 <div>
@@ -34,7 +34,7 @@
                 <label asp-for="StartTime" class="control-label col-md-2"></label>
                 <div class="col-md-10">
                     <div class="input-group date datetimepicker" id="wideDateTimePicker">
-                        <input id="wideDateTimePicker" type="text" class="form-control-short datetimepicker" value="StartTime" />
+                        <input id="wideDateTimePicker" type="text" class="form-control-short datetimepicker" value="@Model.StartTime" />
                     </div>
 
                     <span asp-validation-for="StartTime" class="text-danger" />

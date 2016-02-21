@@ -809,3 +809,14 @@ td#dependencygrouptd a.chosen-single{
 td#dependencygrouptd span{
     vertical-align: middle;
 }
+
+img.logo {
+    float:left;
+    vertical-align:middle;
+    padding-left: 20px;
+    padding-top: 5px;
+}
+
+li.search-field input.default {
+    width: auto !important;
+}

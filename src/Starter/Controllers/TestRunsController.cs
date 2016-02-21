@@ -160,6 +160,7 @@ namespace Starter.Controllers
             testRun.Run = _context.Run.Single(m => m.RunID == testRun.RunID);
 
             testRun.Status = "Unassigned";
+            testRun.TestRunner = null;
             testRun.RetriesLeft = null;
             _context.Update(testRun);
             _context.SaveChanges();
@@ -180,6 +181,7 @@ namespace Starter.Controllers
                 if(testRun.Status != "Passed")
                 {
                     testRun.RetriesLeft = null;
+                    testRun.TestRunner = null;
                     testRun.Status = "Unassigned";
                     _context.Update(testRun);
                 }

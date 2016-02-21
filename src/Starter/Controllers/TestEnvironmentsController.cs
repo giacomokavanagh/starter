@@ -129,24 +129,24 @@ namespace Starter.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(TestEnvironment testEnvironment, IFormFile file)
         {
-            var uploads = Path.Combine(strUploadsDirectory, testEnvironment.TestEnvironmentID.ToString());
-
-            Directory.Delete(uploads, true);
-
-            Directory.CreateDirectory(uploads);
-
-            if (file.Length > 0)
+            if (file != null)
             {
+                var uploads = Path.Combine(strUploadsDirectory, testEnvironment.TestEnvironmentID.ToString());
+
+                Directory.Delete(uploads, true);
+
+                Directory.CreateDirectory(uploads);
+            
                 string fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
                 await file.SaveAsAsync(Path.Combine(uploads, fileName));
 
+                testEnvironment.ContentType = file.ContentType;
                 testEnvironment.XMLFilePath = fileName;
             }
 
             if (ModelState.IsValid)
             {
                 _context.Update(testEnvironment);
-                testEnvironment.ContentType = file.ContentType;
                 _context.SaveChanges();
 
                 HttpContext.Session.SetString("Message", "Environment: " + testEnvironment.Name + " successfully edited");
