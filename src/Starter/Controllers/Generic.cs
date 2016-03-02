@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Microsoft.AspNet.Authorization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Starter.Controllers
 {
-
+    [Authorize]
     public class NavigationLink
     {
         public string Text;

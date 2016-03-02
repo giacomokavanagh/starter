@@ -175,6 +175,20 @@ namespace Starter.Migrations
                     b.HasKey("DependencyGroupID");
                 });
 
+            modelBuilder.Entity("Starter.Models.DerivedKey", b =>
+                {
+                    b.Property<int>("DerivedKeyID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("DerivedKeyString");
+
+                    b.Property<int>("MasterKeyID");
+
+                    b.Property<int?>("TestRunnerID");
+
+                    b.HasKey("DerivedKeyID");
+                });
+
             modelBuilder.Entity("Starter.Models.Folder", b =>
                 {
                     b.Property<int>("FolderID")
@@ -229,6 +243,16 @@ namespace Starter.Migrations
                         .HasAnnotation("MaxLength", 100);
 
                     b.HasKey("LibraryID");
+                });
+
+            modelBuilder.Entity("Starter.Models.MasterKey", b =>
+                {
+                    b.Property<int>("MasterKeyID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("MasterKeyString");
+
+                    b.HasKey("MasterKeyID");
                 });
 
             modelBuilder.Entity("Starter.Models.Project", b =>
@@ -516,6 +540,8 @@ namespace Starter.Migrations
                         .IsRequired()
                         .HasAnnotation("MaxLength", 100);
 
+                    b.Property<bool>("TakeScreenshots");
+
                     b.Property<int>("TestRunnerGroupID");
 
                     b.HasKey("TestRunnerID");
@@ -601,6 +627,17 @@ namespace Starter.Migrations
                     b.HasOne("Starter.Models.TestRun")
                         .WithMany()
                         .HasForeignKey("TestRunTestRunID");
+                });
+
+            modelBuilder.Entity("Starter.Models.DerivedKey", b =>
+                {
+                    b.HasOne("Starter.Models.MasterKey")
+                        .WithMany()
+                        .HasForeignKey("MasterKeyID");
+
+                    b.HasOne("Starter.Models.TestRunner")
+                        .WithOne()
+                        .HasForeignKey("Starter.Models.DerivedKey", "TestRunnerID");
                 });
 
             modelBuilder.Entity("Starter.Models.Folder", b =>

@@ -51,15 +51,49 @@ namespace Starter.Controllers
                 : "";
 
             var user = await GetCurrentUserAsync();
+            var users = _userManager.Users.Where(t => t.Id != user.Id).ToList();
+
             var model = new IndexViewModel
             {
-                HasPassword = await _userManager.HasPasswordAsync(user),
-                PhoneNumber = await _userManager.GetPhoneNumberAsync(user),
-                TwoFactor = await _userManager.GetTwoFactorEnabledAsync(user),
-                Logins = await _userManager.GetLoginsAsync(user),
-                BrowserRemembered = await _signInManager.IsTwoFactorClientRememberedAsync(user)
+                HasPassword = await _userManager.HasPasswordAsync(user)
             };
+
+            model.UserForManage = new List<UserForManage>();
+            foreach (var item in users)
+            {
+                model.UserForManage.Add(new UserForManage() { UserID = item.Id, Email = item.Email});
+            }
+
             return View(model);
+        }
+
+        // GET: Folders/Delete/5
+        [ActionName("Delete")]
+        public IActionResult Delete(string userEmail)
+        {
+            if (userEmail == null)
+            {
+                return HttpNotFound();
+            }
+
+            var user = _userManager.Users.Single(t => t.Email == userEmail);
+            UserForManage userForManager = new UserForManage();
+            userForManager.Email = user.Email;
+            userForManager.UserID = user.Id;
+
+            return View(userForManager);
+        }
+
+        // POST: Folders/Delete/5
+        [HttpPost, ActionName("DeleteConfirmed")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(string userEmail)
+        {
+            var user = await _userManager.FindByEmailAsync(userEmail);
+
+            await _userManager.DeleteAsync(user);
+
+            return RedirectToAction("Index");
         }
 
         //

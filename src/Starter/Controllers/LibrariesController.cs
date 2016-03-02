@@ -5,9 +5,11 @@ using Microsoft.Data.Entity;
 using Starter.Models;
 using System.Collections.Generic;
 using Microsoft.AspNet.Http;
+using Microsoft.AspNet.Authorization;
 
 namespace Starter.Controllers
 {
+    [Authorize]
     public class LibrariesController : Controller
     {
         private ApplicationDbContext _context;

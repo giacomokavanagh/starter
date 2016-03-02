@@ -1,0 +1,63 @@
+@model IEnumerable<Starter.Models.MasterKey>
+
+@{
+    ViewData["Title"] = "Master Key";
+}
+
+<div>
+    <div class="headertwo">
+        <h2>Manage @ViewData["Title"]</h2>
+    </div>
+
+    @if (ViewData["Message"] != null)
+    {
+        <div>
+            <p class="message">
+                @ViewData["Message"]
+            </p>
+        </div>
+    }
+
+    @if (Convert.ToBoolean(@ViewData["MasterKeyExists"]))
+    {
+        @Html.Partial("_MasterKeyDetailsTable", Model.First())
+    }
+
+    <table class="RunOrStopAllTests">
+        <tr>
+            @if (Convert.ToBoolean(@ViewData["MasterKeyExists"]))
+            {
+                <td>
+                    <form asp-action="CreateNewDerivedKey" asp-controller="MasterKeys">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Create New Derived Key" class="btn btn-default" />
+                        </div>
+                    </form>
+                </td>
+            }
+            else
+            {
+                <td class="RunOrStopAllTests">
+                    <form method="get" asp-action="Create" asp-controller="MasterKeys">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Create Master Key" class="btn btn-default" />
+                        </div>
+                    </form>
+                </td>
+            }
+        </tr>
+    </table>
+
+    @if (Convert.ToBoolean(@ViewData["MasterKeyExists"]))
+    {
+
+        @Html.Partial("_DerivedKeyIndexTable", Model.First().DerivedKeys)
+
+        <div>
+            <hr />
+            <p>
+                <a class="Actions" asp-action="Delete" asp-route-id="@Model.First().MasterKeyID">Delete</a>
+            </p>
+        </div>
+    }
+</div>

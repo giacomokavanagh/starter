@@ -7,9 +7,11 @@ using System.Collections.Generic;
 using System.IO;
 using Microsoft.AspNet.Routing;
 using Microsoft.AspNet.Http;
+using Microsoft.AspNet.Authorization;
 
 namespace Starter.Controllers
 {
+    [Authorize]
     public class ResultsController : Controller
     {
         private ApplicationDbContext _context;

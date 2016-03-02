@@ -347,3 +347,22 @@ $(document).ready(function () {
         })
     });
 });
+
+$(document).ready(function () {
+
+    $(".chosenTestRunnerKey").chosen({
+    }).change(PostTestRunnerToModel);
+});
+
+function PostTestRunnerToModel(e) {
+    var id = parseInt(this.id);
+    var value = parseInt(this.value);
+    $.ajax({
+        url: '/MasterKeys/SetTestRunner',
+        type: 'POST',
+        data: {
+            'id': id,
+            'value': value
+        },
+    })
+};

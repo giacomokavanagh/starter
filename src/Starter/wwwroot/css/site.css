@@ -820,3 +820,7 @@ img.logo {
 li.search-field input.default {
     width: auto !important;
 }
+
+td.wordbreak {
+    word-break:break-all;
+}

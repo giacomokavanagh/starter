@@ -11,9 +11,11 @@ using Microsoft.AspNet.Hosting;
 using Microsoft.Net.Http.Headers;
 using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.AspNet.Routing;
+using Microsoft.AspNet.Authorization;
 
 namespace Starter.Controllers
 {
+    [Authorize]
     public class TestsController : Controller
     {
         private ApplicationDbContext _context;

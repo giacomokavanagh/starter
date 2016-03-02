@@ -1,0 +1,42 @@
+@model Starter.Models.MasterKey
+
+@{
+    ViewData["Title"] = "Create Master Key";
+}
+
+<div>
+    <div class="headertwo">
+        <h2>@ViewData["Title"]</h2>
+    </div>
+
+    @if (ViewData["Message"] != null)
+    {
+        <div>
+            <p class="message">
+                @ViewData["Message"]
+            </p>
+        </div>
+    }
+
+    <form asp-action="Create">
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label asp-for="@Model.MasterKeyString" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="@Model.MasterKeyString" class="form-control" value="@ViewData["GeneratedMasterKeyString"]" />
+                    <span asp-validation-for="@Model.MasterKeyString" class="text-danger" />
+                </div>
+            </div>
+            <div asp-validation-summary="ValidationSummary.ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Create" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div>
+        <a asp-action="Index">Back to Index</a>
+    </div>
+</div>

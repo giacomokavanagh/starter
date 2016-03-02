@@ -41,5 +41,7 @@ namespace Starter.Models
         public DbSet<StoredStepDetails> StoredStepDetails { get; set; }
         public DbSet<StoredTestExceptionDetails> StoredTestExceptionDetails { get; set; }
         public DbSet<TestRunnerLog> TestRunnerLog { get; set; }
+        public DbSet<MasterKey> MasterKey { get; set; }
+        public DbSet<DerivedKey> DerivedKey { get; set; }
     }
 }

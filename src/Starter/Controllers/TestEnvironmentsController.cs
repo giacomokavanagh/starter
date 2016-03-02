@@ -12,9 +12,11 @@ using Microsoft.AspNet.Routing;
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using Microsoft.AspNet.Authorization;
 
 namespace Starter.Controllers
 {
+    [Authorize]
     public class TestEnvironmentsController : Controller
     {
         private ApplicationDbContext _context;

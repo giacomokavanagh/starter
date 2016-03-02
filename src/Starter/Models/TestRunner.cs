@@ -26,7 +26,12 @@ namespace Starter.Models
         [Display(Name = "Clear Remote Log")]
         public bool ClearRemoteLogOnNextAccess { get; set; }
 
+        [Display(Name = "Take Screenshots")]
+        public bool TakeScreenshots { get; set; }
+
         public virtual ICollection<TestRunnerLog> TestRunnerLogs { get; set; }
+
+        public virtual DerivedKey DerivedKey { get; set; }
     }
 
     public class TestRunnerLog

@@ -1,0 +1,86 @@
+﻿@model IEnumerable<Starter.Models.DerivedKey>
+
+<div class='panel-group'>
+    <div class='panel panel-default'>
+        <div class='panel-heading'>
+            <h3 class='panel-title'>
+                <a data-toggle='collapse' id='Toggle' href='#collapseDerivedKeys'>Derived Keys</a>
+            </h3>
+        </div>
+
+        @if (Model.Any())
+        {
+            <div id='collapseDerivedKeys' class='panel-collapse collapsed collapse in'>
+                <div class='panel-body'>
+                    <table id="3ColumnDataTable" class="table table-striped">
+                        <thead id="greyTableheader">
+                            <tr>
+                                <th>
+                                    ID
+                                </th>
+                                <th>
+                                    Test Runner
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.First().DerivedKeyString)
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="RightClickTable">
+
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <p class="TableParagraph">
+                                            @Html.DisplayFor(modelItem => item.DerivedKeyID)
+                                        </p>
+                                    </td>
+                                    <td class="TableParagraph">
+                                        @{
+                                            if (item.TestRunnerID == null)
+                                            {
+                                                <div>
+                                                    <select id="@item.DerivedKeyID" asp-for="@item.TestRunnerID" asp-items="ViewBag.ValidTestRunners" data-placeholder="Choose a Test Runner" class="chosenTestRunnerKey">
+                                                        <option value="-1">None</option>
+                                                    </select>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <p class="TableParagraph">
+                                                    @item.TestRunner.Name
+                                                </p>
+                                            }
+                                        }
+                                    </td>
+                                    <td class="wordbreak">
+                                        <p class="TableParagraph">
+                                            @Html.DisplayFor(modelItem => item.DerivedKeyString)
+                                        </p>
+                                    </td>
+                                </tr>
+                                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+                                            }
+
+                                            else
+                                            {
+                                                <div id='collapseDerivedKeys' class='panel-collapse collapsed collapse in'>
+                                                    <div class='panel-body'>
+                                                        <p>
+                                                            There are currently no derived keys
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            }
+    </div>
+</div>
+
+<ul id="contextMenu" class="dropdown-menu" role="menu" style="display:none">
+    <li><a tabindex="-1" href="#" name="MasterKeys">DeleteDerivedKey</a></li>
+</ul>

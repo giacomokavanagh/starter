@@ -11,6 +11,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Starter.Models;
 using Starter.Services;
+using Microsoft.AspNet.Authorization;
+using Microsoft.AspNet.Mvc.Filters;
+using Microsoft.AspNet.Authentication.Cookies;
+using Microsoft.AspNet.Http;
 
 namespace Starter
 {
@@ -48,13 +52,26 @@ namespace Starter
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddMvc();
+            // only allow authenticated users
+            var defaultPolicy = new AuthorizationPolicyBuilder()
+                .RequireAuthenticatedUser()
+                .Build();
+
+            services.AddMvc(setup =>
+            {
+                setup.Filters.Add(new AuthorizeFilter(defaultPolicy));
+            });
             services.AddCaching(); // Adds a default in-memory implementation of IDistributedCache
             services.AddSession();
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
+
+            services.Configure<CookieAuthenticationOptions>(options =>
+            {
+                options.LoginPath = new PathString("/Accounts/Login");
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -58,20 +58,25 @@
                 @Html.DisplayFor(model => model.EndTime)
             </p>
         </dd>
+        @{
+            if (Model.DependencyGroupID != null)
+            {
+                <dt class="dtTable doublewidth">
+                    Dependency Group
+                </dt>
+                <dd>
+                    <p class="TableParagraph">
+                        @Html.DisplayFor(model => model.DependencyGroup.Name)
+                    </p>
+                </dd>
+            }
+        }
         <dt class="dtTable doublewidth">
-            Dependency Group
+            @Html.DisplayNameFor(model => model.Test.Name)
         </dt>
         <dd>
             <p class="TableParagraph">
-                @Html.DisplayFor(model => model.DependencyGroup.Name)
-            </p>
-        </dd>
-        <dt class="dtTable doublewidth">
-            @Html.DisplayNameFor(model => model.ResultFile)
-        </dt>
-        <dd>
-            <p class="TableParagraph">
-                @Html.DisplayFor(model => model.ResultFile)
+                @Html.DisplayFor(model => model.Test.Name)
             </p>
         </dd>
         <dt class="dtTable doublewidth">

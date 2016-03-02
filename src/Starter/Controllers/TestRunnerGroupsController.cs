@@ -8,9 +8,11 @@ using Microsoft.AspNet.Routing;
 using Microsoft.AspNet.Http;
 using System;
 using Microsoft.CodeAnalysis;
+using Microsoft.AspNet.Authorization;
 
 namespace Starter.Controllers
 {
+    [Authorize]
     public class TestRunnerGroupsController : Controller
     {
         private ApplicationDbContext _context;

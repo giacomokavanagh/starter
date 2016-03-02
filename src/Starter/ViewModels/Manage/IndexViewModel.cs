@@ -17,5 +17,13 @@ namespace Starter.ViewModels.Manage
         public bool TwoFactor { get; set; }
 
         public bool BrowserRemembered { get; set; }
+
+        public List<UserForManage> UserForManage { get; set; }
+    }
+
+    public class UserForManage
+    {
+        public string UserID { get; set; }
+        public string Email { get; set; }
     }
 }

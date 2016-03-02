@@ -7,9 +7,11 @@ using Microsoft.AspNet.Http;
 using System;
 using System.Collections.Generic;
 using Microsoft.AspNet.Routing;
+using Microsoft.AspNet.Authorization;
 
 namespace Starter.Controllers
 {
+    [Authorize]
     public class DependenciesController : Controller
     {
         private ApplicationDbContext _context;

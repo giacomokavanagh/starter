@@ -5,9 +5,11 @@ using Microsoft.Data.Entity;
 using Starter.Models;
 using Microsoft.AspNet.Routing;
 using Microsoft.AspNet.Http;
+using Microsoft.AspNet.Authorization;
 
 namespace Starter.Controllers
 {
+    [Authorize]
     public class FoldersController : Controller
     {
         private ApplicationDbContext _context;

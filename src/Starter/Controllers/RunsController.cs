@@ -7,9 +7,11 @@ using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Routing;
 using System.Collections.Generic;
 using System;
+using Microsoft.AspNet.Authorization;
 
 namespace Starter.Controllers
 {
+    [Authorize]
     public class RunsController : Controller
     {
         private ApplicationDbContext _context;

@@ -14,9 +14,11 @@ using System.Net.Http.Headers;
 using System.Net.Http;
 using Microsoft.AspNet.WebUtilities;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNet.Authorization;
 
 namespace Starter.Controllers
 {
+    [Authorize]
     public class TestRunnersController : Controller
     {
         private ApplicationDbContext _context;
@@ -140,7 +142,7 @@ namespace Starter.Controllers
             }
 
             ViewBag.TestRunnerGroups = new SelectList(_context.TestRunnerGroup, "TestRunnerGroupID", "Name", testRunner.TestRunnerGroupID);
-            
+
             return View(testRunner);
         }
 
@@ -205,15 +207,21 @@ namespace Starter.Controllers
             }));
         }
 
-        public ActionResult GetTestRunParametersForRobot(string RobotName)
+        [AllowAnonymous]
+        public ActionResult GetTestRunParametersForRobot(string RobotName, string Key)
         {
-            if(RobotName == null)
+            if (RobotName == null)
             {
                 return HttpNotFound();
             }
 
             var TestRunner = _context.TestRunner.Single(t => t.Name == RobotName);
             if (TestRunner == null)
+            {
+                return HttpNotFound();
+            }
+
+            if (!DerivedKeyCheck(TestRunner.TestRunnerID, Key))
             {
                 return HttpNotFound();
             }
@@ -275,7 +283,7 @@ namespace Starter.Controllers
                         {
                             SecondaryilyRefreshedCandidate.RetriesLeft = SecondaryilyRefreshedCandidate.RetriesLeft - 1;
                             _context.Update(SecondaryilyRefreshedCandidate);
-                            
+
                         }
                         Test test = _context.Test.Single(t => t.TestID ==
                             SecondaryilyRefreshedCandidate.TestID);
@@ -292,6 +300,7 @@ namespace Starter.Controllers
                         commandAndControlParameters.TestEnvironmentFilename = _context.TestEnvironment.Single(t => t.TestEnvironmentID ==
                             SecondaryilyRefreshedCandidate.TestEnvironmentID).XMLFilePath;
                         commandAndControlParameters.ClearRemoteLogOnNextAccess = TestRunner.ClearRemoteLogOnNextAccess;
+                        commandAndControlParameters.TakeScreenshots = TestRunner.TakeScreenshots;
 
                         Response = JsonConvert.SerializeObject(commandAndControlParameters);
 
@@ -308,46 +317,50 @@ namespace Starter.Controllers
         }
 
         [HttpPost]
-        public void UploadResult(int? id, IFormCollection Form)
+        [AllowAnonymous]
+        public void UploadResult(int? id, string Key, IFormCollection Form)
         {
             TestRun testRun = _context.TestRun.Single(t => t.TestRunID == id);
             Test test = _context.Test.Single(t => t.TestID == testRun.TestID);
 
-            var TestReportContents = Form.Single(t => t.Key == "TestReportDetails").Value;
-            TestReportDetails testReportDetails = JsonConvert.DeserializeObject<TestReportDetails>(TestReportContents);
-
-            var DateTimeForFilename = StringClass.sanitiseDateTimeStringForFilename(testReportDetails.strStartTime);
-
-            var frameworkLogDirectory = Path.Combine("TestRunnerLogs", DateTimeForFilename);
-            Directory.CreateDirectory(frameworkLogDirectory);
-            var frameworkLogFilePath = Path.Combine("TestRunnerLogs", DateTimeForFilename, Form.First().Key);
-            System.IO.File.WriteAllText(frameworkLogFilePath, Form.First().Value);
-
-            AddTestRunnerLog(frameworkLogFilePath, Form.First().Key, testRun.TestRunner.Value, DateTimeForFilename);
-
-            var resultDirectory = Path.Combine(strResultsDirectory, testRun.TestRunID.ToString(), DateTimeForFilename);
-            Directory.CreateDirectory(resultDirectory);
-
-            string screenshotList = Form.Single(t => t.Key == "ListOfScreenshots").Value;
-            List<ScreenshotDetails> ListOfScreenshotDetails = JsonConvert.DeserializeObject<List<ScreenshotDetails>>(screenshotList);
-            var screenshotFolder = Path.Combine(strScreenshotsDirectory, testRun.TestRunID.ToString(), DateTimeForFilename);
-            Directory.CreateDirectory(screenshotFolder);
-
-            var ResultID = AddResultOfID(testRun, resultDirectory, screenshotFolder, testReportDetails, test, testRun.TestEnvironmentID.Value);
-
-            string stepDetailsList = Form.Single(t => t.Key == "ListOfStepDetails").Value;
-            List<StepDetails> ListOfStepDetails = JsonConvert.DeserializeObject<List<StepDetails>>(stepDetailsList);
-            StoreStepDetailsList(ListOfStepDetails, ResultID);
-
-            StoreScreenshotDetailsList(ListOfScreenshotDetails, screenshotFolder, ResultID);
-
-            foreach (var item in ListOfScreenshotDetails)
+            if (DerivedKeyCheck(testRun.TestRunner.Value, Key))
             {
-                string imageString = Form.Single(t => t.Key == item.strStepID).Value;
-                byte[] imageByteArray = JsonConvert.DeserializeObject<byte[]>(imageString);
-                var screenshotFilePath = Path.Combine(screenshotFolder, item.strStepID);
+                var TestReportContents = Form.Single(t => t.Key == "TestReportDetails").Value;
+                TestReportDetails testReportDetails = JsonConvert.DeserializeObject<TestReportDetails>(TestReportContents);
 
-                System.IO.File.WriteAllBytes(screenshotFilePath + ".png", imageByteArray);
+                var DateTimeForFilename = StringClass.sanitiseDateTimeStringForFilename(testReportDetails.strStartTime);
+
+                var frameworkLogDirectory = Path.Combine("TestRunnerLogs", DateTimeForFilename);
+                Directory.CreateDirectory(frameworkLogDirectory);
+                var frameworkLogFilePath = Path.Combine("TestRunnerLogs", DateTimeForFilename, Form.First().Key);
+                System.IO.File.WriteAllText(frameworkLogFilePath, Form.First().Value);
+
+                AddTestRunnerLog(frameworkLogFilePath, Form.First().Key, testRun.TestRunner.Value, DateTimeForFilename);
+
+                var resultDirectory = Path.Combine(strResultsDirectory, testRun.TestRunID.ToString(), DateTimeForFilename);
+                Directory.CreateDirectory(resultDirectory);
+
+                string screenshotList = Form.Single(t => t.Key == "ListOfScreenshots").Value;
+                List<ScreenshotDetails> ListOfScreenshotDetails = JsonConvert.DeserializeObject<List<ScreenshotDetails>>(screenshotList);
+                var screenshotFolder = Path.Combine(strScreenshotsDirectory, testRun.TestRunID.ToString(), DateTimeForFilename);
+                Directory.CreateDirectory(screenshotFolder);
+
+                var ResultID = AddResultOfID(testRun, resultDirectory, screenshotFolder, testReportDetails, test, testRun.TestEnvironmentID.Value);
+
+                string stepDetailsList = Form.Single(t => t.Key == "ListOfStepDetails").Value;
+                List<StepDetails> ListOfStepDetails = JsonConvert.DeserializeObject<List<StepDetails>>(stepDetailsList);
+                StoreStepDetailsList(ListOfStepDetails, ResultID);
+
+                StoreScreenshotDetailsList(ListOfScreenshotDetails, screenshotFolder, ResultID);
+
+                foreach (var item in ListOfScreenshotDetails)
+                {
+                    string imageString = Form.Single(t => t.Key == item.strStepID).Value;
+                    byte[] imageByteArray = JsonConvert.DeserializeObject<byte[]>(imageString);
+                    var screenshotFilePath = Path.Combine(screenshotFolder, item.strStepID);
+
+                    System.IO.File.WriteAllBytes(screenshotFilePath + ".png", imageByteArray);
+                }
             }
         }
 
@@ -367,7 +380,7 @@ namespace Starter.Controllers
         {
             Result result = new Result();
             _context.Result.Add(result);
-            
+
             result.ResultName = TestReportDetails.TestName;
             result.ResultDirectory = ResultDirectory;
             result.ScreenshotsDirectory = ScreenshotsDirectory;
@@ -488,159 +501,181 @@ namespace Starter.Controllers
             }
         }
 
-        public void FinaliseTestRun(int? id, string status, DateTime endTime)
+        [AllowAnonymous]
+        public void FinaliseTestRun(int? id, string Key, string status, DateTime endTime)
         {
+
             TestRun testRun = _context.TestRun.Single(t => t.TestRunID == id);
-            testRun.Status = status;
-            testRun.EndTime = endTime;
-            testRun.TestRunner = null;
 
-            _context.Update(testRun);
-            _context.SaveChanges();
-        }
-
-        public ActionResult ReturnTestRunnerLogFile(int? id)
-        {
-            if (id != null)
+            if (DerivedKeyCheck(testRun.TestRunner.Value, Key))
             {
-                TestRunnerLog testRunnerLog = _context.TestRunnerLog.Single(m => m.TestRunnerLogID == id);
+                testRun.Status = status;
+                testRun.EndTime = endTime;
+                testRun.TestRunner = null;
 
-                var file = new FileStream(testRunnerLog.FilePath, FileMode.Open, FileAccess.ReadWrite);
-
-                return File(file, "text/HTML", testRunnerLog.Filename);
-            }
-            return HttpNotFound();
-        }
-
-        // POST: TestRunners/Delete/5
-        [ActionName("Delete Log")]
-        public IActionResult DeleteLog(int? id)
-        {
-            if (id != null)
-            {
-                TestRunnerLog testRunnerLog = _context.TestRunnerLog.Single(m => m.TestRunnerLogID == id);
-                _context.TestRunnerLog.Remove(testRunnerLog);
+                _context.Update(testRun);
                 _context.SaveChanges();
-
-                System.IO.File.Delete(testRunnerLog.FilePath);
-
-                var DateTimeDirectory = Path.Combine(strTestRunnerLogsDirectory, testRunnerLog.DateTime);
-                System.IO.Directory.Delete(DateTimeDirectory);
-
-                HttpContext.Session.SetString("Message", "Test Runner Log: " + testRunnerLog.Filename + " successfully deleted");
-
-                return RedirectToAction("Details", new RouteValueDictionary(new
-                {
-                    controller = "TestRunners",
-                    action = "Details",
-                    ID = testRunnerLog.TestRunnerID
-                }));
             }
-
-            return HttpNotFound();
         }
 
-        public ActionResult DeleteAllTestRunnerLogs(int? id)
+    public ActionResult ReturnTestRunnerLogFile(int? id, string RobotName, string Key)
+    {
+        if (id != null)
         {
-            if (id == null)
-            {
-                return HttpNotFound();
-            }
+            TestRunnerLog testRunnerLog = _context.TestRunnerLog.Single(m => m.TestRunnerLogID == id);
 
-            TestRunner testRunner = new TestRunner();
-            testRunner = _context.TestRunner.Single(t => t.TestRunnerID == id);
-            if (testRunner == null)
-            {
-                return HttpNotFound();
-            }
+            var file = new FileStream(testRunnerLog.FilePath, FileMode.Open, FileAccess.ReadWrite);
 
-            return View(testRunner);
+            return File(file, "text/HTML", testRunnerLog.Filename);
         }
+        return HttpNotFound();
+    }
 
-        [HttpPost]
-        public ActionResult ConfirmDeleteAllTestRunnerLogs(int? id)
+    // POST: TestRunners/Delete/5
+    [ActionName("Delete Log")]
+    public IActionResult DeleteLog(int? id)
+    {
+        if (id != null)
         {
-            if(id == null)
-            {
-                return HttpNotFound();
-            }
-
-            TestRunner testRunner = new TestRunner();
-            testRunner = _context.TestRunner.Single(t => t.TestRunnerID == id);
-            if(testRunner == null)
-            {
-                return HttpNotFound();
-            }
-
-            var AllTestRunnerLogsForTestRunner = _context.TestRunnerLog.Where(t => t.TestRunnerID == id);
-
-            foreach(var testRunnerLog in AllTestRunnerLogsForTestRunner)
-            {
-                _context.TestRunnerLog.Remove(testRunnerLog);
-
-                var DateTimeDirectory = Path.Combine(strTestRunnerLogsDirectory, testRunnerLog.DateTime);
-                Directory.Delete(DateTimeDirectory);
-            }
+            TestRunnerLog testRunnerLog = _context.TestRunnerLog.Single(m => m.TestRunnerLogID == id);
+            _context.TestRunnerLog.Remove(testRunnerLog);
             _context.SaveChanges();
+
+            System.IO.File.Delete(testRunnerLog.FilePath);
+
+            var DateTimeDirectory = Path.Combine(strTestRunnerLogsDirectory, testRunnerLog.DateTime);
+            System.IO.Directory.Delete(DateTimeDirectory);
+
+            HttpContext.Session.SetString("Message", "Test Runner Log: " + testRunnerLog.Filename + " successfully deleted");
 
             return RedirectToAction("Details", new RouteValueDictionary(new
             {
                 controller = "TestRunners",
                 action = "Details",
-                ID = testRunner.TestRunnerID
+                ID = testRunnerLog.TestRunnerID
             }));
         }
+
+        return HttpNotFound();
     }
 
-    public class CommandAndControlParameters
+    public ActionResult DeleteAllTestRunnerLogs(int? id)
     {
-        public int TestRunID { get; set; }
-        public int TestID { get; set; }
-        public string TestName { get; set; }
-        public string TestDataFilename { get; set; }
-        public int TestEnvironmentID { get; set; }
-        public string TestEnvironmentFilename { get; set; }
-        public string Browser { get; set; }
-        public bool ClearRemoteLogOnNextAccess { get; set; }
+        if (id == null)
+        {
+            return HttpNotFound();
+        }
+
+        TestRunner testRunner = new TestRunner();
+        testRunner = _context.TestRunner.Single(t => t.TestRunnerID == id);
+        if (testRunner == null)
+        {
+            return HttpNotFound();
+        }
+
+        return View(testRunner);
     }
 
-    public class ScreenshotDetails
+    [HttpPost]
+    public ActionResult ConfirmDeleteAllTestRunnerLogs(int? id)
     {
-        public string strStepID { get; set; }
-        public string ScreenshotFilePath { get; set; }
+        if (id == null)
+        {
+            return HttpNotFound();
+        }
+
+        TestRunner testRunner = new TestRunner();
+        testRunner = _context.TestRunner.Single(t => t.TestRunnerID == id);
+        if (testRunner == null)
+        {
+            return HttpNotFound();
+        }
+
+        var AllTestRunnerLogsForTestRunner = _context.TestRunnerLog.Where(t => t.TestRunnerID == id);
+
+        foreach (var testRunnerLog in AllTestRunnerLogsForTestRunner)
+        {
+            _context.TestRunnerLog.Remove(testRunnerLog);
+
+            var DateTimeDirectory = Path.Combine(strTestRunnerLogsDirectory, testRunnerLog.DateTime);
+            Directory.Delete(DateTimeDirectory);
+        }
+        _context.SaveChanges();
+
+        return RedirectToAction("Details", new RouteValueDictionary(new
+        {
+            controller = "TestRunners",
+            action = "Details",
+            ID = testRunner.TestRunnerID
+        }));
     }
 
-    public class StepDetails
+    private bool DerivedKeyCheck(int TestRunnerID, string Key)
     {
-        public string strStepID { get; set; }
-        public string StepStatus { get; set; }
-        public string Method { get; set; }
-        public string Attribute { get; set; }
-        public string Value { get; set; }
-        public string Input { get; set; }
-        public string strStepStartTime { get; set; }
-        public string strStepEndTime { get; set; }
-        public List<TestExceptionDetails> ListOfTestExceptionDetails { get; set; }
-        public bool CatastrophicFailure { get; set; }
+        try
+        {
+            var DerivedKeyCheck = _context.DerivedKey.Single(t => t.TestRunnerID == TestRunnerID
+            && t.DerivedKeyString == Key);
+            return true;
+        }
+        catch (Exception exception)
+        {
+            //will need to log this at some point
+            return false;
+        }
     }
+}
 
-    public class TestExceptionDetails
-    {
-        public string ExceptionType { get; set; }
-        [Key]
-        public string ExceptionMessage { get; set; }
-    }
+public class CommandAndControlParameters
+{
+    public int TestRunID { get; set; }
+    public int TestID { get; set; }
+    public string TestName { get; set; }
+    public string TestDataFilename { get; set; }
+    public int TestEnvironmentID { get; set; }
+    public string TestEnvironmentFilename { get; set; }
+    public string Browser { get; set; }
+    public bool ClearRemoteLogOnNextAccess { get; set; }
+    public bool TakeScreenshots { get; set; }
+}
 
-    public class TestReportDetails
-    {
-        public string TestName { get; set; }
-        public string TestStatus { get; set; }
-        public int StepsPassed { get; set; }
-        public int StepsFailed { get; set; }
-        public int StepsBlocked { get; set; }
-        public string strStartTime { get; set; }
-        public string strEndTime { get; set; }
-        public string Browser { get; set; }
-        public string Duration { get; set; }
-    }
+public class ScreenshotDetails
+{
+    public string strStepID { get; set; }
+    public string ScreenshotFilePath { get; set; }
+}
+
+public class StepDetails
+{
+    public string strStepID { get; set; }
+    public string StepStatus { get; set; }
+    public string Method { get; set; }
+    public string Attribute { get; set; }
+    public string Value { get; set; }
+    public string Input { get; set; }
+    public string strStepStartTime { get; set; }
+    public string strStepEndTime { get; set; }
+    public List<TestExceptionDetails> ListOfTestExceptionDetails { get; set; }
+    public bool CatastrophicFailure { get; set; }
+}
+
+public class TestExceptionDetails
+{
+    public string ExceptionType { get; set; }
+    [Key]
+    public string ExceptionMessage { get; set; }
+}
+
+public class TestReportDetails
+{
+    public string TestName { get; set; }
+    public string TestStatus { get; set; }
+    public int StepsPassed { get; set; }
+    public int StepsFailed { get; set; }
+    public int StepsBlocked { get; set; }
+    public string strStartTime { get; set; }
+    public string strEndTime { get; set; }
+    public string Browser { get; set; }
+    public string Duration { get; set; }
+}
 }

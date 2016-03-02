@@ -48,6 +48,23 @@ namespace Starter.Controllers
             return View();
         }
 
+        [AllowAnonymous]
+        public async Task<ActionResult> CreateDefaultAdminUserAndBeQuickAboutIt()
+        {
+            var adminUserExists = await _userManager.FindByEmailAsync("TestAdminUser@hotmail.com");
+            if (adminUserExists == null)
+            {
+                var user = new ApplicationUser
+                {
+                    UserName = "TestAdminUser@hotmail.com",
+                    Email = "TestAdminUser@hotmail.com"
+                };
+
+                var result = await _userManager.CreateAsync(user, "J35U554v35!");
+            }
+            return View("Login");
+        }
+
         //
         // POST: /Account/Login
         [HttpPost]
@@ -89,7 +106,6 @@ namespace Starter.Controllers
         //
         // GET: /Account/Register
         [HttpGet]
-        [AllowAnonymous]
         public IActionResult Register()
         {
             return View();
@@ -98,7 +114,6 @@ namespace Starter.Controllers
         //
         // POST: /Account/Register
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {

@@ -7,9 +7,11 @@ using System.Collections.Generic;
 using Microsoft.AspNet.Routing;
 using Microsoft.AspNet.Http;
 using System;
+using Microsoft.AspNet.Authorization;
 
 namespace Starter.Controllers
 {
+    [Authorize]
     public class TestRunsController : Controller
     {
         private ApplicationDbContext _context;
@@ -371,7 +373,11 @@ namespace Starter.Controllers
             testRun.Test = _context.Test.Single(m => m.TestID == testRun.TestID);
             testRun.Run = _context.Run.Single(m => m.RunID == testRun.RunID);
             testRun.TestEnvironment = _context.TestEnvironment.Single(m => m.TestEnvironmentID == testRun.TestEnvironmentID);
-            testRun.DependencyGroup = _context.DependencyGroup.Single(m => m.DependencyGroupID == testRun.DependencyGroupID);
+
+            if(testRun.DependencyGroupID != null)
+            {
+                testRun.DependencyGroup = _context.DependencyGroup.Single(m => m.DependencyGroupID == testRun.DependencyGroupID);
+            }
 
             return View(testRun);
         }
@@ -410,11 +416,8 @@ namespace Starter.Controllers
                 var dependentTestRuns = _context.TestRun.Where(t => dependenciesTestRunIDsList.Contains(t.TestRunID));
                 var dependentTestRunsStatusList = dependentTestRuns.Select(t => t.Status).ToList();
                 if (dependentTestRunsStatusList.Contains("Blocked") ||
-                    dependentTestRunsStatusList.Contains("Failed"))
-                {
-                    Status = "Blocked";
-                }
-                else if(dependentTestRunsStatusList.Contains("Waiting") ||
+                    dependentTestRunsStatusList.Contains("Failed") ||
+                    dependentTestRunsStatusList.Contains("Waiting") ||
                     dependentTestRunsStatusList.Contains("Running") ||
                     dependentTestRunsStatusList.Contains("Unassigned") ||
                     dependentTestRunsStatusList.Contains("Ready"))
@@ -436,16 +439,16 @@ namespace Starter.Controllers
 
         public void ResetWaitingOrBlockedTestRuns()
         {
-            var testRunsWaitingOrBlocked = _context.TestRun.Where(t => (t.Status == "Waiting"|| t.Status == "Blocked")
+            var testRunsWaitingOrBlocked = _context.TestRun.Where(t => (t.Status == "Waiting")
                 && t.StartTime < DateTime.Now);
 
-            var testRunIDsWithDependency = _context.Dependency.Select(t => t.TestRunID).ToList();
-            var testRunsWaitingOrBlockedWithDependency = testRunsWaitingOrBlocked.Where
-                (t => testRunIDsWithDependency.Contains(t.TestRunID));
+            var testRunIDsWithDependencyGroup = _context.TestRun.Where(l => l.DependencyGroupID != null).Select(t => t.TestRunID).ToList();
+            var testRunsWaitingOrBlockedWithDependencyGroup = testRunsWaitingOrBlocked.Where
+                (t => testRunIDsWithDependencyGroup.Contains(t.TestRunID));
 
-            if(testRunsWaitingOrBlockedWithDependency.Count() > 0)
+            if(testRunsWaitingOrBlockedWithDependencyGroup.Count() > 0)
             {
-                foreach (var testRun in testRunsWaitingOrBlockedWithDependency)
+                foreach (var testRun in testRunsWaitingOrBlockedWithDependencyGroup)
                 {
                     var status = StatusForTestRunBasedOnDependencies(testRun.TestRunID);
                     _context.Update(testRun);

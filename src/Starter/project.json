@@ -45,7 +45,8 @@
     "dnx451": {
       "dependencies": {
         "Microsoft.Net.Http": "2.2.29",
-        "Mvc6.JQuery.Datatables": "1.0.0-rc1-final-build182"
+        "Mvc6.JQuery.Datatables": "1.0.0-rc1-final-build182",
+        "NBitcoin": "3.0.0.16"
       }
     },
     "dnxcore50": { }

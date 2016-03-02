@@ -6,9 +6,11 @@ using Starter.Models;
 using Microsoft.AspNet.Routing;
 using System.Collections.Generic;
 using Microsoft.AspNet.Http;
+using Microsoft.AspNet.Authorization;
 
 namespace Starter.Controllers
 {
+    [Authorize]
     public class SuitesController : Controller
     {
         private ApplicationDbContext _context;
