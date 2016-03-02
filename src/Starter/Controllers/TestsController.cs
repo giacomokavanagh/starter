@@ -12,6 +12,7 @@ using Microsoft.Net.Http.Headers;
 using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.AspNet.Routing;
 using Microsoft.AspNet.Authorization;
+using System;
 
 namespace Starter.Controllers
 {
@@ -240,10 +241,58 @@ namespace Starter.Controllers
         }
 
         // GET: Tests/Delete/5
+        [AllowAnonymous]
+        [ActionName("ReturnExternalTestFile")]
+        public ActionResult ReturnExternalTestFile(int? id, string Key, string RobotName)
+        {
+            if (RobotName == null)
+            {
+                return HttpNotFound();
+            }
+
+            var TestRunner = _context.TestRunner.Single(t => t.Name == RobotName);
+            if (TestRunner == null)
+            {
+                return HttpNotFound();
+            }
+
+            if (!DerivedKeyCheck(TestRunner.TestRunnerID, Key))
+            {
+                return HttpNotFound();
+            }
+
+            Test test = _context.Test.Single(m => m.TestID == id);
+            if (test == null)
+            {
+                return HttpNotFound();
+            }
+
+            var path = Path.Combine(strUploadsDirectory, test.TestID.ToString(), test.ExcelFilePath);
+
+            var file = new FileStream(path, FileMode.Open, FileAccess.ReadWrite);
+
+            return File(file, test.ContentType, test.ExcelFilePath);
+        }
+
+        private bool DerivedKeyCheck(int TestRunnerID, string Key)
+        {
+            try
+            {
+                var DerivedKeyCheck = _context.DerivedKey.Single(t => t.TestRunnerID == TestRunnerID
+                && t.DerivedKeyString == Key);
+                return true;
+            }
+            catch (Exception exception)
+            {
+                //will need to log this at some point
+                return false;
+            }
+        }
+
         [ActionName("ReturnTestFile")]
         public ActionResult ReturnTestFile(int? id)
         {
-            if(id == null)
+            if (id == null)
             {
                 return HttpNotFound();
             }

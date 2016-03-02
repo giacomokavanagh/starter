@@ -193,10 +193,27 @@ namespace Starter.Controllers
         }
 
         // GET: Tests/Delete/5
-        [ActionName("ReturnTestEnvironmentsFile")]
-        public ActionResult ReturnTestEnvironmentsFile(int? id)
+        [AllowAnonymous]
+        [ActionName("ReturnExternalTestEnvironmentsFile")]
+        public ActionResult ReturnExternalTestEnvironmentsFile(int? id, string Key, string RobotName)
         {
-            if(id == null)
+            if (RobotName == null)
+            {
+                return HttpNotFound();
+            }
+
+            var TestRunner = _context.TestRunner.Single(t => t.Name == RobotName);
+            if (TestRunner == null)
+            {
+                return HttpNotFound();
+            }
+
+            if (!DerivedKeyCheck(TestRunner.TestRunnerID, Key))
+            {
+                return HttpNotFound();
+            }
+
+            if (id == null)
             {
                 return HttpNotFound();
             }
@@ -213,7 +230,43 @@ namespace Starter.Controllers
 
             return File(file, testEnvironment.ContentType, testEnvironment.XMLFilePath);
         }
-}
+
+        private bool DerivedKeyCheck(int TestRunnerID, string Key)
+        {
+            try
+            {
+                var DerivedKeyCheck = _context.DerivedKey.Single(t => t.TestRunnerID == TestRunnerID
+                && t.DerivedKeyString == Key);
+                return true;
+            }
+            catch (Exception exception)
+            {
+                //will need to log this at some point
+                return false;
+            }
+        }
+
+        [ActionName("ReturnTestEnvironmentsFile")]
+        public ActionResult ReturnTestEnvironmentsFile(int? id)
+        {
+            if (id == null)
+            {
+                return HttpNotFound();
+            }
+
+            TestEnvironment testEnvironment = _context.TestEnvironment.Single(m => m.TestEnvironmentID == id);
+            if (testEnvironment == null)
+            {
+                return HttpNotFound();
+            }
+
+            var path = Path.Combine(strUploadsDirectory, testEnvironment.TestEnvironmentID.ToString(), testEnvironment.XMLFilePath);
+
+            var file = new FileStream(path, FileMode.Open, FileAccess.ReadWrite);
+
+            return File(file, testEnvironment.ContentType, testEnvironment.XMLFilePath);
+        }
+    }
 
     public class TestEnvironmentsAndNewTestEnvironment
     {
