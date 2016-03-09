@@ -75,6 +75,64 @@ $(document).ready(function () {
 });
 
 $(document).ready(function () {
+    $('#AvailableMethodsDataTable').dataTable({
+        "lengthMenu": [[10, 25, 50, 100, 250, 500, 1000, -1], [10, 25, 50, 100, 250, 500, 1000, "All"]],
+        "pageLength": -1,
+        "columns": [
+            { "width": "8%" },
+            { "width": "30%" },
+            { "width": "52%" }
+        ]
+    });
+});
+
+$(document).ready(function () {
+    $('#StepsUsingMethodDataTable').dataTable({
+        "lengthMenu": [[10, 25, 50, 100, 250, 500, 1000, -1], [10, 25, 50, 100, 250, 500, 1000, "All"]],
+        "pageLength": 10,
+        "columns": [
+            { "width": "8%" },
+            { "width": "30%" },
+            { "width": "52%" }
+        ]
+    });
+});
+
+$(document).ready(function () {
+    $('#ResultsUsingMethodDataTable').dataTable({
+        "lengthMenu": [[10, 25, 50, 100, 250, 500, 1000, -1], [10, 25, 50, 100, 250, 500, 1000, "All"]],
+        "pageLength": 10,
+        "columns": [
+            { "width": "10%" },
+            { "width": "28%" },
+            { "width": "52%" }
+        ]
+    });
+});
+
+$(document).ready(function () {
+    $('#TestRunsUsingTestDataTable').dataTable({
+        "lengthMenu": [[10, 25, 50, 100, 250, 500, 1000, -1], [10, 25, 50, 100, 250, 500, 1000, "All"]],
+        "pageLength": 25,
+        "columns": [
+            { "width": "30%" },
+            { "width": "70%" }
+        ]
+    });
+});
+
+$(document).ready(function () {
+    $('#3ColumnDataTableIDDescending').dataTable({
+        "columns": [
+            { "width": "8%" },
+            { "width": "30%" },
+            { "width": "52%" }
+        ],
+        "order": [[0, "desc"]]
+    });
+});
+
+$(document).ready(function () {
     $('#4ColumnDataTable').dataTable({
         "columns": [
             { "width": "8%" },
@@ -123,19 +181,19 @@ $(document).ready(function () {
             'colvis', 'copy', 'csv', 'excel', 'pdf', 'print'
         ],
         "columns": [
-            { "width": "5%" },
-            { "width": "5.5%" },
-            { "width": "6.5%" },
+            { "width": "4%" },
+            { "width": "5.7%" },
+            { "width": "6.3%" },
             { "width": "17%" },
             { "width": "7%" },
             { "width": "5.5%" },
-            { "width": "7.4%" },
-            { "width": "8%" },
-            { "width": "8%" },
-            { "width": "8%" },
+            { "width": "7.7%" },
+            { "width": "9.5%" },
+            { "width": "6%" },
+            { "width": "8.5%" },
             { "width": "5%" },
             { "width": "5%" },
-            { "width": "7%" }
+            { "width": "9.2%" }
         ],
     });
 });
@@ -157,6 +215,28 @@ $(document).ready(function () {
             { "width": "15%" },
             { "width": "10%" }
         ],
+        "order": [[0, "desc"]]
+    });
+});
+
+$(document).ready(function () {
+    $('#StepDataTable').dataTable({
+        "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+        "pageLength": -1,
+        dom: 'lBfrtip',
+        buttons: [
+            'colvis', 'copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+        "columns": [
+            { "width": "4%" },
+            { "width": "10%" },
+            { "width": "12%" },
+            { "width": "10%" },
+            { "width": "10%" },
+            { "width": "18%" },
+            { "width": "6%" }
+        ],
+        "order": [[6, "asc"]],
     });
 });
 
@@ -164,19 +244,76 @@ $(document).ready(function () {
     $("#TestRunDataRows").contextMenu({
         menuSelector: "#contextMenu",
         menuSelected: function (invokedOn, selectedMenu) {
-
-            if (invokedOn.text() == "Create Dependency Group")
-            {
-                window.location.href = "/DependencyGroups/Create";
+            RowNode = invokedOn.context.parentNode;
+            while (RowNode.tagName != "TR") {
+                RowNode = RowNode.parentNode;
             }
-            else if (invokedOn.text() == "Edit Dependency Group")
+
+            if (this.text == "Create Dependency Group")
             {
-                window.location.href = "/DependencyGroups/EditFromTestRunID/" + invokedOn.text();
+                window.location.href = "/DependencyGroups";
+            }
+            else if (this.text == "View Dependency Group")
+            {
+                window.location.href = "/DependencyGroups/DetailsFromTestRun/" +
+                    RowNode.firstElementChild.innerText;
             }
             else
             {
                 window.location.href = "/TestRuns/" + selectedMenu.text() + "/"
-                    + invokedOn.context.parentNode.firstElementChild.innerText;
+                    + RowNode.firstElementChild.innerText;
+            }
+        }
+    });
+});
+
+$(document).ready(function () {
+    $("#StepDataRows").contextMenu({
+        menuSelector: "#contextMenu",
+        menuSelected: function (invokedOn, selectedMenu) {
+            RowNode = invokedOn.context.parentNode;
+            while (RowNode.tagName != "TR") {
+                RowNode = RowNode.parentNode;
+            }
+            if (this.text == "Edit Step") {
+                window.location.href = "/Tests/EditStep/" +
+                RowNode.firstElementChild.innerText;
+            }
+            else if(this.text == "Move Step Up")
+            {
+                window.location.href = "/Tests/MoveStepUp/" +
+                RowNode.firstElementChild.innerText;
+            }
+            else if (this.text == "Move Step Down") {
+                window.location.href = "/Tests/MoveStepDown/" +
+                RowNode.firstElementChild.innerText;
+            }
+            else if (this.text == "Delete Step") {
+                window.location.href = "/Tests/DeleteStep/" +
+                RowNode.firstElementChild.innerText;
+            }
+            else {
+                //There are no other options at the moment
+            }
+        }
+    });
+});
+
+$(document).ready(function () {
+    $("#DerivedKeyDataRows").contextMenu({
+        menuSelector: "#contextMenu",
+        menuSelected: function (invokedOn, selectedMenu) {
+            RowNode = invokedOn.context.parentNode;
+            while (RowNode.tagName != "TR") {
+                RowNode = RowNode.parentNode;
+            }
+
+            if (this.text == "Delete Derived Key") {
+                window.location.href = "/MasterKeys/DeleteDerivedKey/" +
+                RowNode.firstElementChild.innerText;
+            }
+            else {
+                //There are no other options at the moment
             }
         }
     });
@@ -347,6 +484,103 @@ $(document).ready(function () {
         })
     });
 });
+
+$(document).ready(function () {
+    $(".stepIDInput").change(function () {
+
+        var id = parseInt(this.getAttribute("name"));
+        var value = this.value;
+        $.ajax({
+            url: '/Tests/SetStepID',
+            type: 'POST',
+            data: {
+                'id': id,
+                'value': value
+            },
+        })
+    });
+});
+
+$(document).ready(function () {
+    $(".methodInput").change(function () {
+
+        var id = parseInt(this.getAttribute("name"));
+        var value = this.value;
+        $.ajax({
+            url: '/Tests/SetMethod',
+            type: 'POST',
+            data: {
+                'id': id,
+                'value': value
+            },
+        })
+    });
+});
+
+$(document).ready(function () {
+    $(".attributeInput").change(function () {
+
+        var id = parseInt(this.getAttribute("name"));
+        var value = this.value;
+        $.ajax({
+            url: '/Tests/SetAttribute',
+            type: 'POST',
+            data: {
+                'id': id,
+                'value': value
+            },
+        })
+    });
+});
+
+$(document).ready(function () {
+    $(".valueInput").change(function () {
+
+        var id = parseInt(this.getAttribute("name"));
+        var value = this.value;
+        $.ajax({
+            url: '/Tests/SetValue',
+            type: 'POST',
+            data: {
+                'id': id,
+                'value': value
+            },
+        })
+    });
+});
+
+$(document).ready(function () {
+    $(".inputInput").change(function () {
+
+        var id = parseInt(this.getAttribute("name"));
+        var value = this.value;
+        $.ajax({
+            url: '/Tests/SetInput',
+            type: 'POST',
+            data: {
+                'id': id,
+                'value': value
+            },
+        })
+    });
+});
+
+$(document).ready(function () {
+    $(".orderInput").change(function () {
+
+        var id = parseInt(this.getAttribute("name"));
+        var value = parseInt(this.value);
+        $.ajax({
+            url: '/Tests/SetOrder',
+            type: 'POST',
+            data: {
+                'id': id,
+                'value': value
+            },
+        })
+    });
+});
+
 
 $(document).ready(function () {
 

@@ -1,0 +1,71 @@
+﻿@model IEnumerable<Starter.Models.AvailableMethod>
+
+<div class='panel-group'>
+    <div class='panel panel-default'>
+        <div class='panel-heading'>
+            <h3 class='panel-title'>
+                <a data-toggle='collapse' id='Toggle' href='#collapseMethods'>Available Methods</a>
+            </h3>
+        </div>
+        @if (Model.Any())
+            {
+            <div id='collapseMethods' class='panel-collapse collapsed collapse in'>
+                <div class='panel-body'>
+                    <table id="AvailableMethodsDataTable" class="table table-striped">
+                        <thead id="greyTableheader">
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.AvailableMethodID)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Name)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Description)
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="RightClickTable">
+
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td class="AvailableMethodtd">
+                                        <p class="TableParagraph">@item.AvailableMethodID</p>
+                                    </td>
+                                    <td class="AvailableMethodtd">
+                                        <p class="SmallPadding">
+                                            <a class="Actions" asp-controller="AvailableMethods" asp-route-id="@item.AvailableMethodID" asp-action="Details">@item.Name</a>
+                                        </p>
+                                    </td>
+                                    <td class="AvailableMethodtd">
+                                        <p class="TableParagraph">
+                                            @Html.DisplayFor(modelItem => item.Description)
+                                        </p>
+                                    </td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div id='collapseMethods' class='panel-collapse collapsed collapse in'>
+                <div class='panel-body'>
+                    <p>
+                        There are currently no Available Methods
+                    </p>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<ul id="contextMenu" class="dropdown-menu" role="menu" style="display:none">
+    <li><a tabindex="-1" href="#" name="AvailableMethods">Edit</a></li>
+    <li><a tabindex="-1" href="#" name="AvailableMethods">Details</a></li>
+    <li><a tabindex="-1" href="#" name="AvailableMethods">Delete</a></li>
+</ul>

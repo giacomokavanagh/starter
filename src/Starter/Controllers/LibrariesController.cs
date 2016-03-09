@@ -175,4 +175,25 @@ namespace Starter.Controllers
         public Test Test { get; set; }
         public IEnumerable<Test> Tests { get; set; }
     }
+
+    public class LibraryAndSectionAndSuiteAndTestAndStepsAndNewStep
+    {
+        public Library Library { get; set; }
+        public Section Section { get; set; }
+        public Suite Suite { get; set; }
+        public Test Test { get; set; }
+        public Step NewStep { get; set; }
+        public IEnumerable<Step> Steps { get; set; }
+    }
+
+    public class TestViewModel
+    {
+        public Library Library { get; set; }
+        public Section Section { get; set; }
+        public Suite Suite { get; set; }
+        public Test Test { get; set; }
+        public Step NewStep { get; set; }
+        public IEnumerable<Step> Steps { get; set; }
+        public IEnumerable<TestRun> TestRuns { get; set; }
+    }
 }

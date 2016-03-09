@@ -1,4 +1,4 @@
-@model Starter.Controllers.LibraryAndSectionAndSuiteAndTest
+@model Starter.Controllers.TestViewModel
 
 @{
     ViewData["Title"] = "Test: " + Model.Test.Name;
@@ -19,7 +19,20 @@
     }
 
     @Html.Partial("_TestDetailsTable", Model.Test)
+</div>
 
+    @if (Model.Test.TestDataSource == "Starter")
+    {
+        <hr />
+
+        @Html.Partial("_StepIndexTable", Model.Steps)
+
+        @Html.Partial("_CreateStep", Model.NewStep)
+    }
+
+    @Html.Partial("_TestRunsUsingTest", Model.TestRuns)
+
+<div>
     <div>
         <hr />
         <p>

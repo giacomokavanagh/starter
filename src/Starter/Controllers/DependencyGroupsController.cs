@@ -6,6 +6,7 @@ using Starter.Models;
 using System.Collections.Generic;
 using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Authorization;
+using Microsoft.AspNet.Routing;
 
 namespace Starter.Controllers
 {
@@ -73,6 +74,30 @@ namespace Starter.Controllers
             ViewBag.browsers = new SelectList(new List<string> { "Chrome", "Firefox", "IE" });
 
             return View(dependencyGroupAndNewDependency);
+        }
+
+        public IActionResult DetailsFromTestRun(int? id)
+        {
+            TestRun testRun = _context.TestRun.Single(t => t.TestRunID == id);
+            
+            if(testRun.DependencyGroupID == null)
+            {
+                HttpContext.Session.SetString("Message", "There is no Dependency Group for that Test Run");
+                return RedirectToAction("Details", new RouteValueDictionary(new
+                {
+                    controller = "Runs",
+                    action = "Details",
+                    ID = testRun.RunID
+                }));
+            }
+
+            return RedirectToAction("Details", new RouteValueDictionary(new
+            {
+                controller = "DependencyGroups",
+                action = "Details",
+                ID = testRun.DependencyGroupID
+            }));
+
         }
 
         // GET: DependencyGroups/Create

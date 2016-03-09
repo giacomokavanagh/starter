@@ -14,6 +14,10 @@ using Microsoft.AspNet.Routing;
 using Microsoft.AspNet.Authorization;
 using System;
 
+#if DNX451
+using OfficeOpenXml;
+#endif
+
 namespace Starter.Controllers
 {
     [Authorize]
@@ -54,25 +58,52 @@ namespace Starter.Controllers
             ViewData["Message"] = HttpContext.Session.GetString("Message");
             HttpContext.Session.Remove("Message");
 
-            LibraryAndSectionAndSuiteAndTest libraryAndSectionAndSuiteAndTest = new LibraryAndSectionAndSuiteAndTest();
-            libraryAndSectionAndSuiteAndTest.Test = _context.Test.Single(m => m.TestID == id);
-            if (libraryAndSectionAndSuiteAndTest.Test == null)
+            TestViewModel model = new TestViewModel();
+            model.Test = _context.Test.Single(m => m.TestID == id);
+            if (model.Test == null)
             {
                 return HttpNotFound();
             }
 
-            int intSuiteID = libraryAndSectionAndSuiteAndTest.Test.SuiteID;
-            libraryAndSectionAndSuiteAndTest.Suite = _context.Suite.Single(m => m.SuiteID == intSuiteID);
+            int intSuiteID = model.Test.SuiteID;
+            model.Suite = _context.Suite.Single(m => m.SuiteID == intSuiteID);
 
-            int intSectionID = libraryAndSectionAndSuiteAndTest.Suite.SectionID;
-            libraryAndSectionAndSuiteAndTest.Section = _context.Section.Single(m => m.SectionID == intSectionID);
+            int intSectionID = model.Suite.SectionID;
+            model.Section = _context.Section.Single(m => m.SectionID == intSectionID);
 
-            int intLibraryID = libraryAndSectionAndSuiteAndTest.Section.LibraryID;
-            libraryAndSectionAndSuiteAndTest.Library = _context.Library.Single(m => m.LibraryID == intLibraryID);
+            int intLibraryID = model.Section.LibraryID;
+            model.Library = _context.Library.Single(m => m.LibraryID == intLibraryID);
 
-            ViewBag.strUploadsDirectory = strUploadsDirectory;
+            if (model.Test.TestDataSource == "Excel")
+            {
+                //ViewBag.strUploadsDirectory = strUploadsDirectory;
+            }
+            else if (model.Test.TestDataSource == "Starter")
+            {
+                var AllApplicableSteps = _context.Step.Where(t => t.TestID == id).ToList();
+                model.Steps = AllApplicableSteps.OrderBy(t => t.Order);
 
-            return View(libraryAndSectionAndSuiteAndTest);
+                model.NewStep = new Step();
+                model.NewStep.TestID = id.Value;
+                if (model.Steps.Any())
+                {
+                    model.NewStep.Order = model.Steps.Last().Order + 1;
+                }
+                else
+                {
+                    model.NewStep.Order = 1;
+                }
+
+                ViewBag.AvailableMethods = new SelectList(_context.AvailableMethod, "Name", "Name");
+            }
+
+            model.TestRuns = _context.TestRun.Where(t => t.TestID == id);
+            foreach(var item in model.TestRuns)
+            {
+                item.Run = _context.Run.Single(t => t.RunID == item.RunID);
+            }
+
+            return View(model);
         }
 
         // GET: Tests/Create
@@ -87,12 +118,16 @@ namespace Starter.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Test test, IFormFile file)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                _context.Test.Add(test);
-                test.ContentType = file.ContentType;
-                _context.SaveChanges();
+                return HttpNotFound();
+            }
 
+            _context.Test.Add(test);
+
+            if (test.TestDataSource == "Excel")
+            {
+                test.ContentType = file.ContentType;
                 if (file.Length > 0)
                 {
                     var uploads = Path.Combine(strUploadsDirectory, test.TestID.ToString());
@@ -106,12 +141,18 @@ namespace Starter.Controllers
 
                     await file.SaveAsAsync(Path.Combine(uploads, fileName));
 
+                    _context.SaveChanges();
                     _context.Update(test);
                     test.ExcelFilePath = fileName;
                     _context.SaveChanges();
-                }
 
-                HttpContext.Session.SetString("Message", "Test: " + test.Name + " successfully created");
+                    HttpContext.Session.SetString("Message", "Excel based Test: " + test.Name + " successfully created");
+                }
+            }
+            else
+            {
+                _context.SaveChanges();
+                HttpContext.Session.SetString("Message", "Empty Test: " + test.Name + " successfully created. Please add some steps.");
             }
 
             return RedirectToAction("Details", new RouteValueDictionary(new
@@ -120,6 +161,83 @@ namespace Starter.Controllers
                 action = "Details",
                 ID = test.TestID
             }));
+        }
+
+        public IActionResult CreateStep(Step step)
+        {
+            if (!ModelState.IsValid)
+            {
+                return HttpNotFound();
+            }
+
+            _context.Step.Add(step);
+            _context.SaveChanges();
+
+            createExcelFile(step.TestID);
+
+            HttpContext.Session.SetString("Message", "Step: " + step.StepID + " successfully created");
+
+            return RedirectToAction("Details", new RouteValueDictionary(new
+            {
+                controller = "Tests",
+                action = "Details",
+                ID = step.TestID
+            }));
+        }
+
+        private void createExcelFile(int id)
+        {
+            IEnumerable<Step> Steps = _context.Step.Where(t => t.TestID == id).OrderBy(t => t.Order);
+
+            Test test = _context.Test.Single(t => t.TestID == id);
+            var strFileName = "GeneratedFor" + test.Name + ".xlsx";
+
+            _context.Update(test);
+            test.ExcelFilePath = strFileName;
+            test.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            _context.SaveChanges();
+
+            var uploads = Path.Combine(strUploadsDirectory, id.ToString());
+
+            if (!Directory.Exists(uploads))
+            {
+                Directory.CreateDirectory(uploads);
+            }
+
+            var strFilePath = Path.Combine(uploads, strFileName);
+            FileInfo newFile = new FileInfo(strFilePath);
+
+            if (newFile.Exists)
+            {
+                newFile.Delete();
+            }
+
+#if DNX451
+            ExcelPackage pck = new ExcelPackage(newFile);
+
+            var ws = pck.Workbook.Worksheets.Add("Script");
+
+            ws.Cells["A1"].Value = "STEP_ID";
+            ws.Cells["B1"].Value = "METHOD";
+            ws.Cells["C1"].Value = "ATTRIBUTE";
+            ws.Cells["D1"].Value = "VALUE";
+            ws.Cells["E1"].Value = "INPUT";
+            ws.Cells["A1:E1"].Style.Font.Bold = true;
+
+            var row = 2;
+            foreach (var item in Steps)
+            {
+                ws.Cells["A" + row].Value = item.StepID;
+                ws.Cells["B" + row].Value = item.Method;
+                ws.Cells["C" + row].Value = item.Attribute;
+                ws.Cells["D" + row].Value = item.Value;
+                ws.Cells["E" + row].Value = item.Input;
+
+                row = row + 1;
+            }
+
+            pck.Save();
+#endif
         }
 
         // GET: Tests/Edit/5
@@ -187,6 +305,237 @@ namespace Starter.Controllers
             }));
         }
 
+        [ActionName("EditStep")]
+        public IActionResult EditStep(int? id)
+        {
+            if (id == null)
+            {
+                return HttpNotFound();
+            }
+
+            Step step = _context.Step.Single(t => t.ID == id);
+            if (step == null)
+            {
+                return HttpNotFound();
+            }
+
+            ViewData["Message"] = HttpContext.Session.GetString("Message");
+            HttpContext.Session.Remove("Message");
+
+            return View(step);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditStep(Step step)
+        {
+            if (ModelState.IsValid)
+            {
+                var previousStepID = _context.Step.AsNoTracking().Single(t => t.ID == step.ID).StepID;
+
+                if (stepIDIsNotUniqueToTest(step.ID, step.StepID, previousStepID))
+                {
+                    HttpContext.Session.SetString("Message", "Step ID must be unique for test");
+
+                    return RedirectToAction("EditStep", new RouteValueDictionary(new
+                    {
+                        controller = "Tests",
+                        action = "EditStep",
+                        ID = step.ID
+                    }));
+                }
+                        
+                _context.Update(step);
+                _context.SaveChanges();
+
+                ReorderStepsAroundEdit(step.ID, step.Order);
+
+                createExcelFile(step.TestID);
+
+                HttpContext.Session.SetString("Message", "Step: " + step.StepID + " successfully edited");
+
+                return RedirectToAction("Details", new RouteValueDictionary(new
+                {
+                    controller = "Tests",
+                    action = "Details",
+                    ID = step.TestID
+                }));
+            }
+
+            HttpContext.Session.SetString("Message", "I was unable to edit a step for some reason");
+
+            return RedirectToAction("Details", new RouteValueDictionary(new
+            {
+                controller = "Tests",
+                action = "Details",
+                ID = step.TestID
+            }));
+        }
+
+        public string ReorderStepsAroundEdit(int? id, int Order)
+        {
+            if (id == null)
+            {
+                return "Step ID is null";
+            }
+
+            Step step = _context.Step.Single(t => t.ID == id);
+            if (step == null)
+            {
+                return "Step not found";
+            }
+
+            IEnumerable<Step> AllStepsInTest = _context.Step.Where(t => t.TestID == step.TestID).OrderBy(t => t.Order);
+            int newOrder = 1;
+            foreach (var item in AllStepsInTest)
+            {
+                _context.Update(item);
+                if (item.ID == step.ID)
+                {
+                    newOrder = newOrder + 1;
+                }
+                else if (newOrder == Order)
+                {
+                    newOrder = newOrder + 1;
+                    item.Order = newOrder;
+                }
+                else
+                {
+                    item.Order = newOrder;
+                    newOrder = newOrder + 1;
+                }
+            }
+
+            _context.SaveChanges();
+
+            return "Items reordered";
+        }
+
+        public IActionResult MoveStepUp(int? id)
+        {
+            if (id == null)
+            {
+                return HttpNotFound();
+            }
+
+            Step step = _context.Step.Single(t => t.ID == id);
+
+            if (step == null)
+            {
+                return HttpNotFound();
+            }
+
+            Step stepAbove = _context.Step.Single(t => t.TestID == step.TestID && t.Order == step.Order - 1);
+
+            _context.Update(step);
+            step.Order = step.Order - 1;
+
+            _context.Update(stepAbove);
+            stepAbove.Order = stepAbove.Order + 1;
+
+            _context.SaveChanges();
+
+            createExcelFile(step.TestID);
+
+            HttpContext.Session.SetString("Message", "Step: " + step.StepID + " successfully swapped with " + stepAbove.StepID);
+
+            return RedirectToAction("Details", new RouteValueDictionary(new
+            {
+                controller = "Tests",
+                action = "Details",
+                ID = step.TestID
+            }));
+        }
+
+        public IActionResult MoveStepDown(int? id)
+        {
+            if (id == null)
+            {
+                return HttpNotFound();
+            }
+
+            Step step = _context.Step.Single(t => t.ID == id);
+
+            if (step == null)
+            {
+                return HttpNotFound();
+            }
+
+            Step stepBelow = _context.Step.Single(t => t.TestID == step.TestID && t.Order == step.Order + 1);
+
+            _context.Update(step);
+            step.Order = step.Order + 1;
+
+            _context.Update(stepBelow);
+            stepBelow.Order = stepBelow.Order - 1;
+
+            _context.SaveChanges();
+
+            createExcelFile(step.TestID);
+
+            HttpContext.Session.SetString("Message", "Step: " + step.StepID + " successfully swapped with " + stepBelow.StepID);
+
+            return RedirectToAction("Details", new RouteValueDictionary(new
+            {
+                controller = "Tests",
+                action = "Details",
+                ID = step.TestID
+            }));
+        }
+
+        public IActionResult DeleteStep(int? id)
+        {
+            if (id == null)
+            {
+                return HttpNotFound();
+            }
+
+            Step step = _context.Step.Single(t => t.ID == id);
+            if (step == null)
+            {
+                return HttpNotFound();
+            }
+            var testID = step.TestID;
+
+            _context.Step.Remove(step);
+            _context.SaveChanges();
+
+            ReorderStepsAroundDelete(testID);
+
+            createExcelFile(step.TestID);
+
+            HttpContext.Session.SetString("Message", "Step: " + step.StepID + " successfully deleted");
+
+            return RedirectToAction("Details", new RouteValueDictionary(new
+            {
+                controller = "Tests",
+                action = "Details",
+                ID = testID
+            }));
+        }
+
+        public string ReorderStepsAroundDelete(int? id)
+        {
+            if(id == null)
+            {
+                return "Test ID not present";
+            }
+
+            IEnumerable<Step> AllStepsInTest = _context.Step.Where(t => t.TestID == id).OrderBy(t => t.Order);
+            int newOrder = 1;
+            foreach (var item in AllStepsInTest)
+            {
+                _context.Update(item);
+                item.Order = newOrder;
+                newOrder = newOrder + 1;
+            }
+
+            _context.SaveChanges();
+
+            return "Items reordered";
+        }
+
+
         // GET: Tests/Delete/5
         [ActionName("Delete")]
         public IActionResult Delete(int? id)
@@ -224,7 +573,7 @@ namespace Starter.Controllers
             _context.Test.Remove(test);
             _context.SaveChanges();
 
-            if(test.TestDataSource == "Excel" && test.ExcelFilePath != null)
+            if (test.TestDataSource == "Excel" && test.ExcelFilePath != null)
             {
                 Directory.Delete(Path.Combine(strUploadsDirectory, id.ToString()), true);
             }
@@ -308,6 +657,132 @@ namespace Starter.Controllers
             var file = new FileStream(path, FileMode.Open, FileAccess.ReadWrite);
 
             return File(file, test.ContentType, test.ExcelFilePath);
+        }
+
+        [HttpPost]
+        public string SetStepID(int? id, string value)
+        {
+            Step step = _context.Step.Single(t => t.ID == id);
+
+            if(stepIDIsNotUniqueToTest(id, value, step.StepID))
+            {
+                var messageString = "Step ID of: " + step.StepID + " was not unique for step of ID: " + step.StepID;
+                HttpContext.Session.SetString("Message", messageString);
+                return messageString;
+            }
+
+            step.StepID = value;
+
+            _context.Update(step);
+            _context.SaveChanges();
+
+            createExcelFile(step.TestID);
+
+            return "StepID changed to " + step.StepID;
+        }
+
+        [HttpPost]
+        public string SetMethod(int? id, string value)
+        {
+            Step step = _context.Step.Single(t => t.ID == id);
+
+
+            if(!_context.AvailableMethod.Where(t => t.Name == value).Any())
+            {
+                var messageString = "That method: " + value + " is not available";
+                HttpContext.Session.SetString("Message", messageString);
+                return messageString;
+            }
+
+            step.Method = value;
+
+            _context.Update(step);
+            _context.SaveChanges();
+
+            createExcelFile(step.TestID);
+
+            return "Method changed to " + step.Method;
+        }
+
+        [HttpPost]
+        public string SetAttribute(int? id, string value)
+        {
+            Step step = _context.Step.Single(t => t.ID == id);
+
+            step.Attribute = value;
+
+            _context.Update(step);
+            _context.SaveChanges();
+
+            createExcelFile(step.TestID);
+
+            return "Attribute changed to " + step.Attribute;
+        }
+
+        [HttpPost]
+        public string SetValue(int? id, string value)
+        {
+            Step step = _context.Step.Single(t => t.ID == id);
+
+            step.Value = value;
+
+            _context.Update(step);
+            _context.SaveChanges();
+
+            createExcelFile(step.TestID);
+
+            return "Value changed to " + step.Value;
+        }
+
+        [HttpPost]
+        public string SetInput(int? id, string value)
+        {
+            Step step = _context.Step.Single(t => t.ID == id);
+
+            step.Input = value;
+
+            _context.Update(step);
+            _context.SaveChanges();
+
+            createExcelFile(step.TestID);
+
+            return "Input changed to " + step.Input;
+        }
+
+        [HttpPost]
+        public string SetOrder(int? id, int value)
+        {
+            Step step = _context.Step.Single(t => t.ID == id);
+
+            step.Order = value;
+
+            _context.Update(step);
+            _context.SaveChanges();
+
+            createExcelFile(step.TestID);
+
+            ReorderStepsAroundEdit(step.ID, value);
+
+            return "Order changed to " + step.Order;
+        }
+
+        private bool stepIDIsNotUniqueToTest(int? id, string newStepID, string previousStepID)
+        {
+            if(id == null)
+            {
+                return false;
+            }
+
+            Step step = _context.Step.AsNoTracking().Single(t => t.ID == id);
+            if (step == null)
+            {
+                return false;
+            }
+
+            var allStepIDs = _context.Step.Where(t => t.TestID == step.TestID && t.ID != id).
+                Select(t => t.StepID).AsNoTracking().ToList();
+            allStepIDs.Add(previousStepID);
+            return allStepIDs.Contains(newStepID);
         }
     }
 }

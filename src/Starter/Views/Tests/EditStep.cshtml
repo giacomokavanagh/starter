@@ -1,0 +1,95 @@
+﻿@model Starter.Models.Step
+
+@{
+    ViewData["Title"] = "Edit Step: " + Model.StepID;
+}
+
+<div>
+    <div class="headertwo">
+        <h2>@ViewData["Title"]</h2>
+    </div>
+
+    @if (ViewData["Message"] != null)
+    {
+        <div>
+            <p class="message">
+                @ViewData["Message"]
+            </p>
+        </div>
+    }
+
+    <form asp-action="EditStep" asp-controller="Tests">
+        <div class='panel-group'>
+            <div class='panel panel-default'>
+                <div class='panel-heading'>
+                    <h3 class='panel-title'>
+                        <a data-toggle='collapse' id='Toggle' href='#collapse'>Edit Step</a>
+                    </h3>
+                </div>
+                <div id='collapse' class='panel-collapse collapse in collapse'>
+                    <div class='panel-body'>
+                        <div class="form-horizontal">
+                            <div asp-validation-summary="ValidationSummary.ModelOnly" class="text-danger"></div>
+                            <div class="form-group">
+                                <label asp-for="@Model.StepID" class="col-md-2 control-label"></label>
+                                <div class="col-md-10">
+                                    <input asp-for="@Model.StepID" class="form-control" value="@Model.StepID" />
+                                    <span asp-validation-for="@Model.StepID" class="text-danger" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="@Model.Method" class="col-md-2 control-label"></label>
+                                <div class="col-md-10">
+                                    <textarea asp-for="@Model.Method" class="form-control textarea" rows="2" value="@Model.Method"></textarea>
+                                    <span asp-validation-for="@Model.Method" class="text-danger" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="@Model.Attribute" class="col-md-2 control-label"></label>
+                                <div class="col-md-10">
+                                    <textarea asp-for="@Model.Attribute" class="form-control textarea" rows="2" value="@Model.Attribute"></textarea>
+                                    <span asp-validation-for="@Model.Attribute" class="text-danger" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="@Model.Value" class="col-md-2 control-label"></label>
+                                <div class="col-md-10">
+                                    <textarea asp-for="@Model.Value" class="form-control textarea" rows="2" value="@Model.Value"></textarea>
+                                    <span asp-validation-for="@Model.Value" class="text-danger" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="@Model.Input" class="col-md-2 control-label"></label>
+                                <div class="col-md-10">
+                                    <textarea asp-for="@Model.Input" class="form-control textarea" rows="3" value="@Model.Input"></textarea>
+                                    <span asp-validation-for="@Model.Input" class="text-danger" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="@Model.Order" class="col-md-2 control-label"></label>
+                                <div class="col-md-10">
+                                    <input asp-for="@Model.Order" class="form-control" value="@Model.Order" />
+                                    <span asp-validation-for="@Model.Order" class="text-danger" />
+                                </div>
+                            </div>
+                            <input asp-for="@Model.TestID" class="form-control" type="hidden" readonly="readonly" value="@Model.TestID" />
+                            <span asp-validation-for="@Model.TestID" class="text-danger" />
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <input type="submit" value="Save" class="btn btn-default" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div>
+        <hr />
+        <p>
+            <a asp-controller="Tests" asp-action="Details" asp-route-id="@Model.TestID" class="Actions">Back to test</a>
+        </p>
+    </div>
+</div>

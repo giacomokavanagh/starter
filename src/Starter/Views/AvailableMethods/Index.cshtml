@@ -1,0 +1,26 @@
+@model Starter.Controllers.ViewAvailableMethodIndexModel
+
+@{
+    ViewData["Title"] = "Available Methods";
+}
+
+<div>
+    <div class="headertwo">
+        <h2>@ViewData["Title"]</h2>
+    </div>
+
+    @if (ViewData["Message"] != null)
+    {
+        <div>
+            <p class="message">
+                @ViewData["Message"]
+            </p>
+        </div>
+    }
+
+
+    @Html.Partial("_AvailableMethodsIndexTable", Model.AvailableMethods)
+
+    @Html.Partial("_CreateAvailableMethod", Model.NewAvailableMethod)
+
+</div>

@@ -12,7 +12,7 @@ div.container.body-content {
     clear: both;
     margin: 20px;
     margin-top: 0px;
-    width: 90%;
+    width: 98%;
 }
 
 div.headertwo {
@@ -35,31 +35,43 @@ div#RunTestHidden, div#StopTestHidden {
 }
 
 div#TestRunDataTable_wrapper {
-    width: 110%;
+    width: 102%;
 }
 
 div#ResultsDataTable_wrapper {
     width: 100%;
+    margin-left: 0px;
+    margin-right: 0px;
+}
+div#StepDataTable_wrapper, div#AvailableMethodsDataTable_wrapper, div#StepsUsingMethodDataTable_wrapper, 
+    div#ResultsUsingMethodDataTable_wrapper, div#TestRunsUsingTestDataTable_wrapper {
+    margin-left: 0px;
+    margin-right: 0px;
 }
 
-table#TestRunDataTable, table#ResultsDataTable {
+table#TestRunDataTable, table#ResultsDataTable, table#StepDataTable, table#AvailableMethodsDataTable, 
+    table#StepsUsingMethodDataTable, table#ResultsUsingMethodDataTable, table#TestRunsUsingTestDataTable {
     width: 160%;
     margin-left: 0px;
     margin-right: 0px;
 }
 
-table#TestRunDataTable td, table#ResultsDataTable td {
+table#TestRunDataTable td, table#ResultsDataTable td, table#StepDataTable td, table#AvailableMethodsDataTable td,
+    table#StepsUsingMethodDataTable td, table#ResultsUsingMethodDataTable td, table#TestRunsUsingTestDataTable td {
     padding-bottom: 1px;
     padding-top: 1px;
     font-size: 10px;
 }
 
-table#TestRunDataTable div, table#ResultsDataTable div {
+table#TestRunDataTable div, table#ResultsDataTable div, table#StepDataTable div, table#AvailableMethodsDataTable div,
+    table#StepsUsingMethodDataTable div, table#ResultsUsingMethodDataTable div, table#TestRunsUsingTestDataTable div {
     margin-left: 0px;
     margin-right: 0px;
 }
 
-table#TestRunDataTable td.datetimepickertd, table#TestRunDataTable td.Retriestd {
+table#TestRunDataTable td.datetimepickertd, table#TestRunDataTable td.Retriestd, table#StepDataTable td.stepTabletd, 
+    table#AvailableMethodsDataTable td.AvailableMethodtd, table#StepsUsingMethodDataTable td.AvailableMethodtd,
+    table#ResultsUsingMethodDataTable td.AvailableMethodtd, table#TestRunsUsingTestDataTable td.AvailableMEthodtd {
     padding:0px;
 }
 
@@ -72,7 +84,7 @@ table.ExceptionTable, tr.ExceptionDetails, td.ExceptionType, td.ExceptionMessage
     border: 1px solid black;
 }
 
-div.input-group date, div.datetimepickerdiv, div.Retriesdiv, div.datepicker, div.datepicker.days {
+div.input-group date, div.datetimepickerdiv, div.Retriesdiv, div.datepicker, div.datepicker.days, div.stepTablediv {
     margin: 0px;
     padding: 0px;
     width: 100%;
@@ -117,6 +129,15 @@ input.Retriesinput {
     text-align: center;
     font-size: 8px;
     padding: 2px;
+    width: 100%;
+    border: none;
+}
+
+input.stepTableInput {
+    text-align: left;
+    font-size: 11px;
+    padding: 2px;
+    padding-left: 5px;
     width: 100%;
     border: none;
 }
@@ -298,6 +319,11 @@ p.Actions {
 }
 
 p.TableParagraph {
+    margin-bottom: 0px;
+}
+
+p.SmallPadding {
+    padding: 2px;
     margin-bottom: 0px;
 }
 
@@ -635,6 +661,11 @@ div.panel-group {
     margin-bottom: 0px;
 }
 
+div.panel-group.noMargin {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
 div.panel-collapse {
     margin-bottom: 0px;
     padding: 0px;
@@ -642,6 +673,11 @@ div.panel-collapse {
 
 div.panel-default {
     padding: 0px;
+}
+
+div.panel-default.noMargin {
+    margin-left: 0px;
+    margin-right: 0px;
 }
 
 td.Passed {
@@ -691,7 +727,7 @@ select {
 
 
 #dependencygrouppopup{
-    padding: 2px;
+    padding: 0px;
 }
 
 #dependencygrouppopup li{
@@ -710,6 +746,7 @@ a.TestRunTableActions {
     background-color: #d9d9d9;
     padding: 2px;
     font-size: 10px;
+    margin: 1px;
 }
 
 table#dependencygrouptable td {
@@ -779,8 +816,12 @@ table#dependencygrouptable td {
     width: 73%;
 }
 
-td#dependencygrouptd {
+table#TestRunDataTable td#dependencygrouptd {
     padding: 0px;
+    padding-bottom: 0px;
+    padding-top: 0px;
+    margin-bottom: 0px;
+    margin-top: 0px;
 }
 
 div.dependencygroupdiv{

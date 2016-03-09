@@ -43,6 +43,8 @@
         </dl>
     </div>
 
+    <hr />
+
     <div class='panel-group fullwidth'>
         <div class='panel panel-default'>
             <div class='panel-heading'>
@@ -92,15 +94,15 @@
                                         <td>@item.ResultID</td>
                                         <td class="@item.StoredStatus">@item.StoredStatus</td>
                                         <td>
-                                            <a asp-controller="Results" asp-action="Details" asp-route-id="@item.ResultID">@item.ResultName</a>
+                                            <a class="Actions" asp-controller="Results" asp-action="Details" asp-route-id="@item.ResultID">@item.ResultName</a>
                                         </td>
                                         <td>@item.StoredStartTime</td>
                                         <td>@item.StoredEndTime</td>
                                         <td>
-                                            <a asp-controller="Results" asp-action="ReturnStoredTestFile" asp-route-id="@item.ResultID">@item.StoredTestDataFileName</a>
+                                            <a class="Actions" asp-controller="Results" asp-action="ReturnStoredTestFile" asp-route-id="@item.ResultID">@item.StoredTestDataFileName</a>
                                         </td>
                                         <td>
-                                            <a asp-controller="Results" asp-action="ReturnStoredTestEnvironmentsFile" asp-route-id="@item.ResultID">@item.StoredTestEnvironmentFileName</a>
+                                            <a class="Actions" asp-controller="Results" asp-action="ReturnStoredTestEnvironmentsFile" asp-route-id="@item.ResultID">@item.StoredTestEnvironmentFileName</a>
                                         </td>
                                         <td>@item.StoredTestRunnerName</td>
                                     </tr>
@@ -130,6 +132,9 @@
         <hr />
         <p>
             <a class="Actions" asp-controller="Runs" asp-action="Details" asp-route-id="@Model.TestRun.RunID" >Back to Run: @Model.TestRun.RunID</a>
+        </p>
+        <p>
+            <a class="Actions" asp-controller="Tests" asp-action="Details" asp-route-id="@Model.Results.Last().StoredTestID">Back to Test: @Model.Results.Last().StoredTestName</a>
         </p>
         <p>
             <a class="Actions" asp-controller="Projects" asp-action="Index">Back to Projects</a>

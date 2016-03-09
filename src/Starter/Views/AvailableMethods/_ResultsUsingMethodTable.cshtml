@@ -1,0 +1,66 @@
+﻿@model IEnumerable<Starter.Models.Result>
+
+<div class='panel-group'>
+    <div class='panel panel-default'>
+        <div class='panel-heading'>
+            <h3 class='panel-title'>
+                <a data-toggle='collapse' id='Toggle' href='#collapseResults'>Results Using Method</a>
+            </h3>
+        </div>
+        @if (Model.Any())
+            {
+            <div id='collapseResults' class='panel-collapse collapsed collapse in'>
+                <div class='panel-body'>
+                    <table id="ResultsUsingMethodDataTable" class="table table-striped">
+                        <thead id="greyTableheader">
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.First().ResultID)
+                                </th>
+                                <th>
+                                    Results for Test Run ID
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.First().ResultName)
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td class="AvailableMethodtd">
+                                        <p class="TableParagraph">
+                                            @item.ResultID
+                                        </p>
+                                    </td>
+                                    <td class="AvailableMethodtd">
+                                        <p class="SmallPadding">
+                                            <a class="Actions" asp-controller="Results" asp-route-id="@item.TestRunID" asp-action="ResultsForTestRun">@item.TestRunID</a>
+                                        </p>
+                                    </td>
+                                    <td class="AvailableMethodtd">
+                                        <p class="SmallPadding">
+                                            <a class="Actions" asp-controller="Results" asp-route-id="@item.ResultID" asp-action="Details">@item.ResultName</a>
+                                        </p>
+                                    </td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div id='collapseResults' class='panel-collapse collapsed collapse in'>
+                <div class='panel-body'>
+                    <p>
+                        There are currently no results using this method
+                    </p>
+                </div>
+            </div>
+        }
+    </div>
+</div>

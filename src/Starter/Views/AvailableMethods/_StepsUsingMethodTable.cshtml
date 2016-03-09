@@ -1,0 +1,67 @@
+﻿@model IEnumerable<Starter.Models.Step>
+
+<div class='panel-group'>
+    <div class='panel panel-default'>
+        <div class='panel-heading'>
+            <h3 class='panel-title'>
+                <a data-toggle='collapse' id='Toggle' href='#collapseSteps'>Steps Using Method</a>
+            </h3>
+        </div>
+        @if (Model.Any())
+            {
+            <div id='collapseSteps' class='panel-collapse collapsed collapse in'>
+                <div class='panel-body'>
+                    <table id="StepsUsingMethodDataTable" class="table table-striped">
+                        <thead id="greyTableheader">
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.First().ID)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.First().StepID)
+                                </th>
+                                <th>
+                                    Test
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="RightClickTable">
+
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td class="AvailableMethodtd">
+                                        <p class="TableParagraph">
+                                            @item.ID
+                                        </p>
+                                    </td>
+                                    <td class="AvailableMethodtd">
+                                        <p class="TableParagraph">
+                                            @item.StepID
+                                        </p>
+                                    </td>
+                                    <td class="AvailableMethodtd">
+                                        <p class="SmallPadding">
+                                            <a class="Actions" asp-controller="Tests" asp-route-id="@item.TestID" asp-action="Details">@item.Test.Name</a>
+                                        </p>
+                                    </td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div id='collapseSteps' class='panel-collapse collapsed collapse in'>
+                <div class='panel-body'>
+                    <p>
+                        There are currently no steps using this method
+                    </p>
+                </div>
+            </div>
+        }
+    </div>
+</div>

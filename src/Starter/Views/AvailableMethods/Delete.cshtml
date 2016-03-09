@@ -1,0 +1,33 @@
+@model Starter.Models.AvailableMethod
+
+@{
+    ViewData["Title"] = "Delete Available Method: " + Model.Name;
+}
+
+<div>
+    <div class="headertwo">
+        <h2 class="Delete">@ViewData["Title"]</h2>
+    </div>
+    <div>
+        <h3>Are you sure you want to delete this?</h3>
+    </div>
+
+    <hr />
+
+    <div>
+        @Html.Partial("_AvailableMethodDetailsTable")
+        <form asp-action="Delete">
+            <div class="form-actions no-color">
+                <input type="submit" value="Delete" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+
+    <hr />
+
+    <div>
+        <p class="Actions">
+            <a asp-action="Index" class="Actions">Back to Available Methods</a>
+        </p>
+    </div>
+</div>

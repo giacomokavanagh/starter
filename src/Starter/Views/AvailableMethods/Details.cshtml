@@ -1,0 +1,74 @@
+@model Starter.Models.AvailableMethod
+
+@{
+    ViewData["Title"] = "Available Method: " + Model.Name;
+    var propertyName = "PropertyName" + Model.Results.Last().StoredStatus;
+    var propertyValue = "PropertyValue" + Model.Results.Last().StoredStatus;
+}
+
+<div>
+    <div class="headertwo">
+        <h2>@ViewData["Title"]</h2>
+    </div>
+
+    @if (ViewData["Message"] != null)
+    {
+        <div>
+            <p class="message">
+                @ViewData["Message"]
+            </p>
+        </div>
+    }
+
+    @Html.Partial("_AvailableMethodDetailsTable", Model)
+
+    <hr />
+
+    <div>
+        <div class="PropertiesTableCell">
+            <TABLE class="PropertiesTable">
+                <TR>
+                    <TD class="@propertyName">Result Name</TD>
+                    <TD class="@propertyValue">@Model.Results.Last().ResultName</TD>
+                </TR>
+                <TR>
+                    <TD class="@propertyName">Test Run Start Time</TD>
+                    <TD class="@propertyValue">@Model.Results.Last().StoredStartTime</TD>
+                </TR>
+                <TR>
+                    <TD class="@propertyName">Test Runner Name</TD>
+                    <TD class="@propertyValue">@Model.Results.Last().StoredTestRunnerName</TD>
+                </TR>
+            </TABLE>
+        </div>
+        @if (Model.StoredScreenshot != null)
+            {
+                var actualScreenshot = Model.StoredScreenshot;
+                var actualScreenshotFilePath = actualScreenshot.StoredScreenshotFilePath + ".png";
+                string str = actualScreenshotFilePath.Substring(actualScreenshotFilePath.IndexOf("wwwroot") + 7);
+            <div class="ScreenshotCell">
+                <a href="@str">
+                    <img class="ScreenshotMini" src="@str">
+                </a>
+            </div>
+        }
+    </div>
+    
+
+            @Html.Partial("_StepsUsingMethodTable", Model.Steps)
+
+            @Html.Partial("_ResultsUsingMethodTable", Model.Results)
+
+            <div>
+                <hr />
+                <p>
+                    <a class="Actions" asp-action="Edit" asp-route-id="@Model.AvailableMethodID">Edit</a>
+                </p>
+                <p>
+                    <a class="Actions" asp-action="Delete" asp-route-id="@Model.AvailableMethodID">Delete</a>
+                </p>
+                <p>
+                    <a class="Actions" asp-action="Index">Back to Available Methods</a>
+                </p>
+            </div>
+    </div>

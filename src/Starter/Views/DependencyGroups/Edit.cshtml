@@ -27,13 +27,6 @@
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="TestRunID" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="TestRunID" class="form-control" />
-                <span asp-validation-for="TestRunID" class="text-danger" />
-            </div>
-        </div>
-        <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Save" class="btn btn-default" />
             </div>
@@ -45,8 +38,4 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
-@section Scripts {
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-}
+

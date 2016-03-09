@@ -44,5 +44,7 @@ namespace Starter.Models
         public virtual Suite Suite { get; set; }
 
         public virtual ICollection<TestRun> TestRuns { get; set; }
+
+        public virtual ICollection<Step> Steps { get; set; }
     }
 }

@@ -146,6 +146,24 @@ namespace Starter.Migrations
                     b.HasAnnotation("Relational:TableName", "AspNetUsers");
                 });
 
+            modelBuilder.Entity("Starter.Models.AvailableMethod", b =>
+                {
+                    b.Property<int>("AvailableMethodID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasAnnotation("MaxLength", 5000);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasAnnotation("MaxLength", 100);
+
+                    b.Property<int?>("StoredScreenshotStoredScreenshotDetailsID");
+
+                    b.HasKey("AvailableMethodID");
+                });
+
             modelBuilder.Entity("Starter.Models.Dependency", b =>
                 {
                     b.Property<int>("DependencyID")
@@ -278,6 +296,8 @@ namespace Starter.Migrations
                     b.Property<int>("ResultID")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int?>("AvailableMethodAvailableMethodID");
+
                     b.Property<DateTime>("Duration");
 
                     b.Property<string>("ResultDirectory");
@@ -363,6 +383,32 @@ namespace Starter.Migrations
                     b.HasKey("SectionID");
                 });
 
+            modelBuilder.Entity("Starter.Models.Step", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Attribute");
+
+                    b.Property<int?>("AvailableMethodAvailableMethodID");
+
+                    b.Property<string>("Input");
+
+                    b.Property<string>("Method")
+                        .IsRequired();
+
+                    b.Property<int>("Order");
+
+                    b.Property<string>("StepID")
+                        .IsRequired();
+
+                    b.Property<int>("TestID");
+
+                    b.Property<string>("Value");
+
+                    b.HasKey("ID");
+                });
+
             modelBuilder.Entity("Starter.Models.StoredScreenshotDetails", b =>
                 {
                     b.Property<int>("StoredScreenshotDetailsID")
@@ -445,6 +491,8 @@ namespace Starter.Migrations
                 {
                     b.Property<int>("TestID")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("AvailableMethodAvailableMethodID");
 
                     b.Property<string>("ContentType");
 
@@ -611,6 +659,13 @@ namespace Starter.Migrations
                         .HasForeignKey("UserId");
                 });
 
+            modelBuilder.Entity("Starter.Models.AvailableMethod", b =>
+                {
+                    b.HasOne("Starter.Models.StoredScreenshotDetails")
+                        .WithMany()
+                        .HasForeignKey("StoredScreenshotStoredScreenshotDetailsID");
+                });
+
             modelBuilder.Entity("Starter.Models.Dependency", b =>
                 {
                     b.HasOne("Starter.Models.DependencyGroup")
@@ -671,6 +726,10 @@ namespace Starter.Migrations
 
             modelBuilder.Entity("Starter.Models.Result", b =>
                 {
+                    b.HasOne("Starter.Models.AvailableMethod")
+                        .WithMany()
+                        .HasForeignKey("AvailableMethodAvailableMethodID");
+
                     b.HasOne("Starter.Models.TestRun")
                         .WithOne()
                         .HasForeignKey("Starter.Models.Result", "TestRunID");
@@ -692,6 +751,17 @@ namespace Starter.Migrations
                     b.HasOne("Starter.Models.Library")
                         .WithMany()
                         .HasForeignKey("LibraryID");
+                });
+
+            modelBuilder.Entity("Starter.Models.Step", b =>
+                {
+                    b.HasOne("Starter.Models.AvailableMethod")
+                        .WithMany()
+                        .HasForeignKey("AvailableMethodAvailableMethodID");
+
+                    b.HasOne("Starter.Models.Test")
+                        .WithMany()
+                        .HasForeignKey("TestID");
                 });
 
             modelBuilder.Entity("Starter.Models.StoredScreenshotDetails", b =>
@@ -724,6 +794,10 @@ namespace Starter.Migrations
 
             modelBuilder.Entity("Starter.Models.Test", b =>
                 {
+                    b.HasOne("Starter.Models.AvailableMethod")
+                        .WithMany()
+                        .HasForeignKey("AvailableMethodAvailableMethodID");
+
                     b.HasOne("Starter.Models.Run")
                         .WithMany()
                         .HasForeignKey("RunRunID");

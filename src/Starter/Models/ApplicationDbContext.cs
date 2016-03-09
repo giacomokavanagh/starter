@@ -43,5 +43,7 @@ namespace Starter.Models
         public DbSet<TestRunnerLog> TestRunnerLog { get; set; }
         public DbSet<MasterKey> MasterKey { get; set; }
         public DbSet<DerivedKey> DerivedKey { get; set; }
+        public DbSet<Step> Step { get; set; }
+        public DbSet<AvailableMethod> AvailableMethod { get; set; }
     }
 }

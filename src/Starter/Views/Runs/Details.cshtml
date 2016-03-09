@@ -110,7 +110,7 @@
                             </div>
                         </td>
                         <td id="@TestStatusID" class="@testRun.Status">@testRun.Status</td>
-                        <td>@testRun.Test.Name</td>
+                        <td><a class="Actions" asp-controller="Tests" asp-action="Details" asp-route-id="@testRun.TestID">@testRun.Test.Name</a></td>
                         <td>
                             @if (testRun.TestEnvironment != null)
                             { @testRun.TestEnvironment.Name }
@@ -122,14 +122,14 @@
                             </div>
                         </td>
                         <td>@testRun.EndTime</td>
-                        
+
                         @if (testRun.Result == null)
                         {
                             <td>None</td>
                         }
                         else
                         {
-                            <td><a asp-controller="Results" asp-action="ResultsForTestRun" asp-route-id="@testRun.TestRunID">Latest</a></td>
+                            <td><a class="Actions" asp-controller="Results" asp-action="ResultsForTestRun" asp-route-id="@testRun.TestRunID">Archive</a></td>
                         }
 
                         <td id="dependencygrouptd">
@@ -148,34 +148,44 @@
                                                                 <input type="submit" class="btn btn-default" value="Clear Dependency Group" />
                                                             </form>
                                                         </div>
+                                                        @if (testRun.DependencyGroup.Dependencies != null)
+                                                        {
+                                                            <table id="dependencygrouptable">
+                                                                <thead class="greytableheader">
+                                                                    <tr>
+                                                                        <th class="dependencyid">Test Run ID</th>
+                                                                        <th class="dependencystatus">Status</th>
+                                                                        <th class="dependencypath">Path</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
 
-                                                        <table id="dependencygrouptable">
-                                                            <thead class="greytableheader">
-                                                                <tr>
-                                                                    <th class="dependencyid">Test Run ID</th>
-                                                                    <th class="dependencystatus">Status</th>
-                                                                    <th class="dependencypath">Path</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                @foreach (var dependency in testRun.DependencyGroup.Dependencies)
-                                                                {
+                                                                    @foreach (var dependency in testRun.DependencyGroup.Dependencies)
+                                                                    {
                                                                     var DependencyNavLinkList = (List<Starter.Controllers.NavigationLink>)ViewData["DependencyNavLinkList" + @dependency.DependencyID];
 
-                                                                    <tr>
-                                                                        <td>@dependency.TestRunID</td>
-                                                                        <td>@dependency.TestRun.Status</td>
-                                                                        <td>
-                                                                            @foreach (var item in DependencyNavLinkList)
-                                                                            {
-                                                                                <a class="dependencygrouplinks" asp-controller="@item.Controller" asp-action="@item.Action" asp-route-id="@item.RouteID">@item.Text</a>
-                                                                                <p class="dependencygroupseparator">></p>
-                                                                            }
-                                                                        </td>
-                                                                    </tr>
-                                                                }
-                                                            </tbody>
-                                                        </table>
+                                                                        <tr>
+                                                                            <td>@dependency.TestRunID</td>
+                                                                            <td>@dependency.TestRun.Status</td>
+                                                                            <td>
+                                                                                @foreach (var item in DependencyNavLinkList)
+                                                                                {
+                                                                                    <a class="dependencygrouplinks" asp-controller="@item.Controller" asp-action="@item.Action" asp-route-id="@item.RouteID">@item.Text</a>
+                                                                                    <p class="dependencygroupseparator">></p>
+                                                                                }
+                                                                            </td>
+                                                                        </tr>
+                                                                        }
+
+                                                                </tbody>
+                                                            </table>
+                                                        }
+                                                        else
+                                                        {
+                                                            <table id="dependencygrouptable">
+                                                                <tr><td><p>There are no Dependencies for this Dependency Group</p></td></tr>
+                                                            </table>
+                                                        }
                                                     </div>
                                                 </li>
                                             </ul>
@@ -221,7 +231,6 @@
                 }
             </tbody>
         </table>
-
     }
 
     <hr />
@@ -253,7 +262,8 @@
 <ul id="contextMenu" class="dropdown-menu" role="menu" style="display:none">
     <li><a tabindex="-1" href="#">Edit</a></li>
     <li><a tabindex="-1" href="#">Copy</a></li>
-
+    <li><a tabindex="-1" href="#">Create Dependency Group</a></li>
+    <li><a tabindex="-1" href="#">View Dependency Group</a></li>
     <li class="divider"></li>
     <li><a tabindex="-1" href="#">Delete</a></li>
 </ul>

@@ -41,7 +41,6 @@
                                 <input type="file" name="file" class="form-control" />
                             </div>
                         </div>
-                        <input asp-for="@Model.Test.ExcelFilePath" class="form-control" type="hidden" readonly="readonly" value="" />
                         <input asp-for="@Model.Test.SuiteID" class="form-control" type="hidden" readonly="readonly" value="@Model.Suite.SuiteID" />
                         <span asp-validation-for="@Model.Test.SuiteID" class="text-danger" />
                         <div class="form-group">

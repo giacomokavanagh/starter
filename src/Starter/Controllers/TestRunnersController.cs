@@ -401,19 +401,19 @@ namespace Starter.Controllers
 
             result.StoredTestID = Test.TestID;
             result.StoredTestName = Test.Name;
-            if (Test.TestDataSource == "Excel")
-            {
-                var ExcelFilename = Test.ExcelFilePath;
-                result.StoredTestDataFileName = ExcelFilename;
-                var TestDataFilePath = Path.Combine(_environment.WebRootPath, "uploads", "tests", Test.TestID.ToString(), ExcelFilename);
+            //if (Test.TestDataSource == "Excel")
+            //{
+            var ExcelFilename = Test.ExcelFilePath;
+            result.StoredTestDataFileName = ExcelFilename;
+            var TestDataFilePath = Path.Combine(_environment.WebRootPath, "uploads", "tests", Test.TestID.ToString(), ExcelFilename);
 
-                var testDirectory = Path.Combine(ResultDirectory, "test");
-                Directory.CreateDirectory(testDirectory);
-                var StoredTestDataFilePath = Path.Combine(testDirectory, ExcelFilename);
-                System.IO.File.Copy(TestDataFilePath, StoredTestDataFilePath);
+            var testDirectory = Path.Combine(ResultDirectory, "test");
+            Directory.CreateDirectory(testDirectory);
+            var StoredTestDataFilePath = Path.Combine(testDirectory, ExcelFilename);
+            System.IO.File.Copy(TestDataFilePath, StoredTestDataFilePath);
 
-                result.StoredTestDataFileContentType = Test.ContentType;
-            }
+            result.StoredTestDataFileContentType = Test.ContentType;
+            //}
 
             var environmentDirectory = Path.Combine(ResultDirectory, "environment");
             Directory.CreateDirectory(environmentDirectory);
