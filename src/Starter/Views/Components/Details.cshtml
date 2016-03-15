@@ -1,0 +1,47 @@
+@model Starter.ViewModels.Platform.ComponentDetailsViewModel
+
+@{
+    ViewData["Title"] = "Component: " + Model.Component.Name;
+}
+
+<div>
+    <div class="headertwo">
+        <h2>@ViewData["Title"]</h2>
+    </div>
+
+    @if (ViewData["Message"] != null)
+    {
+        <div>
+            <p class="message">
+                @ViewData["Message"]
+            </p>
+        </div>
+    }
+
+    @Html.Partial("_ComponentDetailsTable", Model.Component)
+
+    <hr />
+
+    @Html.Partial("_ProcessIndexTable", Model.Processes)
+
+    @Html.Partial("_CreateProcess", Model.NewProcess)
+
+    <div>
+        <hr />
+        <p>
+            <a class="Actions" asp-action="Edit" asp-route-id="@Model.Component.ComponentID">Edit</a>
+        </p>
+        <p>
+            <a class="Actions" asp-action="Delete" asp-route-id="@Model.Component.ComponentID">Delete</a>
+        </p>
+        <p>
+            <a class="Actions" asp-controller="Areas" asp-action="Details" asp-route-id="@Model.Component.AreaID">Back to Area: @Model.Component.Area.Name</a>
+        </p>
+        <p>
+            <a class="Actions" asp-controller="Platforms" asp-action="Details" asp-route-id="@Model.Component.Area.PlatformID">Back to Platform: @Model.Component.Area.Platform.Name</a>
+        </p>
+        <p>
+            <a class="Actions" asp-controller="Platforms" asp-action="Index">Back to Platforms</a>
+        </p>
+    </div>
+</div>

@@ -34,8 +34,8 @@ div#RunTestHidden, div#StopTestHidden {
     padding: 0px;
 }
 
-div#TestRunDataTable_wrapper {
-    width: 102%;
+#TestRunsUsingTestDataTable {
+    width: 100% !important;
 }
 
 div#ResultsDataTable_wrapper {
@@ -43,35 +43,46 @@ div#ResultsDataTable_wrapper {
     margin-left: 0px;
     margin-right: 0px;
 }
+
+div#ResultsDataTable_wrapper {
+    width: 100%;
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
 div#StepDataTable_wrapper, div#AvailableMethodsDataTable_wrapper, div#StepsUsingMethodDataTable_wrapper, 
-    div#ResultsUsingMethodDataTable_wrapper, div#TestRunsUsingTestDataTable_wrapper {
+    div#ResultsUsingMethodDataTable_wrapper, div#TestRunsUsingTestDataTable_wrapper, div#ProcessStepDataTable_wrapper {
     margin-left: 0px;
     margin-right: 0px;
 }
 
 table#TestRunDataTable, table#ResultsDataTable, table#StepDataTable, table#AvailableMethodsDataTable, 
-    table#StepsUsingMethodDataTable, table#ResultsUsingMethodDataTable, table#TestRunsUsingTestDataTable {
+    table#StepsUsingMethodDataTable, table#ResultsUsingMethodDataTable, table#TestRunsUsingTestDataTable,
+    table#ProcessStepDataTable {
     width: 160%;
     margin-left: 0px;
     margin-right: 0px;
 }
 
 table#TestRunDataTable td, table#ResultsDataTable td, table#StepDataTable td, table#AvailableMethodsDataTable td,
-    table#StepsUsingMethodDataTable td, table#ResultsUsingMethodDataTable td, table#TestRunsUsingTestDataTable td {
+    table#StepsUsingMethodDataTable td, table#ResultsUsingMethodDataTable td, table#TestRunsUsingTestDataTable td,
+    table#ProcessStepDataTable td {
     padding-bottom: 1px;
     padding-top: 1px;
     font-size: 10px;
 }
 
 table#TestRunDataTable div, table#ResultsDataTable div, table#StepDataTable div, table#AvailableMethodsDataTable div,
-    table#StepsUsingMethodDataTable div, table#ResultsUsingMethodDataTable div, table#TestRunsUsingTestDataTable div {
+    table#StepsUsingMethodDataTable div, table#ResultsUsingMethodDataTable div, table#TestRunsUsingTestDataTable div,
+    table#ProcessStepDataTable div {
     margin-left: 0px;
     margin-right: 0px;
 }
 
 table#TestRunDataTable td.datetimepickertd, table#TestRunDataTable td.Retriestd, table#StepDataTable td.stepTabletd, 
     table#AvailableMethodsDataTable td.AvailableMethodtd, table#StepsUsingMethodDataTable td.AvailableMethodtd,
-    table#ResultsUsingMethodDataTable td.AvailableMethodtd, table#TestRunsUsingTestDataTable td.AvailableMEthodtd {
+    table#ResultsUsingMethodDataTable td.AvailableMethodtd, table#TestRunsUsingTestDataTable td.AvailableMethodtd,
+    table#ProcessStepDataTable td.ProcessStepTabletd {
     padding:0px;
 }
 
@@ -84,7 +95,7 @@ table.ExceptionTable, tr.ExceptionDetails, td.ExceptionType, td.ExceptionMessage
     border: 1px solid black;
 }
 
-div.input-group date, div.datetimepickerdiv, div.Retriesdiv, div.datepicker, div.datepicker.days, div.stepTablediv {
+div.input-group date, div.datetimepickerdiv, div.Retriesdiv, div.datepicker, div.datepicker.days, div.stepTablediv, div.ProcessStepTablediv {
     margin: 0px;
     padding: 0px;
     width: 100%;
@@ -122,7 +133,6 @@ input#wideDateTimePicker {
 
 input.form-control-short datetimepicker {
     width: 100%;
-    
 }
 
 input.Retriesinput {
@@ -133,7 +143,7 @@ input.Retriesinput {
     border: none;
 }
 
-input.stepTableInput {
+input.stepTableInput, input.ProcessStepTableInput {
     text-align: left;
     font-size: 11px;
     padding: 2px;
@@ -835,17 +845,24 @@ div.dependencygroupselectdiv{
     margin: 0px;
 }
 
-td#dependencygrouptd div.chosen-container-single{
+td#dependencygrouptd div.chosen-container-single, div.stepTablediv div.chosen-container-single, div.ProcessStepTablediv div.chosen-container-single {
     padding: 0px;
     margin: 0px;
     width: 100%;
     font-size: 10px;
 }
 
-td#dependencygrouptd a.chosen-single{
+td#dependencygrouptd a.chosen-single {
     height: 21px;
     margin: 2px;
 }
+
+div.stepTablediv a.chosen-single, div.ProcessStepTablediv a.chosen-single {
+    line-height: 18px;
+    height: 18px;
+    margin: 1px;
+}
+
 
 td#dependencygrouptd span{
     vertical-align: middle;

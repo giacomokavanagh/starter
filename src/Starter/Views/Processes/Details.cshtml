@@ -1,0 +1,51 @@
+@model Starter.ViewModels.Platform.ProcessDetailsViewModel
+
+@{
+    ViewData["Title"] = "Process: " + Model.Process.Name;
+}
+
+<div>
+    <div class="headertwo">
+        <h2>@ViewData["Title"]</h2>
+    </div>
+
+    @if (ViewData["Message"] != null)
+    {
+        <div>
+            <p class="message">
+                @ViewData["Message"]
+            </p>
+        </div>
+    }
+
+    @Html.Partial("_ProcessDetailsTable", Model.Process)
+
+</div>
+
+    @Html.Partial("_ProcessStepIndexTable", Model.ProcessSteps)
+
+    @Html.Partial("_CreateProcessStep", Model.NewProcessStep)
+
+<div>
+    <div>
+        <hr />
+        <p>
+            <a class="Actions" asp-action="Edit" asp-route-id="@Model.Process.ProcessID">Edit</a>
+        </p>
+        <p>
+            <a class="Actions" asp-action="Delete" asp-route-id="@Model.Process.ProcessID">Delete</a>
+        </p>
+        <p>
+            <a class="Actions" asp-controller="Components" asp-action="Details" asp-route-id="@Model.Process.ComponentID">Back to Component: @Model.Process.Component.Name</a>
+        </p>
+        <p>
+            <a class="Actions" asp-controller="Areas" asp-action="Details" asp-route-id="@Model.Process.Component.AreaID">Back to Area: @Model.Process.Component.Area.Name</a>
+        </p>
+        <p>
+            <a class="Actions" asp-controller="Platforms" asp-action="Details" asp-route-id="@Model.Process.Component.Area.PlatformID">Back to Platform: @Model.Process.Component.Area.Platform.Name</a>
+        </p>
+        <p>
+            <a class="Actions" asp-controller="Platforms" asp-action="Index">Back to Platforms</a>
+        </p>
+    </div>
+</div>

@@ -1,0 +1,127 @@
+﻿@model IEnumerable<Starter.Models.ProcessStep>
+
+<div class='panel-group noMargin'>
+    <div class='panel panel-default no-border noMargin'>
+        <div class='panel-heading'>
+            <h3 class='panel-title'>
+                <a data-toggle='collapse' id='Toggle' href='#collapseProcessSteps'>Process Steps</a>
+            </h3>
+        </div>
+
+        @if (Model.Any())
+        {
+            <div id='collapseProcessSteps' class='panel-collapse collapsed collapse in'>
+                <div class='panel-body'>
+                    <table id="ProcessStepDataTable" class="table table-striped">
+                        <thead id="greyTableheader">
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.First().ProcessStepID)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.First().StepID)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.First().Method)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.First().Attribute)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.First().Value)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.First().Input)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.First().Static)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.First().Order)
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="ProcessStepDataRows">
+                            @foreach (var item in Model)
+                            {
+                                var stepID = "StepID" + item.ProcessStepID;
+                                var methodID = "MethodID" + item.ProcessStepID;
+                                var attributeID = "AttributeID" + item.ProcessStepID;
+                                var valueID = "ValueID" + item.ProcessStepID;
+                                var inputID = "InputID" + item.ProcessStepID;
+                                var staticID = "StaticID" + item.ProcessStepID;
+                                var orderID = "OrderID" + item.ProcessStepID;
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ProcessStepID)
+                                    </td>
+                                    <td class="ProcessStepTabletd">
+                                        <div class="ProcessStepTablediv">
+                                            <input class="ProcessStepTableInput ProcessStepStepIDInput" name="@item.ProcessStepID" value="@item.StepID" id="@stepID" />
+                                            <p class="hidden">@item.StepID</p>
+                                        </div>
+                                    </td>
+                                    <td class="ProcessStepTabletd">
+                                        <div class="ProcessStepTablediv">
+                                            <select id="@item.ProcessStepID" asp-for="@item.Method" asp-items="@ViewBag.AvailableMethods" name="@item.ProcessStepID" value="@item.Method" class="ProcessStepTableInput methodInput chosensmallprocessstepmethod"></select>
+                                            <p class="hidden">@item.Method</p>
+                                        </div>
+                                    </td>
+                                    <td class="ProcessStepTabletd">
+                                        <div class="ProcessStepTablediv">
+                                            <input class="ProcessStepTableInput ProcessStepAttributeInput" name="@item.ProcessStepID" value="@item.Attribute" id="@attributeID" />
+                                            <p class="hidden">@item.Attribute</p>
+                                        </div>
+                                    </td>
+                                    <td class="ProcessStepTabletd">
+                                        <div class="ProcessStepTablediv">
+                                            <input class="ProcessStepTableInput ProcessStepValueInput" name="@item.ProcessStepID" value="@item.Value" id="@valueID" />
+                                            <p class="hidden">@item.Value</p>
+                                        </div>
+                                    </td>
+                                    <td class="ProcessStepTabletd">
+                                        <div class="ProcessStepTablediv">
+                                            <input class="ProcessStepTableInput ProcessStepInputInput" name="@item.ProcessStepID" value="@item.Input" id="@inputID" />
+                                            <p class="hidden">@item.Input</p>
+                                        </div>
+                                    </td>
+                                    <td class="ProcessStepTabletd">
+                                        <div class="ProcessStepTablediv">
+                                            <input asp-for="@item.Static" class="ProcessStepTableInput ProcessStepStaticInput" name="@item.ProcessStepID" id="@staticID" />
+                                            <p class="hidden">@item.Static</p>
+                                        </div>
+                                    </td>
+                                    <td class="ProcessStepTabletd">
+                                        <div class="ProcessStepTablediv">
+                                            <input class="ProcessStepTableInput ProcessStepOrderInput" name="@item.ProcessID" value="@item.Order" id="@orderID" />
+                                            <p class="hidden">@item.Order</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+
+        else
+        {
+            <div id='collapseProcessSteps' class='panel-collapse collapsed collapse in'>
+                <div class='panel-body'>
+                    <p>
+                        There are currently no Process Steps
+                    </p>
+                </div>
+            </div>
+        }
+
+    </div>
+</div>
+
+<ul id="contextMenu" class="dropdown-menu" role="menu" style="display:none">
+    <li><a tabindex="-1" href="#" name="Processes">Edit Step</a></li>
+    <li><a tabindex="-1" href="#" name="Processes">Delete Step</a></li>
+    <li><a tabindex="-1" href="#" name="Processes">Move Step Up</a></li>
+    <li><a tabindex="-1" href="#" name="Processes">Move Step Down</a></li>
+</ul>

@@ -71,14 +71,14 @@ namespace Starter.Controllers
         // POST: Projects/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("Name, Description")]Project Project)
+        public IActionResult Create([Bind("Name, Description")]Project project)
         {
             if (ModelState.IsValid)
             {
-                _context.Project.Add(Project);
+                _context.Project.Add(project);
                 _context.SaveChanges();
 
-                HttpContext.Session.SetString("Message", "Project: " + Project.Name + " successfully created");
+                HttpContext.Session.SetString("Message", "Project: " + project.Name + " successfully created");
                 return RedirectToAction("Index");
             }
 
@@ -108,20 +108,20 @@ namespace Starter.Controllers
         // POST: Projects/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Project Project)
+        public IActionResult Edit(Project project)
         {
             if (ModelState.IsValid)
             {
-                _context.Update(Project);
+                _context.Update(project);
                 _context.SaveChanges();
 
-                HttpContext.Session.SetString("Message", "Project: " + Project.Name + " successfully edited");
+                HttpContext.Session.SetString("Message", "Project: " + project.Name + " successfully edited");
 
                 return RedirectToAction("Details", new RouteValueDictionary(new
                 {
                     controller = "Projects",
                     action = "Details",
-                    ID = Project.ID
+                    ID = project.ID
                 }));
             }
 
@@ -153,11 +153,11 @@ namespace Starter.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
-            Project Project = _context.Project.Single(m => m.ID == id);
-            _context.Project.Remove(Project);
+            Project project = _context.Project.Single(m => m.ID == id);
+            _context.Project.Remove(project);
             _context.SaveChanges();
 
-            HttpContext.Session.SetString("Message", "Project: " + Project.Name + " successfully deleted");
+            HttpContext.Session.SetString("Message", "Project: " + project.Name + " successfully deleted");
             return RedirectToAction("Index");
         }
     }

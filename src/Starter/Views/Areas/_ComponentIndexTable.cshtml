@@ -1,0 +1,74 @@
+﻿@model IEnumerable<Starter.Models.Component>
+
+<div class='panel-Component'>
+    <div class='panel panel-default'>
+        <div class='panel-heading'>
+            <h3 class='panel-title'>
+                <a data-toggle='collapse' id='Toggle' href='#collapseComponents'>Components</a>
+            </h3>
+        </div>
+
+        @if (Model.Any())
+        {
+            <div id='collapseComponents' class='panel-collapse collapsed collapse in'>
+                <div class='panel-body'>
+                    <table id="3ColumnDataTable" class="table table-striped">
+                        <thead id="greyTableheader">
+                            <tr>
+                                <th>
+                                    ID
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Name)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Description)
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="RightClickTable">
+
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <p class="TableParagraph">@item.ComponentID</p>
+                                    </td>
+                                    <td>
+                                        <p class="TableParagraph">
+                                            <a asp-controller="Components" asp-action="Details" asp-route-id="@item.ComponentID" class="Actions">@item.Name</a>
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p class="TableParagraph">
+                                            @Html.DisplayFor(modelItem => item.Description)
+                                        </p>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+
+        else
+        {
+            <div id='collapseComponents' class='panel-collapse collapsed collapse in'>
+                <div class='panel-body'>
+                    <p>
+                        There are currently no Components
+                    </p>
+                </div>
+            </div>
+        }
+
+    </div>
+</div>
+
+<ul id="contextMenu" class="dropdown-menu" role="menu" style="display:none">
+    <li><a tabindex="-1" href="#" name="Components">Edit</a></li>
+    <li><a tabindex="-1" href="#" name="Components">Details</a></li>
+    <li><a tabindex="-1" href="#" name="Components">Delete</a></li>
+</ul>

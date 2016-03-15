@@ -1,0 +1,92 @@
+@model Starter.ViewModels.Platform.PlatformIndexViewModel
+
+@{
+    ViewData["Title"] = "Platforms";
+}
+
+<div>
+    <div class="headertwo">
+        <h2>Manage @ViewData["Title"]</h2>
+    </div>
+
+    @if (ViewData["Message"] != null)
+    {
+        <div>
+            <p class="message">
+                @ViewData["Message"]
+            </p>
+        </div>
+    }
+
+    <div class='panel-group'>
+        <div class='panel panel-default'>
+            <div class='panel-heading'>
+                <h3 class='panel-title'>
+                    <a data-toggle='collapse' id='Toggle' href='#collapsePlatforms'>Platforms</a>
+                </h3>
+            </div>
+            @if (Model.Platforms.Any())
+            {
+                <div id='collapsePlatforms' class='panel-collapse collapsed collapse in'>
+                    <div class='panel-body'>
+                        <table id="3ColumnDataTable" class="table table-striped">
+                            <thead id="greyTableheader">
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.NewPlatform.PlatformID)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.NewPlatform.Name)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.NewPlatform.Description)
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody id="RightClickTable">
+
+                                @foreach (var item in Model.Platforms)
+                                {
+                                    <tr>
+                                        <td>
+                                            <p class="TableParagraph">@item.PlatformID</p>
+                                        </td>
+                                        <td>
+                                            <p class="TableParagraph">
+                                                <a class="Actions" asp-controller="Platforms" asp-route-id="@item.PlatformID" asp-action="Details">@item.Name</a>
+                                            </p>
+                                        </td>
+                                        <td>
+                                            <p class="TableParagraph">
+                                                @Html.DisplayFor(modelItem => item.Description)
+                                            </p>
+                                        </td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div id='collapsePlatforms' class='panel-collapse collapsed collapse in'>
+                    <div class='panel-body'>
+                        <p>
+                            There are currently no Platforms
+                        </p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    @Html.Partial("_CreatePlatform", Model.NewPlatform)
+</div>
+
+<ul id="contextMenu" class="dropdown-menu" role="menu" style="display:none">
+    <li><a tabindex="-1" href="#" name="Platforms">Edit</a></li>
+    <li><a tabindex="-1" href="#" name="Platforms">Details</a></li>
+    <li><a tabindex="-1" href="#" name="Platforms">Delete</a></li>
+</ul>

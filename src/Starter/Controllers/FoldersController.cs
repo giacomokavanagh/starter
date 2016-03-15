@@ -172,12 +172,11 @@ namespace Starter.Controllers
 
             HttpContext.Session.SetString("Message", "Folder: " + folder.Name + " successfully deleted");
 
-            int ProjectID = folder.ProjectID;
             return RedirectToAction("Details", new RouteValueDictionary(new
             {
                 controller = "Projects",
                 action = "Details",
-                ID = ProjectID
+                ID = folder.ProjectID
             }));
         }
     }

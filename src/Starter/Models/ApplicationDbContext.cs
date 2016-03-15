@@ -45,5 +45,10 @@ namespace Starter.Models
         public DbSet<DerivedKey> DerivedKey { get; set; }
         public DbSet<Step> Step { get; set; }
         public DbSet<AvailableMethod> AvailableMethod { get; set; }
+        public DbSet<Platform> Platform { get; set; }
+        public DbSet<Area> Area { get; set; }
+        public DbSet<Component> Component { get; set; }
+        public DbSet<Process> Process { get; set; }
+        public DbSet<ProcessStep> ProcessStep { get; set; }
     }
 }

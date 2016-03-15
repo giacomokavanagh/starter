@@ -1,0 +1,34 @@
+@model Starter.Models.Area
+
+@{
+    ViewData["Title"] = "Delete Area: " + Model.Name;
+}
+
+<div>
+    <div class="headertwo">
+        <h2 class="Delete">@ViewData["Title"]</h2>
+    </div>
+    <div>
+        <h3>Are you sure you want to delete this?</h3>
+    </div>
+
+    <hr />
+
+    <div>
+        @Html.Partial("_AreaDetailsTable", Model)
+
+        <form asp-action="Delete">
+            <div class="form-actions no-color">
+                <input type="submit" value="Delete" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+
+    <hr />
+
+    <div>
+        <p>
+            <a class="Actions" asp-controller="Platforms" asp-action="Details" asp-route-id="@Model.PlatformID">Back to parent platform: @Model.Platform.Name</a>
+        </p>
+    </div>
+</div>

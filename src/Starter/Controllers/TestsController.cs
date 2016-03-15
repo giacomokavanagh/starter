@@ -322,6 +322,8 @@ namespace Starter.Controllers
             ViewData["Message"] = HttpContext.Session.GetString("Message");
             HttpContext.Session.Remove("Message");
 
+            ViewBag.AvailableMethods = new SelectList(_context.AvailableMethod, "Name", "Name");
+
             return View(step);
         }
 
@@ -518,7 +520,7 @@ namespace Starter.Controllers
         {
             if(id == null)
             {
-                return "Test ID not present";
+                return "Step ID not present";
             }
 
             IEnumerable<Step> AllStepsInTest = _context.Step.Where(t => t.TestID == id).OrderBy(t => t.Order);
@@ -686,7 +688,6 @@ namespace Starter.Controllers
         {
             Step step = _context.Step.Single(t => t.ID == id);
 
-
             if(!_context.AvailableMethod.Where(t => t.Name == value).Any())
             {
                 var messageString = "That method: " + value + " is not available";
@@ -769,6 +770,11 @@ namespace Starter.Controllers
         private bool stepIDIsNotUniqueToTest(int? id, string newStepID, string previousStepID)
         {
             if(id == null)
+            {
+                return false;
+            }
+
+            if(newStepID == previousStepID)
             {
                 return false;
             }

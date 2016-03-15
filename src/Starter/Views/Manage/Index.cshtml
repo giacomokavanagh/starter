@@ -11,31 +11,46 @@
     </div>
 
     <div>
-        @if (Model.HasPassword)
-        {
-            <p class="TableParagraph">
-                <a class="Actions" asp-controller="Manage" asp-action="ChangePassword">Change Password</a>
-            </p>
+        <div>
+            @if (Model.HasPassword)
+            {
+                <p class="TableParagraph">
+                    <a class="Actions" asp-controller="Manage" asp-action="ChangePassword">Change Password</a>
+                </p>
 
-        }
-        else
-        {
-            <p class="TableParagraph">
-                <a class="Actions" asp-controller="Manage" asp-action="SetPassword">Create Password</a>
+            }
+            else
+            {
+                <p class="TableParagraph">
+                    <a class="Actions" asp-controller="Manage" asp-action="SetPassword">Create Password</a>
+                </p>
+            }
+        </div>
+        <div>
+            <p class="Actions">
+                <a class="Actions" asp-controller="Account" asp-action="Register">Create User</a>
             </p>
-        }
-        <hr/>
-        <p class="TableParagraph">
-            <a class="Actions" asp-controller="Account" asp-action="Register">Create User</a>
-        </p>
-        <hr />
-        <p class="TableParagraph">
-            <a class="Actions" asp-controller="MasterKeys" asp-action="Index">Keys - Manage the remote machines keys</a>
-        </p>
-        <hr />
-        <p class="TableParagraph">
-            <a class="Actions" asp-controller="AvailableMethods" asp-action="Index">Available Methods - Manage the methods available for use in tests</a>
-        </p>
+        </div>
+        <div>
+            <p class="TableParagraph">
+                <a class="Actions" asp-controller="TestRunnerGroups" asp-action="Index">Test Runner Groups - for storing machine information for use when running tests</a>
+            </p>
+        </div>
+        <div>
+            <p class="TableParagraph">
+                <a class="Actions" asp-controller="MasterKeys" asp-action="Index">Keys - Manage the remote machines keys</a>
+            </p>
+        </div>
+        <div>
+            <p class="TableParagraph">
+                <a class="Actions" asp-controller="AvailableMethods" asp-action="Index">Available Methods - Manage the methods available for use in tests</a>
+            </p>
+        </div>
+        <div>
+            <p class="TableParagraph">
+                <a class="Actions" asp-controller="Home" asp-action="About">About</a>
+            </p>
+        </div>
     </div>
 </div>
 

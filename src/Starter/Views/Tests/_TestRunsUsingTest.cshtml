@@ -4,12 +4,12 @@
     <div class='panel panel-default noMargin'>
         <div class='panel-heading'>
             <h3 class='panel-title'>
-                <a data-toggle='collapse' id='Toggle' href='#collapseTestRuns'>Test Runs Using Test</a>
+                <a data-toggle='collapse' id='Toggle' href='#collapseTestRunsUsingTest'>Test Runs Using Test</a>
             </h3>
         </div>
         @if (Model.Any())
             {
-            <div id='collapseTestRuns' class='panel-collapse collapsed collapse'>
+            <div id='collapseTestRunsUsingTest' class='panel-collapse collapsed collapse'>
                 <div class='panel-body'>
                     <table id="TestRunsUsingTestDataTable" class="table table-striped">
                         <thead id="greyTableheader">
@@ -18,7 +18,7 @@
                                     @Html.DisplayNameFor(model => model.First().TestRunID)
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.First().Run.Name)
+                                    Run
                                 </th>
                             </tr>
                         </thead>
@@ -46,7 +46,7 @@
         }
         else
         {
-            <div id='collapseTestRuns' class='panel-collapse collapsed collapse in'>
+            <div id='collapseTestRunsUsingTest' class='panel-collapse collapsed collapse in'>
                 <div class='panel-body'>
                     <p>
                         There are currently no Test Runs using this test

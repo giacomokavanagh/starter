@@ -59,7 +59,7 @@
                                     </td>
                                     <td class="stepTabletd">
                                         <div class="stepTablediv">
-                                            <input class="stepTableInput methodInput" name="@item.ID" value="@item.Method" id="@methodID" />
+                                            <select id="@item.ID" asp-for="@item.Method" asp-items="@ViewBag.AvailableMethods" name="@item.ID" value="@item.Method" class="stepTableInput methodInput chosensmallstepmethod"></select>
                                             <p class="hidden">@item.Method</p>
                                         </div>
                                     </td>

@@ -1,0 +1,41 @@
+@model Starter.ViewModels.Platform.PlatformDetailsViewModel
+
+@{
+    ViewData["Title"] = "Platform: " + Model.Platform.Name;
+}
+
+<div>
+    <div class="headertwo">
+        <h2>@ViewData["Title"]</h2>
+    </div>
+
+    @if (ViewData["Message"] != null)
+    {
+        <div>
+            <p class="message">
+                @ViewData["Message"]
+            </p>
+        </div>
+    }
+
+    @Html.Partial("_PlatformDetailsTable", Model.Platform)
+
+    <hr />
+
+    @Html.Partial("_AreaIndexTable", Model.Areas)
+
+    @Html.Partial("_CreateArea", Model.NewArea)
+
+    <div>
+        <hr />
+        <p>
+            <a asp-action="Edit" asp-route-id="@Model.Platform.PlatformID" class="Actions">Edit</a>
+        </p>
+        <p>
+            <a asp-action="Delete" asp-route-id="@Model.Platform.PlatformID" class="Actions">Delete</a>
+        </p>
+        <p>
+            <a asp-action="Index" class="Actions">Back to Platforms</a>
+        </p>
+    </div>
+</div>

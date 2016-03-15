@@ -40,7 +40,7 @@
                             <div class="form-group">
                                 <label asp-for="@Model.Method" class="col-md-2 control-label"></label>
                                 <div class="col-md-10">
-                                    <textarea asp-for="@Model.Method" class="form-control textarea" rows="2" value="@Model.Method"></textarea>
+                                    <select asp-for="@Model.Method" asp-items="ViewBag.AvailableMethods" class="chosen"></select>
                                     <span asp-validation-for="@Model.Method" class="text-danger" />
                                 </div>
                             </div>

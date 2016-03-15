@@ -146,6 +146,24 @@ namespace Starter.Migrations
                     b.HasAnnotation("Relational:TableName", "AspNetUsers");
                 });
 
+            modelBuilder.Entity("Starter.Models.Area", b =>
+                {
+                    b.Property<int>("AreaID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasAnnotation("MaxLength", 5000);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasAnnotation("MaxLength", 100);
+
+                    b.Property<int>("PlatformID");
+
+                    b.HasKey("AreaID");
+                });
+
             modelBuilder.Entity("Starter.Models.AvailableMethod", b =>
                 {
                     b.Property<int>("AvailableMethodID")
@@ -162,6 +180,24 @@ namespace Starter.Migrations
                     b.Property<int?>("StoredScreenshotStoredScreenshotDetailsID");
 
                     b.HasKey("AvailableMethodID");
+                });
+
+            modelBuilder.Entity("Starter.Models.Component", b =>
+                {
+                    b.Property<int>("ComponentID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AreaID");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasAnnotation("MaxLength", 5000);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasAnnotation("MaxLength", 100);
+
+                    b.HasKey("ComponentID");
                 });
 
             modelBuilder.Entity("Starter.Models.Dependency", b =>
@@ -271,6 +307,66 @@ namespace Starter.Migrations
                     b.Property<string>("MasterKeyString");
 
                     b.HasKey("MasterKeyID");
+                });
+
+            modelBuilder.Entity("Starter.Models.Platform", b =>
+                {
+                    b.Property<int>("PlatformID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasAnnotation("MaxLength", 5000);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasAnnotation("MaxLength", 100);
+
+                    b.HasKey("PlatformID");
+                });
+
+            modelBuilder.Entity("Starter.Models.Process", b =>
+                {
+                    b.Property<int>("ProcessID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("ComponentID");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasAnnotation("MaxLength", 5000);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasAnnotation("MaxLength", 100);
+
+                    b.HasKey("ProcessID");
+                });
+
+            modelBuilder.Entity("Starter.Models.ProcessStep", b =>
+                {
+                    b.Property<int>("ProcessStepID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Attribute");
+
+                    b.Property<string>("Input");
+
+                    b.Property<string>("Method")
+                        .IsRequired();
+
+                    b.Property<int>("Order");
+
+                    b.Property<int>("ProcessID");
+
+                    b.Property<bool>("Static");
+
+                    b.Property<string>("StepID")
+                        .IsRequired();
+
+                    b.Property<string>("Value");
+
+                    b.HasKey("ProcessStepID");
                 });
 
             modelBuilder.Entity("Starter.Models.Project", b =>
@@ -659,11 +755,25 @@ namespace Starter.Migrations
                         .HasForeignKey("UserId");
                 });
 
+            modelBuilder.Entity("Starter.Models.Area", b =>
+                {
+                    b.HasOne("Starter.Models.Platform")
+                        .WithMany()
+                        .HasForeignKey("PlatformID");
+                });
+
             modelBuilder.Entity("Starter.Models.AvailableMethod", b =>
                 {
                     b.HasOne("Starter.Models.StoredScreenshotDetails")
                         .WithMany()
                         .HasForeignKey("StoredScreenshotStoredScreenshotDetailsID");
+                });
+
+            modelBuilder.Entity("Starter.Models.Component", b =>
+                {
+                    b.HasOne("Starter.Models.Area")
+                        .WithMany()
+                        .HasForeignKey("AreaID");
                 });
 
             modelBuilder.Entity("Starter.Models.Dependency", b =>
@@ -715,6 +825,20 @@ namespace Starter.Migrations
                     b.HasOne("Starter.Models.TestRunnerGroup")
                         .WithMany()
                         .HasForeignKey("TestRunnerGroupID");
+                });
+
+            modelBuilder.Entity("Starter.Models.Process", b =>
+                {
+                    b.HasOne("Starter.Models.Component")
+                        .WithMany()
+                        .HasForeignKey("ComponentID");
+                });
+
+            modelBuilder.Entity("Starter.Models.ProcessStep", b =>
+                {
+                    b.HasOne("Starter.Models.Process")
+                        .WithMany()
+                        .HasForeignKey("ProcessID");
                 });
 
             modelBuilder.Entity("Starter.Models.Project", b =>
