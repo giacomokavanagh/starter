@@ -1,0 +1,57 @@
+@model Starter.Models.Set
+
+@{
+    ViewData["Title"] = "Edit Set: " + Model.Name;
+}
+
+<div>
+    <div class="headertwo">
+        <h2>@ViewData["Title"]</h2>
+    </div>
+
+    <form asp-action="Edit">
+        <div class="form-horizontal">
+            <div asp-validation-summary="ValidationSummary.ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="SetID" />
+            <div class="form-group">
+                <label asp-for="Name" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <textarea asp-for="Description" class="form-control textarea" rows="5">Description</textarea>
+                    <span asp-validation-for="Description" class="text-danger" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="CollectionID" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <select asp-for="CollectionID" asp-items="ViewBag.Collections" class="chosen"></select>
+                    <span asp-validation-for="CollectionID" class="text-danger" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <hr />
+
+    <div>
+        <p>
+            <a class="Actions" asp-action="Details" asp-route-id="SetID">Back to Set: @Model.Name</a>
+        </p>
+        <p>
+            <a class="Actions" asp-controller="Collections" asp-action="Details" asp-route-id="@Model.CollectionID">Back to parent area: @Model.Collection.Name</a>
+        </p>
+    </div>
+
+</div>
+

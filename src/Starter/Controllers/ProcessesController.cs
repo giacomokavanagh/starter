@@ -54,7 +54,7 @@ namespace Starter.Controllers
             model.NewProcessStep = new ProcessStep();
             model.NewProcessStep.ProcessID = id.Value;
 
-            var allApplicableProcessSteps = _context.ProcessStep.Where(t => t.ProcessID == id.Value);
+            var allApplicableProcessSteps = _context.ProcessStep.Where(t => t.ProcessStepID == id.Value);
             model.ProcessSteps = allApplicableProcessSteps.OrderBy(t => t.Order).ToList();
 
             if (model.ProcessSteps.Any())
@@ -101,26 +101,6 @@ namespace Starter.Controllers
                 controller = "Processes",
                 action = "Details",
                 ID = process.ProcessID
-            }));
-        }
-
-        public IActionResult CreateProcessStep(ProcessStep processStep)
-        {
-            if (!ModelState.IsValid)
-            {
-                return HttpNotFound();
-            }
-
-            _context.ProcessStep.Add(processStep);
-            _context.SaveChanges();
-
-            HttpContext.Session.SetString("Message", "Step: " + processStep.StepID + " successfully created");
-
-            return RedirectToAction("Details", new RouteValueDictionary(new
-            {
-                controller = "Processes",
-                action = "Details",
-                ID = processStep.ProcessID
             }));
         }
 
@@ -178,6 +158,7 @@ namespace Starter.Controllers
             {
                 return HttpNotFound();
             }
+            process.Component = _context.Component.Single(t => t.ComponentID == process.ComponentID);
 
             return View(process);
         }
@@ -198,6 +179,26 @@ namespace Starter.Controllers
                 controller = "Processes",
                 action = "Details",
                 ID = process.ProcessID
+            }));
+        }
+
+        public IActionResult CreateProcessStep(ProcessStep processStep)
+        {
+            if (!ModelState.IsValid)
+            {
+                return HttpNotFound();
+            }
+
+            _context.ProcessStep.Add(processStep);
+            _context.SaveChanges();
+
+            HttpContext.Session.SetString("Message", "Step: " + processStep.StepID + " successfully created");
+
+            return RedirectToAction("Details", new RouteValueDictionary(new
+            {
+                controller = "Processes",
+                action = "Details",
+                ID = processStep.ProcessID
             }));
         }
 

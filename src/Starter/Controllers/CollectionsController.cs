@@ -8,25 +8,25 @@ using Microsoft.AspNet.Routing;
 
 namespace Starter.Controllers
 {
-    public class AreasController : Controller
+    public class CollectionsController : Controller
     {
         private ApplicationDbContext _context;
 
-        public AreasController(ApplicationDbContext context)
+        public CollectionsController(ApplicationDbContext context)
         {
             _context = context;    
         }
 
-        // GET: Areas
+        // GET: Collections
         public IActionResult Index()
         {
             ViewData["Message"] = HttpContext.Session.GetString("Message");
             HttpContext.Session.Remove("Message");
 
-            return View(_context.Area.ToList());
+            return View(_context.Collection.ToList());
         }
 
-        // GET: Areas/Details/5
+        // GET: Collections/Details/5
         public IActionResult Details(int? id)
         {
             if (id == null)
@@ -37,56 +37,57 @@ namespace Starter.Controllers
             ViewData["Message"] = HttpContext.Session.GetString("Message");
             HttpContext.Session.Remove("Message");
 
-            var model = new ViewModels.Platform.AreaDetailsViewModel();
-            model.Area = _context.Area.Single(m => m.AreaID == id);
-            if (model.Area == null)
+            var model = new ViewModels.Category.CollectionDetailsViewModel();
+            model.Collection = _context.Collection.Single(m => m.CollectionID == id);
+            if (model.Collection == null)
             {
                 return HttpNotFound();
             }
 
-            model.Area.Platform = _context.Platform.Single(t => t.PlatformID == model.Area.PlatformID);
+            model.Collection.Category = _context.Category.Single(t => t.CategoryID == model.Collection.CategoryID);
 
-            model.NewComponent = new Component();
-            model.NewComponent.AreaID = id.Value;
+            model.NewSet = new Set();
+            model.NewSet.CollectionID = id.Value;
 
-            model.Components = _context.Component.Where(t => t.AreaID == id.Value).ToList();
+            model.Sets = _context.Set.Where(t => t.CollectionID == id.Value).ToList();
+
             return View(model);
         }
 
-        // GET: Areas/Create
+        // GET: Collections/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Areas/Create
+        // POST: Collections/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Area area)
+        public IActionResult Create(Collection collection)
         {
             if (ModelState.IsValid)
             {
-                _context.Area.Add(area);
+                _context.Collection.Add(collection);
                 _context.SaveChanges();
 
-                HttpContext.Session.SetString("Message", "Area: " + area.Name + " successfully created");
+                HttpContext.Session.SetString("Message", "Collection: " + collection.Name + " successfully created");
 
                 return RedirectToAction("Details", new RouteValueDictionary(new
                 {
-                    controller = "Areas",
+                    controller = "Collections",
                     action = "Details",
-                    ID = area.AreaID
+                    ID = collection.CollectionID
                 }));
             }
             return RedirectToAction("Details", new RouteValueDictionary(new
             {
-                controller = "Areas",
+                controller = "Collections",
                 action = "Details",
-                ID = area.AreaID
+                ID = collection.CollectionID
             }));
         }
 
-        // GET: Areas/Edit/5
+        // GET: Collections/Edit/5
         public IActionResult Edit(int? id)
         {
             if (id == null)
@@ -94,38 +95,38 @@ namespace Starter.Controllers
                 return HttpNotFound();
             }
 
-            Area area = _context.Area.Single(m => m.AreaID == id);
-            if (area == null)
+            Collection collection = _context.Collection.Single(m => m.CollectionID == id);
+            if (collection == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.Platforms = new SelectList(_context.Platform, "PlatformID", "Name", area.PlatformID);
-            return View(area);
+            ViewBag.Categories = new SelectList(_context.Category, "CategoryID", "Name", collection.CategoryID);
+            return View(collection);
         }
 
-        // POST: Areas/Edit/5
+        // POST: Collections/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Area area)
+        public IActionResult Edit(Collection collection)
         {
             if (ModelState.IsValid)
             {
-                _context.Update(area);
+                _context.Update(collection);
                 _context.SaveChanges();
 
-                HttpContext.Session.SetString("Message", "Area: " + area.Name + " successfully edited");
+                HttpContext.Session.SetString("Message", "Collection: " + collection.Name + " successfully edited");
 
                 return RedirectToAction("Details", new RouteValueDictionary(new
                 {
-                    controller = "Areas",
+                    controller = "Collections",
                     action = "Details",
-                    ID = area.AreaID
+                    ID = collection.CollectionID
                 }));
             }
-            return View(area);
+            return View(collection);
         }
 
-        // GET: Areas/Delete/5
+        // GET: Collections/Delete/5
         [ActionName("Delete")]
         public IActionResult Delete(int? id)
         {
@@ -134,33 +135,32 @@ namespace Starter.Controllers
                 return HttpNotFound();
             }
 
-            Area area = _context.Area.Single(m => m.AreaID == id);
-            if (area == null)
+            Collection collection = _context.Collection.Single(m => m.CollectionID == id);
+            if (collection == null)
             {
                 return HttpNotFound();
             }
+            collection.Category = _context.Category.Single(t => t.CategoryID == collection.CategoryID);
 
-            area.Platform = _context.Platform.Single(t => t.PlatformID == area.PlatformID);
-
-            return View(area);
+            return View(collection);
         }
 
-        // POST: Areas/Delete/5
+        // POST: Collections/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
-            Area area = _context.Area.Single(m => m.AreaID == id);
-            _context.Area.Remove(area);
+            Collection collection = _context.Collection.Single(m => m.CollectionID == id);
+            _context.Collection.Remove(collection);
             _context.SaveChanges();
 
-            HttpContext.Session.SetString("Message", "Area: " + area.Name + " successfully deleted");
+            HttpContext.Session.SetString("Message", "Collection: " + collection.Name + " successfully deleted");
 
             return RedirectToAction("Details", new RouteValueDictionary(new
             {
-                controller = "Areas",
+                controller = "Collections",
                 action = "Details",
-                ID = area.AreaID
+                ID = collection.CollectionID
             }));
         }
     }

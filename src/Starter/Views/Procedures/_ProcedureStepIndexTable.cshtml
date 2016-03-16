@@ -1,0 +1,137 @@
+﻿@model IEnumerable<Starter.Models.ProcedureStep>
+
+<div class='panel-group noMargin'>
+    <div class='panel panel-default no-border noMargin'>
+        <div class='panel-heading'>
+            <h3 class='panel-title'>
+                <a data-toggle='collapse' id='Toggle' href='#collapseProcedureSteps'>Procedure Steps</a>
+            </h3>
+        </div>
+
+        @if (Model.Any())
+        {
+            <div id='collapseProcedureSteps' class='panel-collapse collapsed collapse in'>
+                <div class='panel-body'>
+                    <table id="ProcedureStepDataTable" class="table table-striped">
+                        <thead id="greyTableheader">
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.First().ProcedureStepID)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.First().StepID)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.First().Method)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.First().Attribute)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.First().Value)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.First().Input)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.First().Static)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.First().Order)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.First().ProcessStepID)
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="ProcedureStepDataRows">
+                            @foreach (var item in Model)
+                            {
+                                var stepID = "StepID" + item.ProcedureStepID;
+                                var methodID = "MethodID" + item.ProcedureStepID;
+                                var attributeID = "AttributeID" + item.ProcedureStepID;
+                                var valueID = "ValueID" + item.ProcedureStepID;
+                                var inputID = "InputID" + item.ProcedureStepID;
+                                var staticID = "StaticID" + item.ProcedureStepID;
+                                var orderID = "OrderID" + item.ProcedureStepID;
+                                var processStepID = "ProcessStepID" + item.ProcedureStepID;
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ProcedureStepID)
+                                    </td>
+                                    <td class="ProcedureStepTabletd">
+                                        <div class="ProcedureStepTablediv">
+                                            <input class="ProcedureStepTableInput ProcedureStepStepIDInput" name="@item.ProcedureStepID" value="@item.StepID" id="@stepID" />
+                                            <p class="hidden">@item.StepID</p>
+                                        </div>
+                                    </td>
+                                    <td class="ProcedureStepTabletd">
+                                        <div class="ProcedureStepTablediv">
+                                            <select id="@item.ProcedureStepID" asp-for="@item.Method" asp-items="@ViewBag.AvailableMethods" name="@item.ProcedureStepID" value="@item.Method" class="ProcedureStepTableInput methodInput chosensmallprocedurestepmethod"></select>
+                                            <p class="hidden">@item.Method</p>
+                                        </div>
+                                    </td>
+                                    <td class="ProcedureStepTabletd">
+                                        <div class="ProcedureStepTablediv">
+                                            <input class="ProcedureStepTableInput ProcedureStepAttributeInput" name="@item.ProcedureStepID" value="@item.Attribute" id="@attributeID" />
+                                            <p class="hidden">@item.Attribute</p>
+                                        </div>
+                                    </td>
+                                    <td class="ProcedureStepTabletd">
+                                        <div class="ProcedureStepTablediv">
+                                            <input class="ProcedureStepTableInput ProcedureStepValueInput" name="@item.ProcedureStepID" value="@item.Value" id="@valueID" />
+                                            <p class="hidden">@item.Value</p>
+                                        </div>
+                                    </td>
+                                    <td class="ProcedureStepTabletd">
+                                        <div class="ProcedureStepTablediv">
+                                            <input class="ProcedureStepTableInput ProcedureStepInputInput" name="@item.ProcedureStepID" value="@item.Input" id="@inputID" />
+                                            <p class="hidden">@item.Input</p>
+                                        </div>
+                                    </td>
+                                    <td class="ProcedureStepTabletd">
+                                        <div class="ProcedureStepTablediv">
+                                            <input asp-for="@item.Static" class="ProcedureStepTableInput ProcedureStepStaticInput" name="@item.ProcedureStepID" id="@staticID" />
+                                            <p class="hidden">@item.Static</p>
+                                        </div>
+                                    </td>
+                                    <td class="ProcedureStepTabletd">
+                                        <div class="ProcedureStepTablediv">
+                                            <input class="ProcedureStepTableInput ProcedureStepOrderInput" name="@item.ProcedureID" value="@item.Order" id="@orderID" />
+                                            <p class="hidden">@item.Order</p>
+                                        </div>
+                                    </td>
+                                    <td class="ProcedureStepTabletd">
+                                        <div class="ProcedureStepTablediv">
+                                            <input class="ProcedureStepTableInput ProcedureStepOrderInput" name="@item.ProcedureID" value="@item.Order" id="@processStepID" />
+                                            <p class="hidden">@item.ProcessStepID</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+
+        else
+        {
+            <div id='collapseProcedureSteps' class='panel-collapse collapsed collapse in'>
+                <div class='panel-body'>
+                    <p>
+                        There are currently no Procedure Steps
+                    </p>
+                </div>
+            </div>
+        }
+
+    </div>
+</div>
+
+<ul id="contextMenu" class="dropdown-menu" role="menu" style="display:none">
+    <li><a tabindex="-1" href="#" name="Procedures">Edit Step</a></li>
+    <li><a tabindex="-1" href="#" name="Procedures">Delete Step</a></li>
+    <li><a tabindex="-1" href="#" name="Procedures">Move Step Up</a></li>
+    <li><a tabindex="-1" href="#" name="Procedures">Move Step Down</a></li>
+</ul>

@@ -1,0 +1,41 @@
+@model Starter.ViewModels.Category.CategoryDetailsViewModel
+
+@{
+    ViewData["Title"] = "Category: " + Model.Category.Name;
+}
+
+<div>
+    <div class="headertwo">
+        <h2>@ViewData["Title"]</h2>
+    </div>
+
+    @if (ViewData["Message"] != null)
+    {
+        <div>
+            <p class="message">
+                @ViewData["Message"]
+            </p>
+        </div>
+    }
+
+    @Html.Partial("_CategoryDetailsTable", Model.Category)
+
+    <hr />
+
+    @Html.Partial("_CollectionIndexTable", Model.Collections)
+
+    @Html.Partial("_CreateCollection", Model.NewCollection)
+
+    <div>
+        <hr />
+        <p>
+            <a asp-action="Edit" asp-route-id="@Model.Category.CategoryID" class="Actions">Edit</a>
+        </p>
+        <p>
+            <a asp-action="Delete" asp-route-id="@Model.Category.CategoryID" class="Actions">Delete</a>
+        </p>
+        <p>
+            <a asp-action="Index" class="Actions">Back to Categories</a>
+        </p>
+    </div>
+</div>

@@ -1,0 +1,92 @@
+@model Starter.ViewModels.Category.CategoryIndexViewModel
+
+@{
+    ViewData["Title"] = "Categories";
+}
+
+<div>
+    <div class="headertwo">
+        <h2>Manage @ViewData["Title"]</h2>
+    </div>
+
+    @if (ViewData["Message"] != null)
+    {
+        <div>
+            <p class="message">
+                @ViewData["Message"]
+            </p>
+        </div>
+    }
+
+    <div class='panel-group'>
+        <div class='panel panel-default'>
+            <div class='panel-heading'>
+                <h3 class='panel-title'>
+                    <a data-toggle='collapse' id='Toggle' href='#collapseCategories'>Categories</a>
+                </h3>
+            </div>
+            @if (Model.Categories.Any())
+            {
+                <div id='collapseCategories' class='panel-collapse collapsed collapse in'>
+                    <div class='panel-body'>
+                        <table id="3ColumnDataTable" class="table table-striped">
+                            <thead id="greyTableheader">
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.NewCategory.CategoryID)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.NewCategory.Name)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.NewCategory.Description)
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody id="RightClickTable">
+
+                                @foreach (var item in Model.Categories)
+                                {
+                                    <tr>
+                                        <td>
+                                            <p class="TableParagraph">@item.CategoryID</p>
+                                        </td>
+                                        <td>
+                                            <p class="TableParagraph">
+                                                <a class="Actions" asp-controller="Categories" asp-route-id="@item.CategoryID" asp-action="Details">@item.Name</a>
+                                            </p>
+                                        </td>
+                                        <td>
+                                            <p class="TableParagraph">
+                                                @Html.DisplayFor(modelItem => item.Description)
+                                            </p>
+                                        </td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div id='collapseCategories' class='panel-collapse collapsed collapse in'>
+                    <div class='panel-body'>
+                        <p>
+                            There are currently no Categories
+                        </p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    @Html.Partial("_CreateCategory", Model.NewCategory)
+</div>
+
+<ul id="contextMenu" class="dropdown-menu" role="menu" style="display:none">
+    <li><a tabindex="-1" href="#" name="Categories">Edit</a></li>
+    <li><a tabindex="-1" href="#" name="Categories">Details</a></li>
+    <li><a tabindex="-1" href="#" name="Categories">Delete</a></li>
+</ul>

@@ -84,6 +84,26 @@ function PostProcessStepMethodToModel(e) {
 
 $(document).ready(function () {
 
+    $(".chosensmallprocedurestepmethod").chosen({
+        width: "100%"
+    }).change(PostProcedureStepMethodToModel);
+});
+
+function PostProcedureStepMethodToModel(e) {
+    var id = parseInt(this.id);
+    var value = this.value;
+    $.ajax({
+        url: '/Procedures/SetMethod',
+        type: 'POST',
+        data: {
+            'id': id,
+            'value': value
+        },
+    })
+};
+
+$(document).ready(function () {
+
     $(".chosensingledeselect").chosen({
         allow_single_deselect: true,
         width: "100%"
@@ -303,6 +323,29 @@ $(document).ready(function () {
 });
 
 $(document).ready(function () {
+    $('#ProcedureStepDataTable').dataTable({
+        "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+        "pageLength": -1,
+        dom: 'lBfrtip',
+        buttons: [
+            'colvis', 'copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+        "columns": [
+            { "width": "5%" },
+            { "width": "10%" },
+            { "width": "12%" },
+            { "width": "10%" },
+            { "width": "10%" },
+            { "width": "17%" },
+            { "width": "7%" },
+            { "width": "7%" },
+            { "width": "7%" }
+        ],
+        "order": [[6, "asc"]],
+    });
+});
+
+$(document).ready(function () {
     $("#TestRunDataRows").contextMenu({
         menuSelector: "#contextMenu",
         menuSelected: function (invokedOn, selectedMenu) {
@@ -383,6 +426,37 @@ $(document).ready(function () {
             }
             else if (this.text == "Delete Step") {
                 window.location.href = "/Processes/DeleteStep/" +
+                RowNode.firstElementChild.innerText;
+            }
+            else {
+                //There are no other options at the moment
+            }
+        }
+    });
+});
+
+$(document).ready(function () {
+    $("#ProcedureStepDataRows").contextMenu({
+        menuSelector: "#contextMenu",
+        menuSelected: function (invokedOn, selectedMenu) {
+            RowNode = invokedOn.context.parentNode;
+            while (RowNode.tagName != "TR") {
+                RowNode = RowNode.parentNode;
+            }
+            if (this.text == "Edit Step") {
+                window.location.href = "/Procedures/EditStep/" +
+                RowNode.firstElementChild.innerText;
+            }
+            else if (this.text == "Move Step Up") {
+                window.location.href = "/Procedures/MoveStepUp/" +
+                RowNode.firstElementChild.innerText;
+            }
+            else if (this.text == "Move Step Down") {
+                window.location.href = "/Procedures/MoveStepDown/" +
+                RowNode.firstElementChild.innerText;
+            }
+            else if (this.text == "Delete Step") {
+                window.location.href = "/Procedures/DeleteStep/" +
                 RowNode.firstElementChild.innerText;
             }
             else {
@@ -754,6 +828,85 @@ $(document).ready(function () {
     });
 });
 
+$(document).ready(function () {
+    $(".ProcedureStepAttributeInput").change(function () {
+
+        var id = parseInt(this.getAttribute("name"));
+        var value = this.value;
+        $.ajax({
+            url: '/Procedure/SetAttribute',
+            type: 'POST',
+            data: {
+                'id': id,
+                'value': value
+            },
+        })
+    });
+});
+
+$(document).ready(function () {
+    $(".ProcedureStepValueInput").change(function () {
+
+        var id = parseInt(this.getAttribute("name"));
+        var value = this.value;
+        $.ajax({
+            url: '/Procedures/SetValue',
+            type: 'POST',
+            data: {
+                'id': id,
+                'value': value
+            },
+        })
+    });
+});
+
+$(document).ready(function () {
+    $(".ProcedureStepInputInput").change(function () {
+
+        var id = parseInt(this.getAttribute("name"));
+        var value = this.value;
+        $.ajax({
+            url: '/Procedures/SetInput',
+            type: 'POST',
+            data: {
+                'id': id,
+                'value': value
+            },
+        })
+    });
+});
+
+$(document).ready(function () {
+    $(".ProcedureStepStaticInput").change(function () {
+
+        var id = this.getAttribute("id");
+        var value = this.checked;
+        $.ajax({
+            url: '/Procedures/SetStatic',
+            type: 'POST',
+            data: {
+                'id': id,
+                'value': value
+            },
+        })
+    });
+});
+
+$(document).ready(function () {
+    $(".ProcedureStepOrderInput").change(function () {
+
+        var id = parseInt(this.getAttribute("name"));
+        var value = parseInt(this.value);
+        $.ajax({
+            url: '/Procedures/SetOrder',
+            type: 'POST',
+            data: {
+                'id': id,
+                'value': value
+            },
+        })
+    });
+});
 
 $(document).ready(function () {
 

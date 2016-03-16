@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace Starter.Models
 {
-    public class Process
+    public class Procedure
     {
-        [Display(Name = "Process ID")]
-        public int ProcessID { get; set; }
+        [Display(Name = "Procedure ID")]
+        public int ProcedureID { get; set; }
 
         [StringLength(100, MinimumLength = 1), Required]
         public string Name { get; set; }
@@ -19,10 +19,10 @@ namespace Starter.Models
         public string Description { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int ComponentID { get; set; }
-        [ForeignKey("ComponentID")]
-        public virtual Component Component { get; set; }
+        public int SetID { get; set; }
+        [ForeignKey("SetID")]
+        public virtual Set Set { get; set; }
 
-        public virtual ICollection<ProcedureStep> ProcessSteps { get; set; }
+        public virtual ICollection<ProcedureStep> ProcedureStep { get; set; }
     }
 }

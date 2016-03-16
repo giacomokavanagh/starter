@@ -50,5 +50,11 @@ namespace Starter.Models
         public DbSet<Component> Component { get; set; }
         public DbSet<Process> Process { get; set; }
         public DbSet<ProcessStep> ProcessStep { get; set; }
+        public DbSet<Category> Category { get; set; }
+        public DbSet<Collection> Collection { get; set; }
+        public DbSet<Set> Set { get; set; }
+        public DbSet<Procedure> Procedure { get; set; }
+        public DbSet<ProcedureStep> ProcedureStep { get; set; }
+        
     }
 }

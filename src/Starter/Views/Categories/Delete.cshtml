@@ -1,7 +1,7 @@
-@model Starter.Models.Process
+@model Starter.Models.Category
 
 @{
-    ViewData["Title"] = "Delete Process: " + Model.Name;
+    ViewData["Title"] = "Delete Category: " + Model.Name;
 }
 
 <div>
@@ -15,8 +15,7 @@
     <hr />
 
     <div>
-        @Html.Partial("_ProcessDetailsTable", Model)
-
+        @Html.Partial("_CategoryDetailsTable")
         <form asp-action="Delete">
             <div class="form-actions no-color">
                 <input type="submit" value="Delete" class="btn btn-default" />
@@ -27,8 +26,8 @@
     <hr />
 
     <div>
-        <p>
-            <a class="Actions" asp-controller="Components" asp-action="Details" asp-route-id="@Model.ComponentID">Back to parent Component: @Model.Component.Name</a>
+        <p class="Actions">
+            <a asp-action="Index" class="Actions">Back to Categories</a>
         </p>
     </div>
 </div>

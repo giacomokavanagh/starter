@@ -51,14 +51,15 @@ div#ResultsDataTable_wrapper {
 }
 
 div#StepDataTable_wrapper, div#AvailableMethodsDataTable_wrapper, div#StepsUsingMethodDataTable_wrapper, 
-    div#ResultsUsingMethodDataTable_wrapper, div#TestRunsUsingTestDataTable_wrapper, div#ProcessStepDataTable_wrapper {
+    div#ResultsUsingMethodDataTable_wrapper, div#TestRunsUsingTestDataTable_wrapper, div#ProcessStepDataTable_wrapper,
+    div#ProcedureStepDataTable_wrapper {
     margin-left: 0px;
     margin-right: 0px;
 }
 
 table#TestRunDataTable, table#ResultsDataTable, table#StepDataTable, table#AvailableMethodsDataTable, 
     table#StepsUsingMethodDataTable, table#ResultsUsingMethodDataTable, table#TestRunsUsingTestDataTable,
-    table#ProcessStepDataTable {
+    table#ProcessStepDataTable, table#ProcedureStepDataTable {
     width: 160%;
     margin-left: 0px;
     margin-right: 0px;
@@ -66,7 +67,7 @@ table#TestRunDataTable, table#ResultsDataTable, table#StepDataTable, table#Avail
 
 table#TestRunDataTable td, table#ResultsDataTable td, table#StepDataTable td, table#AvailableMethodsDataTable td,
     table#StepsUsingMethodDataTable td, table#ResultsUsingMethodDataTable td, table#TestRunsUsingTestDataTable td,
-    table#ProcessStepDataTable td {
+    table#ProcessStepDataTable td, table#ProcedureStepDataTable td {
     padding-bottom: 1px;
     padding-top: 1px;
     font-size: 10px;
@@ -74,7 +75,7 @@ table#TestRunDataTable td, table#ResultsDataTable td, table#StepDataTable td, ta
 
 table#TestRunDataTable div, table#ResultsDataTable div, table#StepDataTable div, table#AvailableMethodsDataTable div,
     table#StepsUsingMethodDataTable div, table#ResultsUsingMethodDataTable div, table#TestRunsUsingTestDataTable div,
-    table#ProcessStepDataTable div {
+    table#ProcessStepDataTable div, table#ProcedureStepDataTable div {
     margin-left: 0px;
     margin-right: 0px;
 }
@@ -82,7 +83,7 @@ table#TestRunDataTable div, table#ResultsDataTable div, table#StepDataTable div,
 table#TestRunDataTable td.datetimepickertd, table#TestRunDataTable td.Retriestd, table#StepDataTable td.stepTabletd, 
     table#AvailableMethodsDataTable td.AvailableMethodtd, table#StepsUsingMethodDataTable td.AvailableMethodtd,
     table#ResultsUsingMethodDataTable td.AvailableMethodtd, table#TestRunsUsingTestDataTable td.AvailableMethodtd,
-    table#ProcessStepDataTable td.ProcessStepTabletd {
+    table#ProcessStepDataTable td.ProcessStepTabletd, table#ProcedureStepDataTable td.ProcedureStepTabletd {
     padding:0px;
 }
 
@@ -95,7 +96,8 @@ table.ExceptionTable, tr.ExceptionDetails, td.ExceptionType, td.ExceptionMessage
     border: 1px solid black;
 }
 
-div.input-group date, div.datetimepickerdiv, div.Retriesdiv, div.datepicker, div.datepicker.days, div.stepTablediv, div.ProcessStepTablediv {
+div.input-group date, div.datetimepickerdiv, div.Retriesdiv, div.datepicker, div.datepicker.days, div.stepTablediv,
+    div.ProcessStepTablediv, div.ProcedureStepTablediv {
     margin: 0px;
     padding: 0px;
     width: 100%;
@@ -143,7 +145,7 @@ input.Retriesinput {
     border: none;
 }
 
-input.stepTableInput, input.ProcessStepTableInput {
+input.stepTableInput, input.ProcessStepTableInput, input.ProcedureStepTableInput {
     text-align: left;
     font-size: 11px;
     padding: 2px;
@@ -845,7 +847,8 @@ div.dependencygroupselectdiv{
     margin: 0px;
 }
 
-td#dependencygrouptd div.chosen-container-single, div.stepTablediv div.chosen-container-single, div.ProcessStepTablediv div.chosen-container-single {
+td#dependencygrouptd div.chosen-container-single, div.stepTablediv div.chosen-container-single, 
+    div.ProcessStepTablediv div.chosen-container-single, div.ProcedureStepTablediv div.chosen-container-single {
     padding: 0px;
     margin: 0px;
     width: 100%;
@@ -857,7 +860,7 @@ td#dependencygrouptd a.chosen-single {
     margin: 2px;
 }
 
-div.stepTablediv a.chosen-single, div.ProcessStepTablediv a.chosen-single {
+div.stepTablediv a.chosen-single, div.ProcessStepTablediv a.chosen-single, div.ProcedureStepTablediv a.chosen-single {
     line-height: 18px;
     height: 18px;
     margin: 1px;

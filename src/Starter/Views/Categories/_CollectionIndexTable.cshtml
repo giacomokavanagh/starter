@@ -1,16 +1,15 @@
-﻿@model IEnumerable<Starter.Models.Process>
+﻿@model IEnumerable<Starter.Models.Collection>
 
-<div class='panel-Process'>
+<div class='panel-group'>
     <div class='panel panel-default'>
         <div class='panel-heading'>
             <h3 class='panel-title'>
-                <a data-toggle='collapse' id='Toggle' href='#collapseProcesses'>Processes</a>
+                <a data-toggle='collapse' id='Toggle' href='#collapseCollections'>Collections</a>
             </h3>
         </div>
-
         @if (Model.Any())
         {
-            <div id='collapseProcesses' class='panel-collapse collapsed collapse in'>
+            <div id='collapseCollections' class='panel-collapse collapsed collapse in'>
                 <div class='panel-body'>
                     <table id="3ColumnDataTable" class="table table-striped">
                         <thead id="greyTableheader">
@@ -26,18 +25,17 @@
                                 </th>
                             </tr>
                         </thead>
-
                         <tbody id="RightClickTable">
 
                             @foreach (var item in Model)
                             {
                                 <tr>
                                     <td>
-                                        <p class="TableParagraph">@item.ProcessID</p>
+                                        <p class="TableParagraph">@item.CollectionID</p>
                                     </td>
                                     <td>
                                         <p class="TableParagraph">
-                                            <a asp-controller="Processes" asp-action="Details" asp-route-id="@item.ProcessID" class="Actions">@item.Name</a>
+                                            <a asp-controller="Collections" asp-action="Details" asp-route-id="@item.CollectionID" class="Actions">@item.Name</a>
                                         </p>
                                     </td>
                                     <td>
@@ -47,6 +45,7 @@
                                     </td>
                                 </tr>
                             }
+
                         </tbody>
                     </table>
                 </div>
@@ -55,10 +54,10 @@
 
         else
         {
-            <div id='collapseProcesses' class='panel-collapse collapsed collapse in'>
+            <div id='collapseCollections' class='panel-collapse collapsed collapse in'>
                 <div class='panel-body'>
                     <p>
-                        There are currently no Processes
+                        There are currently no Collections
                     </p>
                 </div>
             </div>
@@ -68,7 +67,7 @@
 </div>
 
 <ul id="contextMenu" class="dropdown-menu" role="menu" style="display:none">
-    <li><a tabindex="-1" href="#" name="Processes">Edit</a></li>
-    <li><a tabindex="-1" href="#" name="Processes">Details</a></li>
-    <li><a tabindex="-1" href="#" name="Processes">Delete</a></li>
+    <li><a tabindex="-1" href="#" name="Collections">Edit</a></li>
+    <li><a tabindex="-1" href="#" name="Collections">Details</a></li>
+    <li><a tabindex="-1" href="#" name="Collections">Delete</a></li>
 </ul>

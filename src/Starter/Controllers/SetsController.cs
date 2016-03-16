@@ -8,16 +8,16 @@ using Microsoft.AspNet.Routing;
 
 namespace Starter.Controllers
 {
-    public class ComponentsController : Controller
+    public class SetsController : Controller
     {
         private ApplicationDbContext _context;
 
-        public ComponentsController(ApplicationDbContext context)
+        public SetsController(ApplicationDbContext context)
         {
-            _context = context;
+            _context = context;    
         }
 
-        // GET: Components
+        // GET: Sets
         public IActionResult Index()
         {
             ViewData["Message"] = HttpContext.Session.GetString("Message");
@@ -26,7 +26,7 @@ namespace Starter.Controllers
             return View(_context.Component.ToList());
         }
 
-        // GET: Components/Details/5
+        // GET: Sets/Details/5
         public IActionResult Details(int? id)
         {
             if (id == null)
@@ -37,58 +37,59 @@ namespace Starter.Controllers
             ViewData["Message"] = HttpContext.Session.GetString("Message");
             HttpContext.Session.Remove("Message");
 
-            var model = new ViewModels.Platform.ComponentDetailsViewModel();
-            model.Component = _context.Component.Single(t => t.ComponentID == id);
-            if (model.Component == null)
+            var model = new ViewModels.Category.SetDetailsViewModel();
+            model.Set = _context.Set.Single(t => t.SetID == id);
+            if (model.Set == null)
             {
                 return HttpNotFound();
             }
 
-            model.Component.Area = _context.Area.Single(m => m.AreaID == model.Component.AreaID);
-            model.Component.Area.Platform = _context.Platform.Single(t => t.PlatformID == 
-                model.Component.Area.PlatformID);
+            model.Set.Collection = _context.Collection.Single(m => m.CollectionID == model.Set.CollectionID);
+            model.Set.Collection.Category = _context.Category.Single(t => t.CategoryID ==
+                model.Set.Collection.CategoryID);
 
-            model.NewProcess = new Process();
-            model.NewProcess.ComponentID = id.Value;
+            model.NewProcedure = new Procedure();
+            model.NewProcedure.SetID = id.Value;
 
-            model.Processes = _context.Process.Where(t => t.ComponentID == id.Value).ToList();
+            model.Procedures = _context.Procedure.Where(t => t.ProcedureID == id.Value).ToList();
+
             return View(model);
         }
 
-        // GET: Components/Create
+        // GET: Sets/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Components/Create
+        // POST: Sets/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Component component)
+        public IActionResult Create(Set set)
         {
             if (ModelState.IsValid)
             {
-                _context.Component.Add(component);
+                _context.Set.Add(set);
                 _context.SaveChanges();
 
-                HttpContext.Session.SetString("Message", "Component: " + component.Name + " successfully created");
+                HttpContext.Session.SetString("Message", "Set: " + set.Name + " successfully created");
 
                 return RedirectToAction("Details", new RouteValueDictionary(new
                 {
-                    controller = "Components",
+                    controller = "Sets",
                     action = "Details",
-                    ID = component.ComponentID
+                    ID = set.SetID
                 }));
             }
             return RedirectToAction("Details", new RouteValueDictionary(new
             {
-                controller = "Components",
+                controller = "Sets",
                 action = "Details",
-                ID = component.ComponentID
+                ID = set.SetID
             }));
         }
 
-        // GET: Components/Edit/5
+        // GET: Sets/Edit/5
         public IActionResult Edit(int? id)
         {
             if (id == null)
@@ -96,38 +97,38 @@ namespace Starter.Controllers
                 return HttpNotFound();
             }
 
-            Component component = _context.Component.Single(m => m.ComponentID == id);
-            if (component == null)
+            Set set = _context.Set.Single(m => m.SetID == id);
+            if (set == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.Areas = new SelectList(_context.Area, "AreaID", "Name", component.AreaID);
-            return View(component);
+            ViewBag.Collections = new SelectList(_context.Collection, "CollectionID", "Name", set.CollectionID);
+            return View(set);
         }
 
-        // POST: Components/Edit/5
+        // POST: Sets/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Component component)
+        public IActionResult Edit(Set set)
         {
             if (ModelState.IsValid)
             {
-                _context.Update(component);
+                _context.Update(set);
                 _context.SaveChanges();
 
-                HttpContext.Session.SetString("Message", "Component: " + component.Name + " successfully edited");
+                HttpContext.Session.SetString("Message", "Set: " + set.Name + " successfully edited");
 
                 return RedirectToAction("Details", new RouteValueDictionary(new
                 {
                     controller = "Components",
                     action = "Details",
-                    ID = component.ComponentID
+                    ID = set.SetID
                 }));
             }
-            return View(component);
+            return View(set);
         }
 
-        // GET: Components/Delete/5
+        // GET: Sets/Delete/5
         [ActionName("Delete")]
         public IActionResult Delete(int? id)
         {
@@ -136,32 +137,31 @@ namespace Starter.Controllers
                 return HttpNotFound();
             }
 
-            Component component = _context.Component.Single(m => m.ComponentID == id);
-            if (component == null)
+            Set set = _context.Set.Single(m => m.SetID == id);
+            if (set == null)
             {
                 return HttpNotFound();
             }
-            component.Area = _context.Area.Single(t => t.AreaID == component.AreaID);
 
-            return View(component);
+            return View(set);
         }
 
-        // POST: Components/Delete/5
+        // POST: Sets/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
-            Component component = _context.Component.Single(m => m.ComponentID == id);
-            _context.Component.Remove(component);
+            Set set = _context.Set.Single(m => m.SetID == id);
+            _context.Set.Remove(set);
             _context.SaveChanges();
 
-            HttpContext.Session.SetString("Message", "Component: " + component.Name + " successfully deleted");
+            HttpContext.Session.SetString("Message", "Set: " + set.Name + " successfully deleted");
 
             return RedirectToAction("Details", new RouteValueDictionary(new
             {
-                controller = "Components",
+                controller = "Sets",
                 action = "Details",
-                ID = component.ComponentID
+                ID = set.SetID
             }));
         }
     }

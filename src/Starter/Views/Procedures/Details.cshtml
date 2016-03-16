@@ -1,0 +1,51 @@
+@model Starter.ViewModels.Category.ProcedureDetailsViewModel
+
+@{
+    ViewData["Title"] = "Procedure: " + Model.Procedure.Name;
+}
+
+<div>
+    <div class="headertwo">
+        <h2>@ViewData["Title"]</h2>
+    </div>
+
+    @if (ViewData["Message"] != null)
+    {
+        <div>
+            <p class="message">
+                @ViewData["Message"]
+            </p>
+        </div>
+    }
+
+    @Html.Partial("_ProcedureDetailsTable", Model.Procedure)
+
+</div>
+
+@Html.Partial("_ProcedureStepIndexTable", Model.ProcedureSteps)
+
+@Html.Partial("_CreateProcedureStep", Model.NewProcedureStep)
+
+<div>
+    <div>
+        <hr />
+        <p>
+            <a class="Actions" asp-action="Edit" asp-route-id="@Model.Procedure.ProcedureID">Edit</a>
+        </p>
+        <p>
+            <a class="Actions" asp-action="Delete" asp-route-id="@Model.Procedure.ProcedureID">Delete</a>
+        </p>
+        <p>
+            <a class="Actions" asp-controller="Sets" asp-action="Details" asp-route-id="@Model.Procedure.SetID">Back to Set: @Model.Procedure.Set.Name</a>
+        </p>
+        <p>
+            <a class="Actions" asp-controller="Collections" asp-action="Details" asp-route-id="@Model.Procedure.Set.CollectionID">Back to Collection: @Model.Procedure.Set.Collection.Name</a>
+        </p>
+        <p>
+            <a class="Actions" asp-controller="Categories" asp-action="Details" asp-route-id="@Model.Procedure.Set.Collection.CategoryID">Back to Category: @Model.Procedure.Set.Collection.Category.Name</a>
+        </p>
+        <p>
+            <a class="Actions" asp-controller="Categories" asp-action="Index">Back to Categories</a>
+        </p>
+    </div>
+</div>
