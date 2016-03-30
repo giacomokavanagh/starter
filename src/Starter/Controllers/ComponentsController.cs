@@ -38,7 +38,15 @@ namespace Starter.Controllers
             HttpContext.Session.Remove("Message");
 
             var model = new ViewModels.Platform.ComponentDetailsViewModel();
-            model.Component = _context.Component.Single(t => t.ComponentID == id);
+            try
+            {
+                model.Component = _context.Component.Single(t => t.ComponentID == id);
+            }
+            catch
+            {
+                return HttpNotFound();
+            }
+            
             if (model.Component == null)
             {
                 return HttpNotFound();

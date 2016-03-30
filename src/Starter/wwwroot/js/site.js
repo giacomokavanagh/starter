@@ -13,6 +13,34 @@ function toggleExcelSpecificFields() {
 }
 
 $(document).ready(function () {
+    $("#AtEndOfProcedure").change(function () {
+        var c = this.checked;
+        if (c) {
+            $("#SelectStepForImportProcess").hide();
+            $("#AtStartOfProcedureForImportProcess").hide();
+        }
+        else {
+            $("#SelectStepForImportProcess").show();
+            $("#AtStartOfProcedureForImportProcess").show();
+        }
+    });
+});
+
+$(document).ready(function () {
+    $("#AtStartOfProcedure").change(function () {
+        var c = this.checked;
+        if (c) {
+            $("#SelectStepForImportProcess").hide();
+            $("#AtEndOfProcedureForImportProcess").hide();
+        }
+        else {
+            $("#SelectStepForImportProcess").show();
+            $("#AtEndOfProcedureForImportProcess").show();
+        }
+    });
+});
+
+$(document).ready(function () {
 
     $(".chosen").chosen({
         width: "90%"
@@ -196,9 +224,9 @@ $(document).ready(function () {
     $('#4ColumnDataTable').dataTable({
         "columns": [
             { "width": "8%" },
-            { "width": "30%" },
-            { "width": "52%" },
-            { "width": "30%" }
+            { "width": "20%" },
+            { "width": "50%" },
+            { "width": "22%" }
         ]
     });
 });
@@ -318,7 +346,7 @@ $(document).ready(function () {
             { "width": "7%" },
             { "width": "7%" }
         ],
-        "order": [[6, "asc"]],
+        "order": [[7, "asc"]],
     });
 });
 
@@ -341,7 +369,25 @@ $(document).ready(function () {
             { "width": "7%" },
             { "width": "7%" }
         ],
-        "order": [[6, "asc"]],
+        "order": [[7, "asc"]],
+    });
+});
+
+$(document).ready(function () {
+    $('#TestCaseDataTable').dataTable({
+        "lengthMenu": [[10, 25, 50, 100, 250, 500 -1], [10, 25, 50, 100, 250, 500, "All"]],
+        "pageLength": -1,
+        dom: 'lBfrtip',
+        buttons: [
+            'colvis', 'copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+        "order": [[0, "asc"]],
+        "columnDefs": [
+            {
+                "targets": [ 0 ],
+                "visible": false,
+            },
+        ],
     });
 });
 
@@ -459,6 +505,14 @@ $(document).ready(function () {
                 window.location.href = "/Procedures/DeleteStep/" +
                 RowNode.firstElementChild.innerText;
             }
+            else if (this.text == "Update Step From Process") {
+                window.location.href = "/Procedures/UpdateStepFromProcess/" +
+                RowNode.firstElementChild.innerText;
+            }
+            else if (this.text == "Go To Process") {
+                window.location.href = "/Procedures/GoToProcessFromProcedureStep/" +
+                RowNode.firstElementChild.innerText;
+            }
             else {
                 //There are no other options at the moment
             }
@@ -478,6 +532,41 @@ $(document).ready(function () {
             if (this.text == "Delete Derived Key") {
                 window.location.href = "/MasterKeys/DeleteDerivedKey/" +
                 RowNode.firstElementChild.innerText;
+            }
+            else {
+                //There are no other options at the moment
+            }
+        }
+    });
+});
+
+$(document).ready(function () {
+    $("#ProcessesInProcedureDataRows").contextMenu({
+        menuSelector: "#contextMenu2",
+        menuSelected: function (invokedOn, selectedMenu) {
+            RowNode = invokedOn.context.parentNode;
+            while (RowNode.tagName != "TR") {
+                RowNode = RowNode.parentNode;
+            }
+            if (this.text == "Delete Process In Procedure") {
+                window.location.href = "/Procedures/DeleteProcessFromProcedure/" +
+                RowNode.firstElementChild.innerText;
+            }
+            else if (this.text == "Update Procedure From Process") {
+                window.location.href = "/Procedures/UpdateProcedureFromProcess/?id=" +
+                RowNode.firstElementChild.innerText + "&redirect=Process";
+            }
+            else if (this.text == "Update Process In Procedure") {
+                window.location.href = "/Procedures/UpdateProcedureFromProcess/?id=" +
+                RowNode.firstElementChild.innerText + "&redirect=Procedure";
+            }
+            else if (this.text == "Disassociate Process From Procedure") {
+                window.location.href = "/Procedures/DisassociateProcedureFromProcess/?id=" +
+                RowNode.firstElementChild.innerText + "&redirect=Procedure";
+            }
+            else if (this.text == "Disassociate Procedure In Process") {
+                window.location.href = "/Procedures/DisassociateProcedureFromProcess/?id=" +
+                RowNode.firstElementChild.innerText + "&redirect=Process";
             }
             else {
                 //There are no other options at the moment
@@ -829,12 +918,28 @@ $(document).ready(function () {
 });
 
 $(document).ready(function () {
+    $(".ProcedureStepStepIDInput").change(function () {
+
+        var id = parseInt(this.getAttribute("name"));
+        var value = this.value;
+        $.ajax({
+            url: '/Procedures/SetStepID',
+            type: 'POST',
+            data: {
+                'id': id,
+                'value': value
+            },
+        })
+    });
+});
+
+$(document).ready(function () {
     $(".ProcedureStepAttributeInput").change(function () {
 
         var id = parseInt(this.getAttribute("name"));
         var value = this.value;
         $.ajax({
-            url: '/Procedure/SetAttribute',
+            url: '/Procedures/SetAttribute',
             type: 'POST',
             data: {
                 'id': id,
@@ -926,3 +1031,19 @@ function PostTestRunnerToModel(e) {
         },
     })
 };
+
+$(document).ready(function () {
+    $(".TestCaseDataInput").change(function () {
+
+        var id = parseInt(this.getAttribute("name"));
+        var value = this.value;
+        $.ajax({
+            url: '/TestCases/SetData',
+            type: 'POST',
+            data: {
+                'id': id,
+                'value': value
+            },
+        })
+    });
+});

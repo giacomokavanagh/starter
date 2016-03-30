@@ -46,10 +46,7 @@
 
     <div>
         <p>
-            <a class="Actions" asp-action="Details" asp-route-id="SetID">Back to Set: @Model.Name</a>
-        </p>
-        <p>
-            <a class="Actions" asp-controller="Collections" asp-action="Details" asp-route-id="@Model.CollectionID">Back to parent area: @Model.Collection.Name</a>
+            <a class="Actions" asp-action="Details" asp-route-id="@Model.SetID">Back to Set: @Model.Name</a>
         </p>
     </div>
 

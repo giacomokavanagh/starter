@@ -30,5 +30,9 @@ namespace Starter.Models
 
         public int? ProcessStepID { get; set; }
         public virtual ProcessStep ProcessStep { get; set; }
+
+        public bool? MatchesProcessStep { get; set; }
+
+        public virtual ICollection<TestCaseStep> TestCaseSteps { get; set; }
     }
 }

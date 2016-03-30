@@ -17,7 +17,7 @@ namespace Starter.Models
         [MaxLength(5000), Required]
         public string Description { get; set; }
 
-        public virtual ICollection<Set> Set { get; set; }
+        public virtual ICollection<Set> Sets { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int CategoryID { get; set; }

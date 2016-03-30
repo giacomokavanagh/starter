@@ -1,0 +1,82 @@
+﻿@model IEnumerable<Starter.Models.ProcedureStep>
+
+<div class='panel-group noMargin'>
+    <div class='panel panel-default no-border noMargin'>
+        <div class='panel-heading'>
+            <h3 class='panel-title'>
+                <a data-toggle='collapse' id='Toggle' href='#collapseProcedureSteps'>Procedure Steps</a>
+            </h3>
+        </div>
+
+        @if (Model.Any())
+        {
+            <div id='collapseProcedureSteps' class='panel-collapse collapsed collapse in'>
+                <div class='panel-body'>
+                    <table id="ProcedureStepDataTable" class="table table-striped">
+                        <thead id="greyTableheader">
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.First().ProcedureStepID)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.First().StepID)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.First().Method)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.First().Attribute)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.First().Value)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.First().Input)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.First().Static)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.First().Order)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.First().ProcessStepID)
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ProcedureStepID)
+                                    </td>
+                                    <td>@item.StepID</td>
+                                    <td>@item.Method</td>
+                                    <td>@item.Attribute</td>
+                                    <td>@item.Value</td>
+                                    <td>@item.Input</td>
+                                    <td>@item.Static</td>
+                                    <td>@item.Order</td>
+                                    <td>@item.ProcessStepID</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+
+        else
+        {
+            <div id='collapseProcedureSteps' class='panel-collapse collapsed collapse in'>
+                <div class='panel-body'>
+                    <p>
+                        There are currently no Procedure Steps
+                    </p>
+                </div>
+            </div>
+        }
+
+    </div>
+</div>

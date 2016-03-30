@@ -1,0 +1,59 @@
+@model Starter.Models.TestCase
+
+@{
+    ViewData["Title"] = "Edit TestCase: " + Model.Name;
+}
+<div>
+    <div class="headertwo">
+        <h2>@ViewData["Title"]</h2>
+    </div>
+
+    <form asp-action="Edit">
+        <div class="form-horizontal">
+            <div asp-validation-summary="ValidationSummary.ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="TestCaseID" />
+            <div class="form-group">
+                <label asp-for="Name" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <textarea asp-for="Description" class="form-control textarea" rows="5">@Model.Description</textarea>
+                    <span asp-validation-for="Description" class="text-danger" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Order" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="@Model.Order" class="form-control" />
+                    <span asp-validation-for="@Model.Order" class="text-danger" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.DisplayTestCase" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="@Model.DisplayTestCase" class="form-control thinner" />
+                    <span asp-validation-for="@Model.DisplayTestCase" class="text-danger" />
+                </div>
+            </div>
+            <input asp-for="@Model.ProcedureID" class="form-control" type="hidden" readonly="readonly" value="@Model.ProcedureID" />
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <hr />
+
+    <div>
+        <p>
+            <a asp-action="Index" class="Actions">Back to TestCases</a>
+        </p>
+    </div>
+</div>

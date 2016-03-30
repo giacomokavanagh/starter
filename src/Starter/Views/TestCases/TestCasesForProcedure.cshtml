@@ -1,0 +1,45 @@
+@model Starter.ViewModels.TestCase.TestCasesForProcedureViewModel
+
+@{
+    ViewData["Title"] = "Test Cases for Procedure: " + Model.Procedure.Name;
+}
+
+<div>
+    <div class="headertwo">
+        <h2>@ViewData["Title"]</h2>
+    </div>
+
+    @if (ViewData["Message"] != null)
+    {
+        <div>
+            <p class="message">
+                @ViewData["Message"]
+            </p>
+        </div>
+    }
+
+    <table class="RunOrStopAllTests">
+        <tr>
+            <td class="RunOrStopAllTests">
+                <form method="post" asp-action="ManageTestCasesForProcedure" asp-controller="TestCases" asp-route-id="@Model.Procedure.ProcedureID">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Manage Test Cases" class="btn btn-default" />
+                    </div>
+                </form>
+            </td>
+        </tr>
+    </table>
+
+    @Html.Partial("_TestCaseIndexTable", Model.Procedure.TestCases)
+
+    @Html.Partial("_CreateTestCase", Model.NewTestCase)
+
+    <div>
+        <div>
+            <hr />
+            <p>
+                <a class="Actions" asp-controller="Procedures" asp-action="Details" asp-route-id="@Model.Procedure.ProcedureID">Back to Procedure: @Model.Procedure.Name</a>
+            </p>
+        </div>
+    </div>
+</div>

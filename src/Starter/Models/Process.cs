@@ -18,11 +18,16 @@ namespace Starter.Models
         [MaxLength(5000), Required]
         public string Description { get; set; }
 
+        [Display(Name = "Locked")]
+        public bool IsLocked { get; set; }
+
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int ComponentID { get; set; }
         [ForeignKey("ComponentID")]
         public virtual Component Component { get; set; }
 
-        public virtual ICollection<ProcedureStep> ProcessSteps { get; set; }
+        public virtual ICollection<ProcessStep> ProcessSteps { get; set; }
+
+        public virtual ICollection<ProcessInProcedure> ProcessInProcedures { get; set; }
     }
 }

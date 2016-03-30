@@ -26,7 +26,15 @@
                                 <span asp-validation-for="@Model.Description" class="text-danger" />
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label asp-for="@Model.IsLocked" class="col-md-2 control-label"></label>
+                            <div class="col-md-10">
+                                <input asp-for="@Model.IsLocked" class="form-control thinner" />
+                                <span asp-validation-for="@Model.IsLocked" class="text-danger" />
+                            </div>
+                        </div>
                         <input asp-for="@Model.SetID" class="form-control" type="hidden" readonly="readonly" value="@Model.SetID" />
+                        <input asp-for="@Model.DisplayStaticSteps" class="form-control" type="hidden" readonly="readonly" value="1" />
                         <span asp-validation-for="@Model.SetID" class="text-danger" />
                         <div class="form-group">
                             <div class="col-md-offset-2 col-md-10">

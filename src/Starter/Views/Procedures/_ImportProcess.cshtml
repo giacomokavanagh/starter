@@ -1,0 +1,61 @@
+@model Starter.ViewModels.Category.ProcessImportViewModel
+
+<form asp-action="ImportProcess" asp-controller="Procedures">
+    <div class='panel-group noMargin'>
+        <div class='panel panel-default noMargin'>
+            <div class='panel-heading'>
+                <h3 class='panel-title'>
+                    <a data-toggle='collapse' id='Toggle' href='#collapseProcessImport'>Import Process</a>
+                </h3>
+            </div>
+            <div id='collapseProcessImport' class='panel-collapse collapsed collapse'>
+                <div class='panel-body'>
+                    <div class="form-horizontal">
+                        <div asp-validation-summary="ValidationSummary.ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="ProcessID" class="col-md-2 control-label"></label>
+                            <div class="col-md-10">
+                                <select asp-for="ProcessID" asp-items="ViewBag.AvailableProcesses" class="chosen"></select>
+                                <span asp-validation-for="ProcessID" class="text-danger" />
+                            </div>
+                        </div>
+                        
+                        @{
+                            if (Convert.ToBoolean(ViewData["ProcedureHasSteps"]))
+                            {
+                                <div class="form-group" id="AtStartOfProcedureForImportProcess">
+                                    <label asp-for="AtStartOfProcedure" class="col-md-2 control-label"></label>
+                                    <div class="col-md-10">
+                                        <input asp-for="AtStartOfProcedure" class="form-control thinner" />
+                                        <span asp-validation-for="AtStartOfProcedure" class="text-danger" />
+                                    </div>
+                                </div>
+                                <div class="form-group" id="AtEndOfProcedureForImportProcess">
+                                    <label asp-for="AtEndOfProcedure" class="col-md-2 control-label"></label>
+                                    <div class="col-md-10">
+                                        <input asp-for="AtEndOfProcedure" class="form-control thinner" />
+                                        <span asp-validation-for="AtEndOfProcedure" class="text-danger" />
+                                    </div>
+                                </div>
+                                <div class="form-group" id="SelectStepForImportProcess">
+                                    <label asp-for="AfterStep" class="col-md-2 control-label"></label>
+                                    <div class="col-md-10">
+                                        <select asp-for="AfterStep" asp-items="ViewBag.Steps" class="chosen"></select>
+                                        <span asp-validation-for="AfterStep" class="text-danger" />
+                                    </div>
+                                </div>
+                            }
+                        }
+                        <input asp-for="ProcedureID" class="form-control" type="hidden" readonly="readonly" value="@Model.ProcedureID" />
+                        <span asp-validation-for="ProcedureID" class="text-danger" />
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" value="Import Process" class="btn btn-default" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

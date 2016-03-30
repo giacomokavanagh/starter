@@ -52,14 +52,14 @@ div#ResultsDataTable_wrapper {
 
 div#StepDataTable_wrapper, div#AvailableMethodsDataTable_wrapper, div#StepsUsingMethodDataTable_wrapper, 
     div#ResultsUsingMethodDataTable_wrapper, div#TestRunsUsingTestDataTable_wrapper, div#ProcessStepDataTable_wrapper,
-    div#ProcedureStepDataTable_wrapper {
+    div#ProcedureStepDataTable_wrapper, div#TestCaseDataTable_wrapper {
     margin-left: 0px;
     margin-right: 0px;
 }
 
 table#TestRunDataTable, table#ResultsDataTable, table#StepDataTable, table#AvailableMethodsDataTable, 
     table#StepsUsingMethodDataTable, table#ResultsUsingMethodDataTable, table#TestRunsUsingTestDataTable,
-    table#ProcessStepDataTable, table#ProcedureStepDataTable {
+    table#ProcessStepDataTable, table#ProcedureStepDataTable, table#TestCaseDataTable {
     width: 160%;
     margin-left: 0px;
     margin-right: 0px;
@@ -67,7 +67,7 @@ table#TestRunDataTable, table#ResultsDataTable, table#StepDataTable, table#Avail
 
 table#TestRunDataTable td, table#ResultsDataTable td, table#StepDataTable td, table#AvailableMethodsDataTable td,
     table#StepsUsingMethodDataTable td, table#ResultsUsingMethodDataTable td, table#TestRunsUsingTestDataTable td,
-    table#ProcessStepDataTable td, table#ProcedureStepDataTable td {
+    table#ProcessStepDataTable td, table#ProcedureStepDataTable td, table#TestCaseDataTable td {
     padding-bottom: 1px;
     padding-top: 1px;
     font-size: 10px;
@@ -75,7 +75,7 @@ table#TestRunDataTable td, table#ResultsDataTable td, table#StepDataTable td, ta
 
 table#TestRunDataTable div, table#ResultsDataTable div, table#StepDataTable div, table#AvailableMethodsDataTable div,
     table#StepsUsingMethodDataTable div, table#ResultsUsingMethodDataTable div, table#TestRunsUsingTestDataTable div,
-    table#ProcessStepDataTable div, table#ProcedureStepDataTable div {
+    table#ProcessStepDataTable div, table#ProcedureStepDataTable div, table#TestCaseDataTable div {
     margin-left: 0px;
     margin-right: 0px;
 }
@@ -83,7 +83,8 @@ table#TestRunDataTable div, table#ResultsDataTable div, table#StepDataTable div,
 table#TestRunDataTable td.datetimepickertd, table#TestRunDataTable td.Retriestd, table#StepDataTable td.stepTabletd, 
     table#AvailableMethodsDataTable td.AvailableMethodtd, table#StepsUsingMethodDataTable td.AvailableMethodtd,
     table#ResultsUsingMethodDataTable td.AvailableMethodtd, table#TestRunsUsingTestDataTable td.AvailableMethodtd,
-    table#ProcessStepDataTable td.ProcessStepTabletd, table#ProcedureStepDataTable td.ProcedureStepTabletd {
+    table#ProcessStepDataTable td.ProcessStepTabletd, table#ProcedureStepDataTable td.ProcedureStepTabletd,
+    table#TestCaseDataTable td.TestCaseTabletd {
     padding:0px;
 }
 
@@ -97,7 +98,7 @@ table.ExceptionTable, tr.ExceptionDetails, td.ExceptionType, td.ExceptionMessage
 }
 
 div.input-group date, div.datetimepickerdiv, div.Retriesdiv, div.datepicker, div.datepicker.days, div.stepTablediv,
-    div.ProcessStepTablediv, div.ProcedureStepTablediv {
+    div.ProcessStepTablediv, div.ProcedureStepTablediv, div.TestCaseTablediv {
     margin: 0px;
     padding: 0px;
     width: 100%;
@@ -145,7 +146,7 @@ input.Retriesinput {
     border: none;
 }
 
-input.stepTableInput, input.ProcessStepTableInput, input.ProcedureStepTableInput {
+input.stepTableInput, input.ProcessStepTableInput, input.ProcedureStepTableInput, input.TestCaseTableInput {
     text-align: left;
     font-size: 11px;
     padding: 2px;
@@ -692,7 +693,7 @@ div.panel-default.noMargin {
     margin-right: 0px;
 }
 
-td.Passed {
+td.Passed, td.MatchesProcessStepTrue {
     text-align: left;
     background-color: #f7fff7;
 }
@@ -702,7 +703,7 @@ td.Blocked {
     background-color: #fffece;
 }
 
-td.Failed {
+td.Failed, td.MatchesProcessStepFalse {
     text-align: left;
     background-color: #ffcece;
 }

@@ -1,0 +1,88 @@
+﻿@model Starter.ViewModels.TestCase.ManageTestCasesForProcedureViewModel
+
+<div class='panel-group'>
+    <div class='panel panel-default'>
+        <div class='panel-heading'>
+            <h3 class='panel-title'>
+                <a data-toggle='collapse' id='Toggle' href='#collapseTestCaseData'>Test Cases</a>
+            </h3>
+        </div>
+        @if (Model.Procedure.TestCases.Any())
+        {
+            <div id='collapseTestCases' class='panel-collapse collapsed collapse in'>
+                <div class='panel-body'>
+                    <table id="TestCaseDataTable" class="table table-striped">
+                        <thead id="greyTableheader">
+                            <tr>
+                                <th>Order</th>
+                                <th>
+                                    <a asp-controller="Procedures" asp-action="Details" asp-route-id="@Model.Procedure.ProcedureID">@Model.Procedure.Name</a>
+                                </th>
+                                @{
+                                    foreach (var item in Model.Procedure.TestCases)
+                                    {
+                                        if (item.DisplayTestCase)
+                                        {
+                                            <th>
+                                                @item.Name
+                                            </th>
+                                        }
+                                    }
+                                }
+                            </tr>
+                        </thead>
+                        <tbody id="RightClickTable">
+
+                            @{
+                                foreach (var procedureStep in Model.Procedure.ProcedureSteps)
+                                {
+                                    if (Model.Procedure.DisplayStaticSteps || (Model.Procedure.DisplayStaticSteps || !procedureStep.Static))
+                                    {
+                                        <tr>
+                                            <td>@procedureStep.Order</td>
+                                            <td id="greyTableHeader">
+                                                <p class="TableParagraph">@procedureStep.StepID</p>
+                                            </td>
+                                            @foreach (var item in Model.Procedure.TestCases)
+                                            {
+                                                if (item.DisplayTestCase)
+                                                {
+                                                    var testCaseStep = item.TestCaseSteps.Single(t => t.ProcedureStepID == procedureStep.ProcedureStepID);
+                                                    var dataID = "TestCaseStepDataID" + testCaseStep.TestCaseStepID;
+                                                    <td class="TestCaseDataTabletd">
+                                                        <div class="TestCaseTablediv">
+                                                            <input class="TestCaseTableInput TestCaseDataInput" name="@testCaseStep.TestCaseStepID" value="@testCaseStep.Data" id="@dataID" />
+                                                            <p class="hidden">@testCaseStep.Data</p>
+                                                        </div>
+                                                    </td>
+                                                }
+                                            }
+                                        </tr>
+                                    }
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+
+        else
+        {
+            <div id='collapseTestCases' class='panel-collapse collapsed collapse in'>
+                <div class='panel-body'>
+                    <p>
+                        There are currently no Test Cases for this procedure
+                    </p>
+                </div>
+            </div>
+        }
+
+    </div>
+</div>
+
+<ul id="contextMenu" class="dropdown-menu" role="menu" style="display:none">
+    <li><a tabindex="-1" href="#" name="TestCases">Edit</a></li>
+    <li><a tabindex="-1" href="#" name="TestCases">Details</a></li>
+    <li><a tabindex="-1" href="#" name="TestCases">Delete</a></li>
+</ul>

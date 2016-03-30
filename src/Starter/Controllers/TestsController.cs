@@ -185,7 +185,7 @@ namespace Starter.Controllers
             }));
         }
 
-        private void createExcelFile(int id)
+        public void createExcelFile(int id)
         {
             IEnumerable<Step> Steps = _context.Step.Where(t => t.TestID == id).OrderBy(t => t.Order);
 
@@ -387,19 +387,21 @@ namespace Starter.Controllers
                 return "Step not found";
             }
 
-            IEnumerable<Step> AllStepsInTest = _context.Step.Where(t => t.TestID == step.TestID).OrderBy(t => t.Order);
+            IEnumerable<Step> AllStepsInTest = _context.Step.Where(t => t.TestID == step.TestID
+                && t.ID != step.ID).OrderBy(t => t.Order);
             int newOrder = 1;
             foreach (var item in AllStepsInTest)
             {
                 _context.Update(item);
                 if (item.ID == step.ID)
                 {
-                    newOrder = newOrder + 1;
+                    item.Order = Order;
                 }
                 else if (newOrder == Order)
                 {
                     newOrder = newOrder + 1;
                     item.Order = newOrder;
+                    newOrder = newOrder + 1;
                 }
                 else
                 {
@@ -762,7 +764,7 @@ namespace Starter.Controllers
 
             createExcelFile(step.TestID);
 
-            ReorderStepsAroundEdit(step.ID, value);
+            ReorderStepsAroundEdit(id, value);
 
             return "Order changed to " + step.Order;
         }
@@ -789,6 +791,129 @@ namespace Starter.Controllers
                 Select(t => t.StepID).AsNoTracking().ToList();
             allStepIDs.Add(previousStepID);
             return allStepIDs.Contains(newStepID);
+        }
+
+        // GET: TestCases/Edit/5
+        public IActionResult GenerateTestsFromProcedure(ViewModels.TestCase.GenerateTestCasesFromProcedure generateTestCases)
+        {
+            if (!ModelState.IsValid)
+            {
+                return HttpNotFound();
+            }
+
+            Suite suite = _context.Suite.AsNoTracking().SingleOrDefault(t => t.SuiteID == generateTestCases.SuiteID);
+            if (suite == null)
+            {
+                return HttpNotFound();
+            }
+
+            var suiteID = suite.SuiteID;
+            var testCases = _context.TestCase.AsNoTracking().Where
+                (t => t.ProcedureID == generateTestCases.ProcedureID).ToList();
+
+            var procedureID = generateTestCases.ProcedureID;
+            Procedure procedure = _context.Procedure.AsNoTracking().Single(t => t.ProcedureID == procedureID);
+            var procedureSteps = _context.ProcedureStep.AsNoTracking().Where(t => t.ProcedureID == procedureID).ToList();
+
+            string messageString = "";
+            foreach (var item in testCases)
+            {
+                var testCaseSteps = _context.TestCaseStep.Where(t => t.TestCaseID == item.TestCaseID).ToList();
+
+                Test test = new Test();
+                var testName = procedure.Name + "_" + item.Name;
+                test.Name = testName;
+                test.Description = item.Description;
+                test.SuiteID = suiteID;
+                test.TestDataSource = "Starter";
+                test.ExcelFilePath = testName;
+                test.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+
+                var oldTest = _context.Test.AsNoTracking().SingleOrDefault(t => t.Name == testName && t.SuiteID == suiteID);
+                if (oldTest == null)
+                {
+                    _context.Test.Add(test);
+                    _context.SaveChanges();
+
+                    messageString = messageString + "Test: " + testName + " successfully created. ";
+
+                    foreach (var procedureStep in procedureSteps)
+                    {
+                        var testCaseStep = testCaseSteps.Single(t => t.ProcedureStepID == procedureStep.ProcedureStepID);
+                        Step step = new Step();
+                        step.TestID = test.TestID;
+                        step.Attribute = procedureStep.Attribute;
+                        step.StepID = procedureStep.StepID;
+                        step.Method = procedureStep.Method;
+                        step.Attribute = procedureStep.Attribute;
+                        step.Value = procedureStep.Value;
+                        step.Input = testCaseStep.Data;
+                        step.Order = procedureStep.Order;
+
+                        var oldStep = _context.Step.AsNoTracking().SingleOrDefault(t => t.TestID == test.TestID
+                            && t.Order == step.Order);
+                        if (oldStep == null)
+                        {
+                            _context.Step.Add(step);
+                        }
+                        else
+                        {
+                            _context.Update(step);
+                        }
+                    }
+                    createExcelFile(test.TestID);
+                }
+                else if (oldTest != null && generateTestCases.Overwrite)
+                {
+                    test.TestID = oldTest.TestID;
+                    _context.Update(test);
+                    _context.SaveChanges();
+
+                    messageString = messageString + "Test: " + testName + " successfully updated. ";
+
+                    foreach (var procedureStep in procedureSteps)
+                    {
+                        var testCaseStep = testCaseSteps.Single(t => t.ProcedureStepID == procedureStep.ProcedureStepID);
+                        Step step = new Step();
+                        step.TestID = test.TestID;
+                        step.Attribute = procedureStep.Attribute;
+                        step.StepID = procedureStep.StepID;
+                        step.Method = procedureStep.Method;
+                        step.Attribute = procedureStep.Attribute;
+                        step.Value = procedureStep.Value;
+                        step.Input = testCaseStep.Data;
+                        step.Order = procedureStep.Order;
+
+                        var oldStep = _context.Step.AsNoTracking().SingleOrDefault(t => t.TestID == test.TestID
+                            && t.Order == step.Order);
+                        if (oldStep == null)
+                        {
+                            _context.Step.Add(step);
+                        }
+                        else
+                        {
+                            step.ID = oldStep.ID;
+                            _context.Update(step);
+                        }
+                    }
+                    createExcelFile(test.TestID);
+                }
+                else
+                {
+                    messageString = messageString + "Test: " + testName + " already exists in Suite: " + suite.Name + ". ";
+                }
+
+                _context.SaveChanges();
+            }
+
+            HttpContext.Session.SetString("Message", messageString);
+
+            return RedirectToAction("Details", new RouteValueDictionary(new
+            {
+                controller = "Suites",
+                action = "Details",
+                ID = suiteID
+            }));
         }
     }
 }

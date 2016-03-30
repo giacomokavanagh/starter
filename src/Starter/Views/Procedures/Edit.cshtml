@@ -35,6 +35,20 @@
                 </div>
             </div>
             <div class="form-group">
+                <label asp-for="IsLocked" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="IsLocked" class="form-control thinner" />
+                    <span asp-validation-for="IsLocked" class="text-danger" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="DisplayStaticSteps" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="DisplayStaticSteps" class="form-control thinner" />
+                    <span asp-validation-for="DisplayStaticSteps" class="text-danger" />
+                </div>
+            </div>
+            <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
                     <input type="submit" value="Save" class="btn btn-default" />
                 </div>

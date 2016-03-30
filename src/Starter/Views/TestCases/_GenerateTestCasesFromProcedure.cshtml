@@ -1,0 +1,39 @@
+﻿@model GenerateTestCasesFromProcedure
+
+<form asp-action="GenerateTestsFromProcedure" asp-controller="Tests">
+    <div class='panel-group noMargin'>
+        <div class='panel panel-default noMargin'>
+            <div class='panel-heading'>
+                <h3 class='panel-title'>
+                    <a data-toggle='collapse' id='Toggle' href='#collapseGenerateTestCases'>Generate Test Cases From Procedure</a>
+                </h3>
+            </div>
+            <div id='collapseGenerateTestCases' class='panel-collapse collapsed collapse'>
+                <div class='panel-body'>
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label asp-for="SuiteID" class="col-md-2 control-label"></label>
+                            <div class="col-md-10">
+                                <select asp-for="SuiteID" asp-items="ViewBag.Suites" class="chosen"></select>
+                                <span asp-validation-for="SuiteID" class="text-danger" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Overwrite" class="col-md-2 control-label"></label>
+                            <div class="col-md-10">
+                                <input asp-for="Overwrite" class="form-control thinner" />
+                                <span asp-validation-for="Overwrite" class="text-danger" />
+                            </div>
+                        </div>
+                        <input asp-for="@Model.ProcedureID" class="form-control" type="hidden" readonly="readonly" value="@Model.ProcedureID" />
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" value="Generate Test Cases" class="btn btn-default" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

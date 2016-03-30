@@ -1,0 +1,71 @@
+﻿@model Starter.ViewModels.TestCase.ManageTestCasesForProcedureViewModel
+
+@{
+    ViewData["Title"] = "Manage Test Cases for Procedure: " + Model.Procedure.Name;
+}
+
+<div>
+    <div class="headertwo">
+        <h2>@ViewData["Title"]</h2>
+    </div>
+
+    @if (ViewData["Message"] != null)
+    {
+        <div>
+            <p class="message">
+                @ViewData["Message"]
+            </p>
+        </div>
+    }
+
+    <table class="RunOrStopAllTests">
+        <tr>
+            <td class="RunOrStopAllTests">
+                <form method="post" asp-action="TestCasesForProcedure" asp-controller="TestCases" asp-route-id="@Model.Procedure.ProcedureID">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Test Cases" class="btn btn-default" />
+                    </div>
+                </form>
+            </td>
+
+            @{
+                if (Model.Procedure.DisplayStaticSteps)
+                {
+                    <td class="RunOrStopAllTests">
+                        <form method="post" asp-action="DisplayOrHideStaticSteps" asp-controller="Procedures" asp-route-id="@Model.Procedure.ProcedureID">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" value="Hide Static Steps" class="btn btn-default" />
+                            </div>
+                        </form>
+                    </td>
+                }
+                else
+                {
+                    <td class="RunOrStopAllTests">
+                        <form method="post" asp-action="DisplayOrHideStaticSteps" asp-controller="Procedures" asp-route-id="@Model.Procedure.ProcedureID">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" value="Display Static Steps" class="btn btn-default" />
+                            </div>
+                        </form>
+                    </td>
+                }
+            }
+
+        </tr>
+    </table>
+
+    @Html.Partial("_TestCaseDataIndexTable", Model)
+
+    @Html.Partial("_CreateTestCase", Model.NewTestCase)
+
+    @Html.Partial("_GenerateTestCasesFromProcedure", Model.GenerateTestCasesFromProcedure)
+
+    <div>
+        <div>
+            <hr />
+            <p>
+                <a class="Actions" asp-controller="Platforms" asp-action="Index">Back to Platforms</a>
+            </p>
+        </div>
+    </div>
+</div>

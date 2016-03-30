@@ -17,6 +17,6 @@ namespace Starter.Models
         [MaxLength(5000), Required]
         public string Description { get; set; }
 
-        public virtual ICollection<Collection> Collection { get; set; }
+        public virtual ICollection<Collection> Collections { get; set; }
     }
 }

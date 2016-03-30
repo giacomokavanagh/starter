@@ -1,0 +1,81 @@
+﻿@model IEnumerable<ProcessInProcedure>
+
+<div class='panel-group noMargin'>
+    <div class='panel panel-default noMargin'>
+        <div class='panel-heading'>
+            <h3 class='panel-title'>
+                <a data-toggle='collapse' id='Toggle' href='#collapseProcessesInProcedure'>Processes in Procedure</a>
+            </h3>
+        </div>
+        @if (Model.Any())
+            {
+            <div id='collapseProcessesInProcedure' class='panel-collapse collapsed collapse'>
+                <div class='panel-body'>
+                    <table id="3ColumnDataTable" class="table table-striped" style="width:100%">
+                        <thead id="greyTableheader">
+                            <tr>
+                                <th>
+                                    ID
+                                </th>
+                                <th>
+                                    Process Name
+                                </th>
+                                <th>
+                                    Procedure Step IDs
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="ProcessesInProcedureDataRows">
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td class="AvailableMethodtd">
+                                        <p class="TableParagraph">
+                                            @item.ProcessInProcedureID
+                                        </p>
+                                    </td>
+                                    <td class="AvailableMethodtd">
+                                        <p class="SmallPadding">
+                                            <a class="Actions" asp-controller="Processes" asp-route-id="@item.ProcessID" asp-action="Details">@item.Process.Name</a>
+                                        </p>
+                                    </td>
+                                    <td class="AvailableMethodtd">
+                                        
+                                        @{
+                                            string ProcedureStepIDString = "";
+                                            int procedureStepCount = item.ProcedureStepsInProcessInProcedures.Count();
+                                            var i = 0;
+                                            foreach (var procedureStep in item.ProcedureStepsInProcessInProcedures)
+                                            {
+                                                ProcedureStepIDString = ProcedureStepIDString + Convert.ToString(procedureStep.ProcedureStepID);
+                                                if (i < (procedureStepCount - 1))
+                                                {
+                                                    ProcedureStepIDString = ProcedureStepIDString + ", ";
+                                                }
+                                                i = i + 1;
+                                            }
+                                            <p class="TableParagraph">
+                                                @ProcedureStepIDString
+                                            </p>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div id='collapseProcessesInProcedure' class='panel-collapse collapsed collapse in'>
+                <div class='panel-body'>
+                    <p>
+                        There are currently no Processes in this Procedure
+                    </p>
+                </div>
+            </div>
+        }
+    </div>
+</div>

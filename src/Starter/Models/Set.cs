@@ -17,7 +17,7 @@ namespace Starter.Models
         [MaxLength(5000), Required]
         public string Description { get; set; }
 
-        public virtual ICollection<Procedure> Procedure { get; set; }
+        public virtual ICollection<Procedure> Procedures { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int CollectionID { get; set; }

@@ -20,11 +20,50 @@
 
     @Html.Partial("_ProcedureDetailsTable", Model.Procedure)
 
+    <table class="RunOrStopAllTests">
+        <tr>
+            <td class="RunOrStopAllTests">
+                <form method="post" asp-action="UpdateAllProcessesInProcedureFromProcess" asp-controller="Procedures" asp-route-id="@Model.Procedure.ProcedureID">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Update All Processes" class="btn btn-default" />
+                    </div>
+                </form>
+            </td>
+            <td class="RunOrStopAllTests">
+                <form method="post" asp-action="TestCasesForProcedure" asp-controller="TestCases"  asp-route-id="@Model.Procedure.ProcedureID">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Test Cases" class="btn btn-default" />
+                    </div>
+                </form>
+            </td>
+        </tr>
+    </table>
+
 </div>
 
-@Html.Partial("_ProcedureStepIndexTable", Model.ProcedureSteps)
+@if (Model.Procedure.IsLocked)
+{
+    @Html.Partial("_ProcedureStepIndexTableLocked", Model.Procedure.ProcedureSteps)
+}
+else
+{
+    @Html.Partial("_ProcedureStepIndexTable", Model.Procedure.ProcedureSteps)
 
-@Html.Partial("_CreateProcedureStep", Model.NewProcedureStep)
+    @Html.Partial("_ImportProcess", Model.ProcessImportViewModel)
+
+    @Html.Partial("_CreateProcedureStep", Model.NewProcedureStep)
+}
+
+@if (Model.ProcessesInProcedure.Any())
+{
+    @Html.Partial("_ProcessesInProcedure", Model.ProcessesInProcedure)
+
+    if (!Model.Procedure.IsLocked)
+    {
+        @Html.Partial("_RightClickMenuForProcessesInProcedure")
+    }
+}
+
 
 <div>
     <div>

@@ -1,0 +1,48 @@
+﻿@model Starter.Models.TestCase
+
+<form asp-action="Create" asp-controller="TestCases">
+    <div class='panel-group noMargin'>
+        <div class='panel panel-default noMargin'>
+            <div class='panel-heading'>
+                <h3 class='panel-title'>
+                    <a data-toggle='collapse' id='Toggle' href='#collapse'>Create Test Case</a>
+                </h3>
+            </div>
+            <div id='collapse' class='panel-collapse collapsed collapse'>
+                <div class='panel-body'>
+                    <div class="form-horizontal">
+                        <div asp-validation-summary="ValidationSummary.ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="@Model.Name" class="col-md-2 control-label"></label>
+                            <div class="col-md-10">
+                                <input asp-for="@Model.Name" class="form-control" value="@Model.Order" />
+                                <span asp-validation-for="@Model.Name" class="text-danger" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="@Model.Description" class="col-md-2 control-label"></label>
+                            <div class="col-md-10">
+                                <textarea asp-for="@Model.Description" class="form-control textarea" rows="5"></textarea>
+                                <span asp-validation-for="@Model.Description" class="text-danger" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="@Model.Order" class="col-md-2 control-label"></label>
+                            <div class="col-md-10">
+                                <input asp-for="@Model.Order" class="form-control" />
+                                <span asp-validation-for="@Model.Order" class="text-danger" />
+                            </div>
+                        </div>
+                        <input asp-for="@Model.ProcedureID" class="form-control" type="hidden" readonly="readonly" value="@Model.ProcedureID" />
+                        <input asp-for="@Model.DisplayTestCase" class="form-control" type="hidden" readonly="readonly" value="true" />
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" value="Add Test Case" class="btn btn-default" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

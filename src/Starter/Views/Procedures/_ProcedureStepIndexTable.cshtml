@@ -54,7 +54,8 @@
                                 var inputID = "InputID" + item.ProcedureStepID;
                                 var staticID = "StaticID" + item.ProcedureStepID;
                                 var orderID = "OrderID" + item.ProcedureStepID;
-                                var processStepID = "ProcessStepID" + item.ProcedureStepID;
+                                var processStepID = "ProcessStepID" + item.ProcessStepID;
+                                
                                 <tr>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.ProcedureStepID)
@@ -97,16 +98,23 @@
                                     </td>
                                     <td class="ProcedureStepTabletd">
                                         <div class="ProcedureStepTablediv">
-                                            <input class="ProcedureStepTableInput ProcedureStepOrderInput" name="@item.ProcedureID" value="@item.Order" id="@orderID" />
+                                            <input class="ProcedureStepTableInput ProcedureStepOrderInput" name="@item.ProcedureStepID" value="@item.Order" id="@orderID" />
                                             <p class="hidden">@item.Order</p>
                                         </div>
                                     </td>
-                                    <td class="ProcedureStepTabletd">
-                                        <div class="ProcedureStepTablediv">
-                                            <input class="ProcedureStepTableInput ProcedureStepOrderInput" name="@item.ProcedureID" value="@item.Order" id="@processStepID" />
-                                            <p class="hidden">@item.ProcessStepID</p>
-                                        </div>
-                                    </td>
+                                    @if (item.ProcessStepID == null)
+                                    {
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.ProcessStepID)
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        var MatchesProcessStep = "MatchesProcessStep" + Convert.ToString(item.MatchesProcessStep);
+                                        <td class="@MatchesProcessStep">
+                                            @Html.DisplayFor(modelItem => item.ProcessStepID)
+                                        </td>
+                                    }
                                 </tr>
                             }
                         </tbody>
@@ -134,4 +142,6 @@
     <li><a tabindex="-1" href="#" name="Procedures">Delete Step</a></li>
     <li><a tabindex="-1" href="#" name="Procedures">Move Step Up</a></li>
     <li><a tabindex="-1" href="#" name="Procedures">Move Step Down</a></li>
+    <li><a tabindex="-1" href="#" name="Procedures">Update Step From Process</a></li>
+    <li><a tabindex="-1" href="#" name="Procedures">Go To Process</a></li>
 </ul>

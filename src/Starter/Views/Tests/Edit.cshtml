@@ -64,6 +64,7 @@
                     <span asp-validation-for="@Model.Test.SuiteID" class="text-danger" />
                 </div>
             </div>
+            <input asp-for="@Model.Test.ContentType" class="form-control" type="hidden" readonly="readonly" value="@Model.Test.ContentType" />
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
                     <input type="submit" value="Save" class="btn btn-default" />

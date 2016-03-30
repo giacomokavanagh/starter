@@ -33,6 +33,13 @@
                                 <span asp-validation-for="@Model.TestRunner.ClearRemoteLogOnNextAccess" class="text-danger" />
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label asp-for="@Model.TestRunner.TakeScreenshots" class="col-md-2 control-label"></label>
+                            <div class="col-md-10">
+                                <input asp-for="@Model.TestRunner.TakeScreenshots">
+                                <span asp-validation-for="@Model.TestRunner.TakeScreenshots" class="text-danger" />
+                            </div>
+                        </div>
                         <input asp-for="@Model.TestRunner.TestRunnerGroupID" class="form-control" type="hidden" readonly="readonly" value="@Model.TestRunnerGroup.TestRunnerGroupID" />
                         <span asp-validation-for="@Model.TestRunner.TestRunnerGroupID" class="text-danger" />
                         <div class="form-group">

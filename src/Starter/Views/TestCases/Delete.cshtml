@@ -1,0 +1,33 @@
+@model Starter.Models.TestCase
+
+@{
+    ViewData["Title"] = "Delete Test Case: " + Model.Name;
+}
+
+<div>
+    <div class="headertwo">
+        <h2 class="Delete">@ViewData["Title"]</h2>
+    </div>
+    <div>
+        <h3>Are you sure you want to delete this?</h3>
+    </div>
+
+    <hr />
+
+    <div>
+        @Html.Partial("_TestCaseDetails")
+        <form asp-action="Delete">
+            <div class="form-actions no-color">
+                <input type="submit" value="Delete" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+
+    <hr />
+
+    <div>
+        <p class="Actions">
+            <a asp-action="TestCasesForProcedure" class="Actions">Back to Test cases for Procedure: @Model.Procedure.Name</a>
+        </p>
+    </div>
+</div>

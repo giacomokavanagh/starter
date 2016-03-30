@@ -28,7 +28,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label asp-for="CategoryID" class="col-md-2 control-label"></label>
+                <label asp-for="Category" class="col-md-2 control-label"></label>
                 <div class="col-md-10">
                     <select asp-for="CategoryID" asp-items="ViewBag.Categories" class="chosen"></select>
                     <span asp-validation-for="CategoryID" class="text-danger" />
@@ -46,10 +46,7 @@
 
     <div>
         <p>
-            <a class="Actions" asp-action="Details" asp-route-id="CollectionID">Back to Collection: @Model.Name</a>
-        </p>
-        <p>
-            <a class="Actions" asp-controller="Categorys" asp-action="Details" asp-route-id="@Model.CategoryID">Back to parent Category: @Model.Category.Name</a>
+            <a class="Actions" asp-action="Details" asp-route-id="@Model.CollectionID">Back to Collection: @Model.Name</a>
         </p>
     </div>
 

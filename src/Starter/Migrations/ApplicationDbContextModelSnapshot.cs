@@ -182,6 +182,40 @@ namespace Starter.Migrations
                     b.HasKey("AvailableMethodID");
                 });
 
+            modelBuilder.Entity("Starter.Models.Category", b =>
+                {
+                    b.Property<int>("CategoryID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasAnnotation("MaxLength", 5000);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasAnnotation("MaxLength", 100);
+
+                    b.HasKey("CategoryID");
+                });
+
+            modelBuilder.Entity("Starter.Models.Collection", b =>
+                {
+                    b.Property<int>("CollectionID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("CategoryID");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasAnnotation("MaxLength", 5000);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasAnnotation("MaxLength", 100);
+
+                    b.HasKey("CollectionID");
+                });
+
             modelBuilder.Entity("Starter.Models.Component", b =>
                 {
                     b.Property<int>("ComponentID")
@@ -325,6 +359,70 @@ namespace Starter.Migrations
                     b.HasKey("PlatformID");
                 });
 
+            modelBuilder.Entity("Starter.Models.Procedure", b =>
+                {
+                    b.Property<int>("ProcedureID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasAnnotation("MaxLength", 5000);
+
+                    b.Property<bool>("DisplayStaticSteps");
+
+                    b.Property<bool>("IsLocked");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasAnnotation("MaxLength", 100);
+
+                    b.Property<int>("SetID");
+
+                    b.HasKey("ProcedureID");
+                });
+
+            modelBuilder.Entity("Starter.Models.ProcedureStep", b =>
+                {
+                    b.Property<int>("ProcedureStepID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Attribute");
+
+                    b.Property<string>("Input");
+
+                    b.Property<bool?>("MatchesProcessStep");
+
+                    b.Property<string>("Method")
+                        .IsRequired();
+
+                    b.Property<int>("Order");
+
+                    b.Property<int>("ProcedureID");
+
+                    b.Property<int?>("ProcessStepID");
+
+                    b.Property<bool>("Static");
+
+                    b.Property<string>("StepID")
+                        .IsRequired();
+
+                    b.Property<string>("Value");
+
+                    b.HasKey("ProcedureStepID");
+                });
+
+            modelBuilder.Entity("Starter.Models.ProcedureStepInProcessInProcedure", b =>
+                {
+                    b.Property<int>("ProcedureStepInProcessInProcedureID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("ProcedureStepID");
+
+                    b.Property<int>("ProcessInProcedureID");
+
+                    b.HasKey("ProcedureStepInProcessInProcedureID");
+                });
+
             modelBuilder.Entity("Starter.Models.Process", b =>
                 {
                     b.Property<int>("ProcessID")
@@ -336,11 +434,25 @@ namespace Starter.Migrations
                         .IsRequired()
                         .HasAnnotation("MaxLength", 5000);
 
+                    b.Property<bool>("IsLocked");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasAnnotation("MaxLength", 100);
 
                     b.HasKey("ProcessID");
+                });
+
+            modelBuilder.Entity("Starter.Models.ProcessInProcedure", b =>
+                {
+                    b.Property<int>("ProcessInProcedureID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("ProcedureID");
+
+                    b.Property<int>("ProcessID");
+
+                    b.HasKey("ProcessInProcedureID");
                 });
 
             modelBuilder.Entity("Starter.Models.ProcessStep", b =>
@@ -479,6 +591,24 @@ namespace Starter.Migrations
                     b.HasKey("SectionID");
                 });
 
+            modelBuilder.Entity("Starter.Models.Set", b =>
+                {
+                    b.Property<int>("SetID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("CollectionID");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasAnnotation("MaxLength", 5000);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasAnnotation("MaxLength", 100);
+
+                    b.HasKey("SetID");
+                });
+
             modelBuilder.Entity("Starter.Models.Step", b =>
                 {
                     b.Property<int>("ID")
@@ -611,6 +741,40 @@ namespace Starter.Migrations
                         .HasAnnotation("MaxLength", 50);
 
                     b.HasKey("TestID");
+                });
+
+            modelBuilder.Entity("Starter.Models.TestCase", b =>
+                {
+                    b.Property<int>("TestCaseID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Description");
+
+                    b.Property<bool>("DisplayTestCase");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasAnnotation("MaxLength", 500);
+
+                    b.Property<int>("Order");
+
+                    b.Property<int>("ProcedureID");
+
+                    b.HasKey("TestCaseID");
+                });
+
+            modelBuilder.Entity("Starter.Models.TestCaseStep", b =>
+                {
+                    b.Property<int>("TestCaseStepID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Data");
+
+                    b.Property<int>("ProcedureStepID");
+
+                    b.Property<int>("TestCaseID");
+
+                    b.HasKey("TestCaseStepID");
                 });
 
             modelBuilder.Entity("Starter.Models.TestEnvironment", b =>
@@ -769,6 +933,13 @@ namespace Starter.Migrations
                         .HasForeignKey("StoredScreenshotStoredScreenshotDetailsID");
                 });
 
+            modelBuilder.Entity("Starter.Models.Collection", b =>
+                {
+                    b.HasOne("Starter.Models.Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryID");
+                });
+
             modelBuilder.Entity("Starter.Models.Component", b =>
                 {
                     b.HasOne("Starter.Models.Area")
@@ -827,11 +998,47 @@ namespace Starter.Migrations
                         .HasForeignKey("TestRunnerGroupID");
                 });
 
+            modelBuilder.Entity("Starter.Models.Procedure", b =>
+                {
+                    b.HasOne("Starter.Models.Set")
+                        .WithMany()
+                        .HasForeignKey("SetID");
+                });
+
+            modelBuilder.Entity("Starter.Models.ProcedureStep", b =>
+                {
+                    b.HasOne("Starter.Models.Procedure")
+                        .WithMany()
+                        .HasForeignKey("ProcedureID");
+
+                    b.HasOne("Starter.Models.ProcessStep")
+                        .WithMany()
+                        .HasForeignKey("ProcessStepID");
+                });
+
+            modelBuilder.Entity("Starter.Models.ProcedureStepInProcessInProcedure", b =>
+                {
+                    b.HasOne("Starter.Models.ProcessInProcedure")
+                        .WithMany()
+                        .HasForeignKey("ProcessInProcedureID");
+                });
+
             modelBuilder.Entity("Starter.Models.Process", b =>
                 {
                     b.HasOne("Starter.Models.Component")
                         .WithMany()
                         .HasForeignKey("ComponentID");
+                });
+
+            modelBuilder.Entity("Starter.Models.ProcessInProcedure", b =>
+                {
+                    b.HasOne("Starter.Models.Procedure")
+                        .WithMany()
+                        .HasForeignKey("ProcedureID");
+
+                    b.HasOne("Starter.Models.Process")
+                        .WithMany()
+                        .HasForeignKey("ProcessID");
                 });
 
             modelBuilder.Entity("Starter.Models.ProcessStep", b =>
@@ -875,6 +1082,13 @@ namespace Starter.Migrations
                     b.HasOne("Starter.Models.Library")
                         .WithMany()
                         .HasForeignKey("LibraryID");
+                });
+
+            modelBuilder.Entity("Starter.Models.Set", b =>
+                {
+                    b.HasOne("Starter.Models.Collection")
+                        .WithMany()
+                        .HasForeignKey("CollectionID");
                 });
 
             modelBuilder.Entity("Starter.Models.Step", b =>
@@ -929,6 +1143,24 @@ namespace Starter.Migrations
                     b.HasOne("Starter.Models.Suite")
                         .WithMany()
                         .HasForeignKey("SuiteID");
+                });
+
+            modelBuilder.Entity("Starter.Models.TestCase", b =>
+                {
+                    b.HasOne("Starter.Models.Procedure")
+                        .WithMany()
+                        .HasForeignKey("ProcedureID");
+                });
+
+            modelBuilder.Entity("Starter.Models.TestCaseStep", b =>
+                {
+                    b.HasOne("Starter.Models.ProcedureStep")
+                        .WithMany()
+                        .HasForeignKey("ProcedureStepID");
+
+                    b.HasOne("Starter.Models.TestCase")
+                        .WithMany()
+                        .HasForeignKey("TestCaseID");
                 });
 
             modelBuilder.Entity("Starter.Models.TestRun", b =>

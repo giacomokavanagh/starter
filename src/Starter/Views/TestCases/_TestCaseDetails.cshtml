@@ -1,0 +1,30 @@
+﻿@model Starter.Models.TestCase
+
+<div>
+    <dl class="dl-horizontal doublewidth">
+        <dt class="dtTable doublewidth">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd>
+            <p class="TableParagraph">
+                @Html.DisplayFor(model => model.Description)
+            </p>
+        </dd>
+        <dt class="dtTable doublewidth">
+           @Html.DisplayNameFor(model => model.Order)
+        </dt>
+        <dd>
+            <p class="TableParagraph">
+                @Html.DisplayFor(model => model.Order)
+            </p>
+        </dd>
+        <dt class="dtTable doublewidth">
+            @Html.DisplayNameFor(model => model.DisplayTestCase)
+        </dt>
+        <dd>
+            <p class="TableParagraph">
+                @Html.DisplayFor(model => model.DisplayTestCase)
+            </p>
+        </dd>
+    </dl>
+</div>

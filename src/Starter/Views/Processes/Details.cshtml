@@ -20,11 +20,40 @@
 
     @Html.Partial("_ProcessDetailsTable", Model.Process)
 
+    <table class="RunOrStopAllTests">
+        <tr>
+            <td class="RunOrStopAllTests">
+                <form method="post" asp-action="UpdateAllProceduresFromProcess" asp-controller="Processes" asp-route-id="@Model.Process.ProcessID">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Update All Procedures" class="btn btn-default" />
+                    </div>
+                </form>
+            </td>
+        </tr>
+    </table>
+
 </div>
 
+@if (Model.Process.IsLocked)
+{
+    @Html.Partial("_ProcessStepIndexTableLocked", Model.ProcessSteps)
+}
+else
+{
     @Html.Partial("_ProcessStepIndexTable", Model.ProcessSteps)
 
     @Html.Partial("_CreateProcessStep", Model.NewProcessStep)
+}
+
+@if (Model.ProcessesInProcedure.Any())
+{
+    @Html.Partial("_ProceduresUsingProcess", Model.ProcessesInProcedure)
+
+    if (!Model.Process.IsLocked)
+    {
+        @Html.Partial("_RightClickMenuForProceduresUsingProcess")
+    }
+}
 
 <div>
     <div>

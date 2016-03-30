@@ -22,7 +22,7 @@
 
     <hr />
 
-    @Html.Partial("_SetIndexTable", Model.Sets)
+    @Html.Partial("_SetIndexTable", Model.Collection.Sets)
 
     @Html.Partial("_CreateSet", Model.NewSet)
 
@@ -35,7 +35,7 @@
             <a class="Actions" asp-action="Delete" asp-route-id="@Model.Collection.CollectionID">Delete</a>
         </p>
         <p>
-            <a class="Actions" asp-controller="Categories" asp-action="Details" asp-route-id="@Model.">Back to Category: @Model.Collection.Category.Name</a>
+            <a class="Actions" asp-controller="Categories" asp-action="Details" asp-route-id="@Model.Collection.CategoryID">Back to Category: @Model.Collection.Category.Name</a>
         </p>
         <p>
             <a class="Actions" asp-controller="Categories" asp-action="Index">Back to Categories</a>

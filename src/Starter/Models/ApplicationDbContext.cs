@@ -18,9 +18,13 @@ namespace Starter.Models
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
             //builder.Entity<Project>()
-              //  .HasOne(p => p.TestRunnerGroup).WithMany(t => t.Projects).IsRequired(false);
+            //  .HasOne(p => p.TestRunnerGroup).WithMany(t => t.Projects).IsRequired(false);
             //builder.Entity<TestRunnerGroup>()
-              //  .HasMany(p => p.Projects).WithOne(s => s.TestRunnerGroup).IsRequired(false);
+            //  .HasMany(p => p.Projects).WithOne(s => s.TestRunnerGroup).IsRequired(false);
+            builder.Entity<TestCase>().HasOne(t => t.Procedure).WithMany(t => t.TestCases)
+                .OnDelete(Microsoft.Data.Entity.Metadata.DeleteBehavior.Restrict);
+            builder.Entity<TestCaseStep>().HasOne(t => t.ProcedureStep).WithMany(t => t.TestCaseSteps)
+                .OnDelete(Microsoft.Data.Entity.Metadata.DeleteBehavior.Restrict);
         }
         public DbSet<Project> Project { get; set; }
         public DbSet<Folder> Folder { get; set; }
@@ -55,6 +59,9 @@ namespace Starter.Models
         public DbSet<Set> Set { get; set; }
         public DbSet<Procedure> Procedure { get; set; }
         public DbSet<ProcedureStep> ProcedureStep { get; set; }
-        
+        public DbSet<ProcessInProcedure> ProcessInProcedure { get; set; }
+        public DbSet<ProcedureStepInProcessInProcedure> ProcedureStepInProcessInProcedure { get; set; }
+        public DbSet<TestCase> TestCase { get; set; }
+        public DbSet<TestCaseStep> TestCaseStep { get; set; }
     }
 }

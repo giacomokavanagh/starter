@@ -168,10 +168,19 @@
                                                                             <td>@dependency.TestRunID</td>
                                                                             <td>@dependency.TestRun.Status</td>
                                                                             <td>
-                                                                                @foreach (var item in DependencyNavLinkList)
-                                                                                {
-                                                                                    <a class="dependencygrouplinks" asp-controller="@item.Controller" asp-action="@item.Action" asp-route-id="@item.RouteID">@item.Text</a>
-                                                                                    <p class="dependencygroupseparator">></p>
+                                                                                @{ 
+                                                                                    var count = DependencyNavLinkList.Count();
+                                                                                    var i = 1;
+
+                                                                                    foreach (var item in DependencyNavLinkList)
+                                                                                    {
+                                                                                        <a class="dependencygrouplinks" asp-controller="@item.Controller" asp-action="@item.Action" asp-route-id="@item.RouteID">@item.Text</a>
+                                                                                        if (i != count)
+                                                                                        {
+                                                                                            <p class="dependencygroupseparator">></p>
+                                                                                            i = i + 1;
+                                                                                        }
+                                                                                    }
                                                                                 }
                                                                             </td>
                                                                         </tr>

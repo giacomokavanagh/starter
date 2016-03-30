@@ -43,7 +43,8 @@
         "Microsoft.Net.Http": "2.2.29",
         "EPPlus": "4.0.5",
         "Mvc6.JQuery.Datatables": "1.0.0-rc1-final-build182",
-        "NBitcoin": "3.0.0.16"
+        "NBitcoin": "3.0.0.16",
+        "morelinq": "1.4.0"
       }
     },
     "dnxcore50": { }

@@ -51,7 +51,7 @@ namespace Starter.Controllers
             model.NewProcedure = new Procedure();
             model.NewProcedure.SetID = id.Value;
 
-            model.Procedures = _context.Procedure.Where(t => t.ProcedureID == id.Value).ToList();
+            model.Set.Procedures = _context.Procedure.Where(t => t.SetID == id.Value).ToList();
 
             return View(model);
         }
@@ -120,7 +120,7 @@ namespace Starter.Controllers
 
                 return RedirectToAction("Details", new RouteValueDictionary(new
                 {
-                    controller = "Components",
+                    controller = "Sets",
                     action = "Details",
                     ID = set.SetID
                 }));
@@ -159,9 +159,9 @@ namespace Starter.Controllers
 
             return RedirectToAction("Details", new RouteValueDictionary(new
             {
-                controller = "Sets",
+                controller = "Collections",
                 action = "Details",
-                ID = set.SetID
+                ID = set.CollectionID
             }));
         }
     }

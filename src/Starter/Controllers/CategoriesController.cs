@@ -51,8 +51,8 @@ namespace Starter.Controllers
             }
 
             model.NewCollection = new Collection();
-            model.NewCollection.CollectionID = id.Value;
-            model.Collections = _context.Collection.Where(l => l.CollectionID == id).ToList();
+            model.NewCollection.CategoryID = id.Value;
+            model.Category.Collections = _context.Collection.Where(l => l.CollectionID == id).ToList();
 
             return View(model);
         }

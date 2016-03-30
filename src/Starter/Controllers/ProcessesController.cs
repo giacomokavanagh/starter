@@ -54,7 +54,7 @@ namespace Starter.Controllers
             model.NewProcessStep = new ProcessStep();
             model.NewProcessStep.ProcessID = id.Value;
 
-            var allApplicableProcessSteps = _context.ProcessStep.Where(t => t.ProcessStepID == id.Value);
+            var allApplicableProcessSteps = _context.ProcessStep.Where(t => t.ProcessID == id.Value);
             model.ProcessSteps = allApplicableProcessSteps.OrderBy(t => t.Order).ToList();
 
             if (model.ProcessSteps.Any())
@@ -67,6 +67,13 @@ namespace Starter.Controllers
             }
 
             ViewBag.AvailableMethods = new SelectList(_context.AvailableMethod, "Name", "Name");
+
+            model.ProcessesInProcedure = _context.ProcessInProcedure.Where(t => t.ProcessID == id).ToList();
+
+            foreach(var item in model.ProcessesInProcedure)
+            {
+                item.Procedure = _context.Procedure.Single(t => t.ProcedureID == item.ProcedureID);
+            }
 
             return View(model);
         }
@@ -176,9 +183,9 @@ namespace Starter.Controllers
 
             return RedirectToAction("Details", new RouteValueDictionary(new
             {
-                controller = "Processes",
+                controller = "Component",
                 action = "Details",
-                ID = process.ProcessID
+                ID = process.ComponentID
             }));
         }
 
@@ -282,19 +289,21 @@ namespace Starter.Controllers
                 return "Process Step not found";
             }
 
-            IEnumerable<ProcessStep> AllStepsInProcess = _context.ProcessStep.Where(t => t.ProcessID == processStep.ProcessID).OrderBy(t => t.Order);
+            IEnumerable<ProcessStep> AllStepsInProcess = _context.ProcessStep.Where
+                (t => t.ProcessID == processStep.ProcessID).OrderBy(t => t.Order);
             int newOrder = 1;
             foreach (var item in AllStepsInProcess)
             {
                 _context.Update(item);
                 if (item.ProcessStepID == processStep.ProcessStepID)
                 {
-                    newOrder = newOrder + 1;
+                    item.Order = Order;
                 }
                 else if (newOrder == Order)
                 {
                     newOrder = newOrder + 1;
                     item.Order = newOrder;
+                    newOrder = newOrder + 1;
                 }
                 else
                 {
@@ -525,16 +534,9 @@ namespace Starter.Controllers
         [HttpPost]
         public string SetOrder(int? id, int value)
         {
-            ProcessStep processStep = _context.ProcessStep.Single(t => t.ProcessStepID == id);
+            ReorderStepsAroundEdit(id, value);
 
-            processStep.Order = value;
-
-            _context.Update(processStep);
-            _context.SaveChanges();
-
-            ReorderStepsAroundEdit(processStep.ProcessStepID, value);
-
-            return "Order changed to " + processStep.Order;
+            return "Order changed to " + value;
         }
 
         private bool stepIDIsNotUniqueToTest(int? id, string newStepID, string previousStepID)
@@ -559,6 +561,51 @@ namespace Starter.Controllers
                 Select(t => t.StepID).AsNoTracking().ToList();
             allStepIDs.Add(previousStepID);
             return allStepIDs.Contains(newStepID);
+        }
+
+        public IActionResult UpdateAllProceduresFromProcess(int? id)
+        {
+            if (id == null)
+            {
+                return HttpNotFound();
+            }
+
+            Process process = _context.Process.Single(t => t.ProcessID == id);
+            if(process == null)
+            {
+                return HttpNotFound();
+            }
+
+            var processInProcedures = _context.ProcessInProcedure.Where(t => t.ProcessID == id);
+
+            foreach(var item in processInProcedures)
+            {
+                item.ProcedureStepsInProcessInProcedures = _context.ProcedureStepInProcessInProcedure.Where
+                    (t => t.ProcessInProcedureID == item.ProcessInProcedureID).ToList();
+                foreach(var procedureStepInProcessInProcedure in item.ProcedureStepsInProcessInProcedures)
+                {
+                    ProcedureStep procedureStep = _context.ProcedureStep.Single(t => t.ProcedureStepID ==
+                        procedureStepInProcessInProcedure.ProcedureStepID);
+                    ProcessStep processStep = _context.ProcessStep.Single(t => t.ProcessStepID == procedureStep.ProcessStepID);
+                    procedureStep.Method = processStep.Method;
+                    procedureStep.Attribute = processStep.Attribute;
+                    procedureStep.Value = processStep.Value;
+                    procedureStep.Input = processStep.Input;
+                    procedureStep.Static = processStep.Static;
+                    _context.Update(procedureStep);
+                }
+            }
+            _context.SaveChanges();
+
+            HttpContext.Session.SetString("Message", "Process updates pushed to all procedures using Process: "
+                + process.Name);
+
+            return RedirectToAction("Details", new RouteValueDictionary(new
+            {
+                controller = "Processes",
+                action = "Details",
+                ID = id
+            }));
         }
     }
 }

@@ -49,7 +49,7 @@ namespace Starter.Controllers
             model.NewSet = new Set();
             model.NewSet.CollectionID = id.Value;
 
-            model.Sets = _context.Set.Where(t => t.CollectionID == id.Value).ToList();
+            model.Collection.Sets = _context.Set.Where(t => t.CollectionID == id.Value).ToList();
 
             return View(model);
         }
