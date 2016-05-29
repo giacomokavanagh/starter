@@ -1,0 +1,62 @@
+@model PageObject
+
+<form asp-action="Create" asp-controller="PageObjects">
+    <div class='panel-group'>
+        <div class='noMargin panel panel-default'>
+            <div class='panel-heading'>
+                <h3 class='panel-title'>
+                    <a data-toggle='collapse' id='Toggle' href='#collapseCreatePageObject'>Create Folder</a>
+                </h3>
+            </div>
+            <div id='collapseCreatePageObject' class='panel-collapse collapsed collapse'>
+                <div class='panel-body'>
+                    <div class="form-horizontal">
+                        <div asp-validation-summary="ValidationSummary.ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="Name" class="col-md-2 control-label"></label>
+                            <div class="col-md-10">
+                                <input asp-for="Name" class="form-control" />
+                                <span asp-validation-for="Name" class="text-danger" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Description" class="col-md-2 control-label"></label>
+                            <div class="col-md-10">
+                                <textarea asp-for="Description" class="form-control textarea" rows="5"></textarea>
+                                <span asp-validation-for="Description" class="text-danger" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="@Model.Method" class="col-md-2 control-label"></label>
+                            <div class="col-md-10">
+                                <select asp-for="@Model.Method" asp-items="ViewBag.AvailableMethods" class="chosen"></select>
+                                <span asp-validation-for="@Model.Method" class="text-danger" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="@Model.Attribute" class="col-md-2 control-label"></label>
+                            <div class="col-md-10">
+                                <input asp-for="@Model.Attribute" class="form-control" />
+                                <span asp-validation-for="@Model.Attribute" class="text-danger" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="@Model.Value" class="col-md-2 control-label"></label>
+                            <div class="col-md-10">
+                                <input asp-for="@Model.Value" class="form-control" />
+                                <span asp-validation-for="@Model.Value" class="text-danger" />
+                            </div>
+                        </div>
+                        <input asp-for="@Model.ObjectLibraryID" class="form-control" type="hidden" readonly="readonly" value="@Model.ObjectLibraryID" />
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" value="Create" class="btn btn-default" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+

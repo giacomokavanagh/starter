@@ -244,6 +244,13 @@ namespace Starter.Controllers
         {
             Procedure procedure = _context.Procedure.Single(m => m.ProcedureID == id);
             _context.Procedure.Remove(procedure);
+
+            var testCases = _context.TestCase.Where(t => t.ProcedureID == id);
+            foreach(var item in testCases)
+            {
+                _context.TestCase.Remove(item);
+            }
+
             _context.SaveChanges();
 
             HttpContext.Session.SetString("Message", "Procedure: " + procedure.Name + " successfully deleted");

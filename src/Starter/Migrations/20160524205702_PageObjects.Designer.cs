@@ -8,9 +8,10 @@ using Starter.Models;
 namespace Starter.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20160524205702_PageObjects")]
+    partial class PageObjects
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.0-rc1-16348")
@@ -886,8 +887,6 @@ namespace Starter.Migrations
                         .IsRequired()
                         .HasAnnotation("MaxLength", 5000);
 
-                    b.Property<int?>("GenericFolderID");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasAnnotation("MaxLength", 100);
@@ -1313,13 +1312,6 @@ namespace Starter.Migrations
                         .HasForeignKey("TestCaseID");
                 });
 
-            modelBuilder.Entity("Starter.Models.TestEnvironment", b =>
-                {
-                    b.HasOne("Starter.Models.GenericFolder")
-                        .WithMany()
-                        .HasForeignKey("GenericFolderID");
-                });
-
             modelBuilder.Entity("Starter.Models.TestRun", b =>
                 {
                     b.HasOne("Starter.Models.DependencyGroup")
@@ -1360,8 +1352,8 @@ namespace Starter.Migrations
             modelBuilder.Entity("Starter.Models.TreeviewNodeState", b =>
                 {
                     b.HasOne("Starter.Models.GenericFolder")
-                        .WithOne()
-                        .HasForeignKey("Starter.Models.TreeviewNodeState", "GenericFolderID");
+                        .WithMany()
+                        .HasForeignKey("GenericFolderID");
                 });
         }
     }

@@ -31,5 +31,15 @@
         <p>
             <a class="Actions" asp-action="Index">Back to Environments</a>
         </p>
+
+        @{
+            if (Model.GenericFolderID != null)
+            {
+                <p>
+                    <a class="Actions" asp-controller="GenericFolders" asp-action="Details" asp-route-id="">Back to Folder: @Model.GenericFolder.Name</a>
+                </p>
+            }
+        }
+        
     </div>
 </div>

@@ -1,0 +1,40 @@
+@model GenericFolderDetailsViewModel
+
+@{
+    ViewData["Title"] = Model.ThisFolder.Name;
+}
+
+<div>
+    <div class="headertwo">
+        <h2>@ViewData["Title"]</h2>
+    </div>
+
+    @if (ViewData["Message"] != null)
+    {
+        <div>
+            <p class="message">
+                @ViewData["Message"]
+            </p>
+        </div>
+    }
+
+    <table class="AddItemsToGenericFolder">
+        <tr>
+            <td class="AddObjectLibraryToGenericFolder">
+                <div class="col-md-offset-2 col-md-10">
+                    <a asp-controller="ObjectLibraries" asp-action="Create" asp-route-id="@Model.ThisFolder.GenericFolderID" class="btn btn-default">Create Object Library</a>
+                </div>
+            </td>
+            <td class="AddEnvironmentToGenericFolder">
+                <div class="col-md-offset-2 col-md-10">
+                    <a asp-controller="Environments" asp-action="Create" asp-route-id="@Model.ThisFolder.GenericFolderID" class="btn btn-default">Create Test Environment</a>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    @Html.Partial("_GenericFolderDetails", Model.ThisFolder)
+
+    @Html.Partial("_CreateFolder", Model.NewFolder)
+
+</div>

@@ -8,9 +8,10 @@ using Starter.Models;
 namespace Starter.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20160508202600_GenericFolders")]
+    partial class GenericFolders
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.0-rc1-16348")
@@ -361,44 +362,6 @@ namespace Starter.Migrations
                     b.Property<string>("MasterKeyString");
 
                     b.HasKey("MasterKeyID");
-                });
-
-            modelBuilder.Entity("Starter.Models.ObjectLibrary", b =>
-                {
-                    b.Property<int>("ObjectLibraryID")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Description")
-                        .IsRequired();
-
-                    b.Property<int>("GenericFolderID");
-
-                    b.Property<string>("Name")
-                        .IsRequired();
-
-                    b.HasKey("ObjectLibraryID");
-                });
-
-            modelBuilder.Entity("Starter.Models.PageObject", b =>
-                {
-                    b.Property<int>("PageObjectID")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Attribute");
-
-                    b.Property<string>("Description");
-
-                    b.Property<string>("Method")
-                        .IsRequired();
-
-                    b.Property<string>("Name")
-                        .IsRequired();
-
-                    b.Property<int>("ObjectLibraryID");
-
-                    b.Property<string>("Value");
-
-                    b.HasKey("PageObjectID");
                 });
 
             modelBuilder.Entity("Starter.Models.Platform", b =>
@@ -771,46 +734,6 @@ namespace Starter.Migrations
                     b.HasKey("SuiteID");
                 });
 
-            modelBuilder.Entity("Starter.Models.Tag", b =>
-                {
-                    b.Property<int>("TagID")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Name")
-                        .IsRequired();
-
-                    b.Property<int?>("TagGroupID");
-
-                    b.HasKey("TagID");
-                });
-
-            modelBuilder.Entity("Starter.Models.TagGroup", b =>
-                {
-                    b.Property<int>("TagGroupID")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Description");
-
-                    b.Property<string>("Name")
-                        .IsRequired();
-
-                    b.HasKey("TagGroupID");
-                });
-
-            modelBuilder.Entity("Starter.Models.TagLink", b =>
-                {
-                    b.Property<int>("TagLinkID")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int?>("ObjectLibraryID");
-
-                    b.Property<int?>("PageObjectID");
-
-                    b.Property<int>("TagID");
-
-                    b.HasKey("TagLinkID");
-                });
-
             modelBuilder.Entity("Starter.Models.Test", b =>
                 {
                     b.Property<int>("TestID")
@@ -885,8 +808,6 @@ namespace Starter.Migrations
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasAnnotation("MaxLength", 5000);
-
-                    b.Property<int?>("GenericFolderID");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -985,20 +906,6 @@ namespace Starter.Migrations
                     b.Property<int>("TestRunnerID");
 
                     b.HasKey("TestRunnerLogID");
-                });
-
-            modelBuilder.Entity("Starter.Models.TreeviewNodeState", b =>
-                {
-                    b.Property<int>("TreeviewNodeStateID")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("GenericFolderID");
-
-                    b.Property<string>("UserEmail");
-
-                    b.Property<bool>("isExpanded");
-
-                    b.HasKey("TreeviewNodeStateID");
                 });
 
             modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.IdentityRoleClaim<string>", b =>
@@ -1110,20 +1017,6 @@ namespace Starter.Migrations
                     b.HasOne("Starter.Models.TestRunnerGroup")
                         .WithMany()
                         .HasForeignKey("TestRunnerGroupID");
-                });
-
-            modelBuilder.Entity("Starter.Models.ObjectLibrary", b =>
-                {
-                    b.HasOne("Starter.Models.GenericFolder")
-                        .WithMany()
-                        .HasForeignKey("GenericFolderID");
-                });
-
-            modelBuilder.Entity("Starter.Models.PageObject", b =>
-                {
-                    b.HasOne("Starter.Models.ObjectLibrary")
-                        .WithMany()
-                        .HasForeignKey("ObjectLibraryID");
                 });
 
             modelBuilder.Entity("Starter.Models.Procedure", b =>
@@ -1258,28 +1151,6 @@ namespace Starter.Migrations
                         .HasForeignKey("SectionID");
                 });
 
-            modelBuilder.Entity("Starter.Models.Tag", b =>
-                {
-                    b.HasOne("Starter.Models.TagGroup")
-                        .WithMany()
-                        .HasForeignKey("TagGroupID");
-                });
-
-            modelBuilder.Entity("Starter.Models.TagLink", b =>
-                {
-                    b.HasOne("Starter.Models.ObjectLibrary")
-                        .WithMany()
-                        .HasForeignKey("ObjectLibraryID");
-
-                    b.HasOne("Starter.Models.PageObject")
-                        .WithMany()
-                        .HasForeignKey("PageObjectID");
-
-                    b.HasOne("Starter.Models.Tag")
-                        .WithOne()
-                        .HasForeignKey("Starter.Models.TagLink", "TagID");
-                });
-
             modelBuilder.Entity("Starter.Models.Test", b =>
                 {
                     b.HasOne("Starter.Models.AvailableMethod")
@@ -1311,13 +1182,6 @@ namespace Starter.Migrations
                     b.HasOne("Starter.Models.TestCase")
                         .WithMany()
                         .HasForeignKey("TestCaseID");
-                });
-
-            modelBuilder.Entity("Starter.Models.TestEnvironment", b =>
-                {
-                    b.HasOne("Starter.Models.GenericFolder")
-                        .WithMany()
-                        .HasForeignKey("GenericFolderID");
                 });
 
             modelBuilder.Entity("Starter.Models.TestRun", b =>
@@ -1355,13 +1219,6 @@ namespace Starter.Migrations
                     b.HasOne("Starter.Models.TestRunner")
                         .WithMany()
                         .HasForeignKey("TestRunnerID");
-                });
-
-            modelBuilder.Entity("Starter.Models.TreeviewNodeState", b =>
-                {
-                    b.HasOne("Starter.Models.GenericFolder")
-                        .WithOne()
-                        .HasForeignKey("Starter.Models.TreeviewNodeState", "GenericFolderID");
                 });
         }
     }

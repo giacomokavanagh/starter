@@ -1,0 +1,63 @@
+@model GenericFolderIndexViewModel
+
+@{
+    ViewData["Title"] = "Folders";
+}
+
+<div>
+    <div class="headertwo">
+        <h2>Manage @ViewData["Title"]</h2>
+    </div>
+
+    @if (ViewData["Message"] != null)
+    {
+        <div>
+            <p class="message">
+                @ViewData["Message"]
+            </p>
+        </div>
+    }
+
+    <div class='panel-group'>
+        <div class='treeview panel panel-default'>
+            <div class='panel-heading'>
+                <h3 class='panel-title'>
+                    <a data-toggle='collapse' id='Toggle' href='#collapseFolders'>Folders</a>
+                </h3>
+            </div>
+            @if (Model.TreeviewNode.GenericFolders.Any())
+            {
+                <div id='collapseFolders' class='panel-collapse collapsed collapse in'>
+                    <div class='panel-body'>
+                        <table class="treeview table table-striped">
+                            <tbody id="RightClickTable">
+
+                                
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div id='collapseFolders' class='panel-collapse collapsed collapse in'>
+                    <div class='panel-body'>
+                        <p>
+                            There are currently no Folders
+                        </p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    @Html.Partial("_CreateFolder", Model.NewFolder)
+</div>
+
+<ul id="contextMenu" class="dropdown-menu" role="menu" style="display:none">
+    <li><a tabindex="-1" href="#" name="GenericFolders">Edit</a></li>
+    <li><a tabindex="-1" href="#" name="GenericFolders">Details</a></li>
+    <li><a tabindex="-1" href="#" name="GenericFolders">Delete</a></li>
+    <li><a tabindex="-1" href="#" name="GenericFolders">Details in new tab</a></li>
+</ul>

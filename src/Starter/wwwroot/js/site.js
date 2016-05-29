@@ -254,8 +254,15 @@ $(document).ready(function () {
                 RowNode = RowNode.parentNode;
             }
 
-            window.location.href = "/" + selectedMenu.context.name + "/" + selectedMenu.text() + "/"
+            if (this.text == "Details in new tab") {
+                url = "/" + selectedMenu.context.name + "/Details/"
                 + RowNode.firstElementChild.innerText;
+                var win = window.open(url, '_blank');
+                win.focus();
+            } else {
+                window.location.href = "/" + selectedMenu.context.name + "/" + selectedMenu.text() + "/"
+                + RowNode.firstElementChild.innerText;
+            }
         }
     });
 });
@@ -1043,6 +1050,74 @@ $(document).ready(function () {
             data: {
                 'id': id,
                 'value': value
+            },
+        })
+    });
+});
+
+$(document).ready(function () {
+    $("#RightClickTreeview").contextMenu({
+        menuSelector: "#contextMenu",
+        menuSelected: function (invokedOn, selectedMenu) {
+
+            Node = invokedOn.context;
+            name = Node.name;
+            url = "/GenericFolders/Details/" + name;
+
+            if (this.text == "Details in new tab") {
+                var win = window.open(url, '_blank');
+                win.focus();
+            } else {
+                window.location.href = url;
+            }
+        }
+    });
+});
+
+$(document).ready(function () {
+    $('#PageObjectDataTable').dataTable({
+        "lengthMenu": [[10, 25, 50, 100, 250, 500, 1000, -1], [10, 25, 50, 100, 250, 500, 1000, "All"]],
+        "pageLength": -1,
+        dom: 'lBfrtip',
+        buttons: [
+            'colvis', 'copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+        "columns": [
+            { "width": "4%" },
+            { "width": "5.7%" },
+            { "width": "6.3%" },
+            { "width": "17%" },
+            { "width": "7%" },
+            { "width": "5.5%" },
+            { "width": "7.7%" },
+            { "width": "9.5%" },
+            { "width": "6%" },
+            { "width": "8.5%" },
+            { "width": "5%" },
+            { "width": "5%" },
+            { "width": "9.2%" }
+        ],
+    });
+});
+
+
+$(document).ready(function () {
+    $("#Toggle.treeview").click(function () {
+        var className = this.className;
+        var id = this.name;
+        var isExpanded = false;
+        if (className == "treeview") {
+            isExpanded = false;
+        } else {
+            isExpanded = true;
+        }
+
+        $.ajax({
+            url: '/GenericFolders/SetTreeviewNodeState',
+            type: 'POST',
+            data: {
+                'id': id,
+                'isExpanded': isExpanded
             },
         })
     });

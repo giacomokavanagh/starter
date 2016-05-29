@@ -1,0 +1,77 @@
+﻿@model IEnumerable<PageObject>
+
+<div class='panel-group'>
+    <div class='panel panel-default'>
+        <div class='panel-heading'>
+            <h3 class='panel-title'>
+                <a data-toggle='collapse' id='Toggle' href='#collapsePageObjects'>Page Objects</a>
+            </h3>
+        </div>
+        @if (Model.Any())
+        {
+            <div id='collapsePageObjects' class='panel-collapse collapsed collapse in'>
+                <div class='panel-body'>
+                    <table id="PageObjectDataTable" class="table table-striped">
+                        <thead id="greyTableheader">
+                            <tr>
+                                <th>ID</th>
+                                <th>@Html.DisplayNameFor(model => model.First().PageObjectID)</th>
+                                <th>@Html.DisplayNameFor(model => model.First().Method)</th>
+                                <th>@Html.DisplayNameFor(model => model.First().Attribute)</th>
+                                <th>@Html.DisplayNameFor(model => model.First().Value)</th>
+                                <th>Tags</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="TestRunDataRows">
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.PageObjectID</td>
+                                    <td>@item.Method</td>
+                                    <td>@item.Attribute</td>
+                                    <td>@item.Value</td>
+                                    <td>
+                                        @{
+                                            var count = item.TagLinks.Count;
+                                            var i = 0;
+                                            @foreach (var tagLink in item.TagLinks)
+                                            {
+                                                if (i != count)
+                                                {
+                                                    <a asp-controller="@tagLink.Tag.Name" asp-action="Details" asp-route-id="@tagLink.TagID">@tagLink.Tag.Name, </a>
+                                                }
+                                                else
+                                                {
+                                                    <a asp-controller="@tagLink.Tag.Name" asp-action="Details" asp-route-id="@tagLink.TagID">@tagLink.Tag.Name</a>
+                                                }
+                                                i = i + 1;
+                                            }
+                                        }
+                                        
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div id='collapsePageObjects' class='panel-collapse collapsed collapse in'>
+                <div class='panel-body'>
+                    <p>
+                        There are currently no Page Objects
+                    </p>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<ul id="contextMenu" class="dropdown-menu" role="menu" style="display:none">
+    <li><a tabindex="-1" href="#" name="Areas">Edit</a></li>
+    <li><a tabindex="-1" href="#" name="Areas">Details</a></li>
+    <li><a tabindex="-1" href="#" name="Areas">Delete</a></li>
+</ul>

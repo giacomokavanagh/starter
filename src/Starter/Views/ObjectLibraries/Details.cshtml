@@ -1,0 +1,41 @@
+@model ObjectLibraryDetailsViewModel
+
+@{
+    ViewData["Title"] = "Object Library: " + Model.ObjectLibrary.Name;
+}
+
+<div>
+    <div class="headertwo">
+        <h2>@ViewData["Title"]</h2>
+    </div>
+
+    @if (ViewData["Message"] != null)
+    {
+        <div>
+            <p class="message">
+                @ViewData["Message"]
+            </p>
+        </div>
+    }
+
+    @Html.Partial("_ObjectLibraryDetailsTable", Model.ObjectLibrary)
+
+    <hr />
+
+    @Html.Partial("_PageObjectIndexTable", Model.PageObjects)
+
+    @Html.Partial("_CreatePageObject", Model)
+
+    <div>
+        <hr />
+        <p>
+            <a asp-action="Edit" asp-route-id="@Model.ObjectLibrary.ObjectLibraryID" class="Actions">Edit</a>
+        </p>
+        <p>
+            <a asp-action="Delete" asp-route-id="@Model.ObjectLibrary.ObjectLibraryID" class="Actions">Delete</a>
+        </p>
+        <p>
+            <a asp-controller="GenericFolders" asp-action="Details" asp-route-id="@Model.ObjectLibrary.GenericFolderID" class="Actions">Back to Folder: @Model.ObjectLibrary.GenericFolder.Name</a>
+        </p>
+    </div>
+</div>

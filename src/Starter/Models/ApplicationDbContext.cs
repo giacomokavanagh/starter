@@ -63,5 +63,11 @@ namespace Starter.Models
         public DbSet<ProcedureStepInProcessInProcedure> ProcedureStepInProcessInProcedure { get; set; }
         public DbSet<TestCase> TestCase { get; set; }
         public DbSet<TestCaseStep> TestCaseStep { get; set; }
+        public DbSet<GenericFolder> GenericFolder { get; set; }
+        public DbSet<TreeviewNodeState> TreeviewNodeState { get; set; }
+        public DbSet<Tag> Tag { get; set; }
+        public DbSet<TagLink> TagLink { get; set; }
+        public DbSet<PageObject> PageObject { get; set; }
+        public DbSet<ObjectLibrary> ObjectLibrary { get; set; }
     }
 }

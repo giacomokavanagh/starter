@@ -1,0 +1,22 @@
+﻿@model Starter.Models.ObjectLibrary
+
+<div>
+    <dl class="dl-horizontal doublewidth">
+        <dt class="dtTable doublewidth">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd>
+            <p class="TableParagraph">
+                @Html.DisplayFor(model => model.Description)
+            </p>
+        </dd>
+        <dt class="dtTable doublewidth">
+            Folder Name
+        </dt>
+        <dd>
+            <p class="TableParagraph">
+                @Html.DisplayFor(model => model.GenericFolder.Name)
+            </p>
+        </dd>
+    </dl>
+</div>

@@ -1,0 +1,37 @@
+@model GenericFolderIndexViewModel
+
+@{
+    ViewData["Title"] = "Folders";
+}
+
+<div>
+    <div class="headertwo">
+        <h2>Manage @ViewData["Title"]</h2>
+    </div>
+
+    @if (ViewData["Message"] != null)
+    {
+        <div>
+            <p class="message">
+                @ViewData["Message"]
+            </p>
+        </div>
+    }
+
+    
+    @if (Model.TreeviewNode.GenericFolders.Any())
+    {
+        <div id="RightClickTreeview">
+            @Html.Partial("_TreeviewNode", Model.TreeviewNode)
+        </div>        
+    }
+
+    @Html.Partial("_CreateFolder", Model.NewFolder)
+</div>
+
+<ul id="contextMenu" class="dropdown-menu" role="menu" style="display:none">
+    <li><a tabindex="-1" href="#" name="GenericFolders">Edit</a></li>
+    <li><a tabindex="-1" href="#" name="GenericFolders">Details</a></li>
+    <li><a tabindex="-1" href="#" name="GenericFolders">Delete</a></li>
+    <li><a tabindex="-1" href="#" name="GenericFolders">Details in new tab</a></li>
+</ul>

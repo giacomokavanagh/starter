@@ -21,6 +21,9 @@ namespace Starter.Models
         [Display(Name = "XML File")]
         public string XMLFilePath { get; set; }
 
+        public int? GenericFolderID { get; set; }
+        public virtual GenericFolder GenericFolder { get; set; }
+
         public virtual ICollection<TestRun> TestRuns { get; set; }
     }
 }

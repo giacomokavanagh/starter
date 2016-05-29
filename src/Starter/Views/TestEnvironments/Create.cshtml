@@ -1,0 +1,32 @@
+﻿@model CreateTestEnvironmentViewModel
+
+@{
+    ViewData["Title"] = "Create Environment";
+}
+
+<div>
+    <div class="headertwo">
+        <h2>@ViewData["Title"]</h2>
+    </div>
+
+    @if (ViewData["Message"] != null)
+    {
+        <div>
+            <p class="message">
+                @ViewData["Message"]
+            </p>
+        </div>
+    }
+
+    @Html.Partial("_CreateTestEnvironments", Model.NewTestEnvironment)
+
+    <div>
+        <hr />
+        <p>
+            <a asp-controller="GenericFolders" asp-action="Details" asp-route-id="@Model.NewTestEnvironment.GenericFolderID" class="Actions">Back to Folder: @Model.NewTestEnvironment.GenericFolder.Name</a>
+        </p>
+        <p>
+            <a class="Actions" asp-action="Index">Back to Environments</a>
+        </p>
+    </div>
+</div>

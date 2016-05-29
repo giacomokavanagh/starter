@@ -49,6 +49,44 @@ namespace Starter.Controllers
             return View(testEnvironmentsAndNewTestEnvironment);
         }
 
+        [Authorize]
+        // GET: TestEnvironments/Create
+        public IActionResult Create(int? id)
+        {
+            var model = new ViewModels.TestEnvironment.CreateTestEnvironmentViewModel();
+            model.NewTestEnvironment = new TestEnvironment();
+            model.NewTestEnvironment.GenericFolderID = id;
+            model.NewTestEnvironment.GenericFolder = _context.GenericFolder.Single(t => t.GenericFolderID == id);
+
+            ViewData["GenericFolderID"] = new SelectList(_context.GenericFolder, "GenericFolderID", "GenericFolder", id);
+
+            return View(model);
+        }
+
+        // POST: TestEnvironments/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public IActionResult Create(TestEnvironment testEnvironment)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.TestEnvironment.Add(testEnvironment);
+                _context.SaveChanges();
+
+                HttpContext.Session.SetString("Message", "Test Environment: " + testEnvironment.Name + " successfully created");
+
+                return RedirectToAction("Details", new RouteValueDictionary(new
+                {
+                    controller = "TestEnvironments",
+                    action = "Details",
+                    ID = testEnvironment.TestEnvironmentID
+                }));
+            }
+            ViewData["GenericFolderID"] = new SelectList(_context.GenericFolder, "GenericFolderID", "GenericFolder", testEnvironment.GenericFolderID);
+            return View(testEnvironment);
+        }
+
         // GET: Environments/Details/5
         public IActionResult Details(int? id)
         {
@@ -65,6 +103,8 @@ namespace Starter.Controllers
             {
                 return HttpNotFound();
             }
+
+            environment.GenericFolder = _context.GenericFolder.Single(t => t.GenericFolderID == environment.GenericFolderID);
 
             return View(environment);
         }

@@ -684,6 +684,11 @@ div.panel-collapse {
     padding: 0px;
 }
 
+div.treeview.panel-collapse {
+    margin-left: 5px;
+    margin-right: 0px;
+}
+
 div.panel-default {
     padding: 0px;
 }
@@ -760,6 +765,15 @@ a.TestRunTableActions {
     padding: 2px;
     font-size: 10px;
     margin: 1px;
+}
+
+a.TreeViewTableActions {
+    display: inline-block;
+    background-color: #d9d9d9;
+    padding: 2px;
+    font-size: 10px;
+    margin: 1px;
+    width: 100%;
 }
 
 table#dependencygrouptable td {
@@ -885,4 +899,44 @@ li.search-field input.default {
 
 td.wordbreak {
     word-break:break-all;
+}
+
+div.noMargin{
+    margin: 0px;
+    padding: 0px;
+}
+
+div.treeviewNodeDiv {
+    margin: 0px;
+    margin-left: 5px;
+    padding: 0px;
+}
+
+div.treeview.panel-default, div.treeview.panel-heading {
+    margin: 0px;
+}
+
+div.treeview.panel-heading {
+    padding: 2px;
+    padding-left: 6px;
+    font-size: 12px;
+    color: black;
+}
+
+.panel-group .panel-heading + .panel-collapse > div.treeview.panel-body {
+    border-top: none;
+}
+
+div.treeview.panel-body, div.treeview.panel-group {
+    margin: 0px;
+}
+
+div.treeview.panel-group {
+    padding-left: 0px;
+    padding-right: 0px;
+    width: 101%
+}
+
+div#RightClickTreeview{
+    width: 30%;
 }
