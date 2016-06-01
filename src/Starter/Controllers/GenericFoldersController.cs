@@ -52,18 +52,30 @@ namespace Starter.Controllers
             {
                 foreach (var item in model.TreeviewNode.GenericFolders)
                 {
+                    //Get the state of node expansion for all GenericFolders
                     if (allTreeviewNodesForUser.Any(t => t.GenericFolderID == item.GenericFolderID))
                     {
                         item.isExpanded = allTreeviewNodesForUser.SingleOrDefault(t => t.GenericFolderID == item.GenericFolderID).isExpanded;
                     }
+
+                    //Get the test environments in all GenericFolders
+                    item.TestEnvironments = _context.TestEnvironment.Where(t => t.GenericFolderID == item.GenericFolderID);
                 }
             }
 
             model.NewFolder = new GenericFolder();
             model.NewFolder.ParentLocationID = null;
+            model.ImaginaryRootFolder = new GenericFolder();
+
+            model.ImaginaryRootFolder.TestEnvironments = _context.TestEnvironment.Where(t => t.GenericFolderID == null);
+            //var testEnvironmentsForRootFolder = _context.TestEnvironment.Where(t => t.GenericFolderID == null);
+            //if (testEnvironmentsForRootFolder.Any())
+            //{
+            //    model.ImaginaryRootFolder.TestEnvironments = testEnvironmentsForRootFolder;
+            //}
 
             return View(model);
-        }
+        }   
 
         // GET: GenericFolders/Details/5
         public IActionResult Details(int? id)

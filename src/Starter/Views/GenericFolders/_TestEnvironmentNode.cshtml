@@ -1,0 +1,23 @@
+﻿@model GenericFolder
+
+@foreach (var testEnvironment in Model.TestEnvironments)
+{
+    
+    var toggleID = "collapseEnvironments" + Model.GenericFolderID;
+    var testEnvironmentName = "TestEnvironment-" + testEnvironment.TestEnvironmentID;
+
+    <div class='treeview panel-group'>
+        <div class='treeview environment panel panel-default'>
+            <div class='treeview environment panel-heading'>
+                <a class="treeview environment" data-toggle='collapse' id='Toggle' href='#@toggleID' name="@testEnvironmentName">Test Environments</a>
+            </div>
+
+            <div id='@toggleID' class='treeview panel-collapse collapse' name="@Model.GenericFolderID">
+                <div class='treeview environment panel-body' name="@Model.GenericFolderID">
+                    <a class="treeview environment" asp-controller="TestEnvironments" asp-action="Details" asp-route-id="@testEnvironment.TestEnvironmentID" name="@testEnvironmentName">@testEnvironment.Name</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+}

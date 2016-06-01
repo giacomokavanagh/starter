@@ -104,7 +104,10 @@ namespace Starter.Controllers
                 return HttpNotFound();
             }
 
-            environment.GenericFolder = _context.GenericFolder.Single(t => t.GenericFolderID == environment.GenericFolderID);
+            if(environment.GenericFolderID != null)
+            {
+                environment.GenericFolder = _context.GenericFolder.Single(t => t.GenericFolderID == environment.GenericFolderID);
+            }
 
             return View(environment);
         }

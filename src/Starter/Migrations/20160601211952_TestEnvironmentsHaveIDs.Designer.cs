@@ -8,9 +8,10 @@ using Starter.Models;
 namespace Starter.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20160601211952_TestEnvironmentsHaveIDs")]
+    partial class TestEnvironmentsHaveIDs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.0-rc1-16348")
@@ -992,7 +993,7 @@ namespace Starter.Migrations
                     b.Property<int>("TreeviewNodeStateID")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int?>("GenericFolderID");
+                    b.Property<int>("GenericFolderID");
 
                     b.Property<string>("UserEmail");
 

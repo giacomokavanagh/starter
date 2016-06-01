@@ -929,6 +929,7 @@ div.treeview.panel-heading {
 
 div.treeview.panel-body, div.treeview.panel-group {
     margin: 0px;
+    font-size: 12px;
 }
 
 div.treeview.panel-group {
@@ -939,4 +940,16 @@ div.treeview.panel-group {
 
 div#RightClickTreeview{
     width: 30%;
+}
+
+div.treeview.environment.panel-heading {
+    background-color: #2DBF0F;
+}
+
+div.treeview.environment.panel-body, div.treeview.environment.panel.panel-default {
+    background-color: #B6E6AC;
+}
+
+a.treeview.environment {
+    color: black;
 }

@@ -23,6 +23,12 @@
     {
         <div id="RightClickTreeview">
             @Html.Partial("_TreeviewNode", Model.TreeviewNode)
+
+            @if (Model.ImaginaryRootFolder.TestEnvironments.Any())
+            {
+                @Html.Partial("_TestEnvironmentNode", Model.ImaginaryRootFolder)
+            }
+            
         </div>        
     }
 

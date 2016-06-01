@@ -1060,15 +1060,19 @@ $(document).ready(function () {
         menuSelector: "#contextMenu",
         menuSelected: function (invokedOn, selectedMenu) {
 
-            Node = invokedOn.context;
-            name = Node.name;
-            url = "/GenericFolders/Details/" + name;
+            var node = invokedOn.context;
+            var name = node.name;
+            var array = name.split('-');
+            var controller = array[0];
+            var id = array[1];
 
             if (this.text == "Details in new tab") {
+                url = "/" + controller + "/Details/" + id;
                 var win = window.open(url, '_blank');
                 win.focus();
             } else {
-                window.location.href = url;
+                window.location.href = "/" + controller + "/" + selectedMenu.text() + "/"
+                    + id;
             }
         }
     });
@@ -1102,11 +1106,11 @@ $(document).ready(function () {
 
 
 $(document).ready(function () {
-    $("#Toggle.treeview").click(function () {
+    $("#Toggle.treeviewLink").click(function () {
         var className = this.className;
         var id = this.name;
         var isExpanded = false;
-        if (className == "treeview") {
+        if (className == "treeviewLink") {
             isExpanded = false;
         } else {
             isExpanded = true;

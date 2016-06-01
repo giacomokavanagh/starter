@@ -22,6 +22,8 @@ namespace Starter.Models
         public int? ParentLocationID { get; set; }
 
         public bool isExpanded { get; set; }
+
+        public virtual IEnumerable<TestEnvironment> TestEnvironments { get; set; }
     }
 
     public class TreeviewNodeState
@@ -30,7 +32,7 @@ namespace Starter.Models
         public int TreeviewNodeStateID { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int GenericFolderID { get; set; }
+        public int? GenericFolderID { get; set; }
         public virtual GenericFolder GenericFolder { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.None)]

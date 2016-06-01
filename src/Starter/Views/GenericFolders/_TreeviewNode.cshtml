@@ -5,6 +5,7 @@
     
     @foreach (var node in Model.GenericFolders)
     {
+        var genericFolderName = "GenericFolders-" + node.GenericFolderID;
         if (node.ParentLocationID == Model.Seed)
         {
             var inner = new GenericFolderTreeNode { Seed = node.GenericFolderID, GenericFolders = Model.GenericFolders };
@@ -14,7 +15,12 @@
                 <div class='treeview panel-group'>
                     <div class='treeview panel panel-default'>
                         <div class='treeview panel-heading'>
-                            <a class="treeviewLink" asp-controller="GenericFolders" asp-action="Details" asp-route-id="@node.GenericFolderID" name="@node.GenericFolderID">@node.Name</a>
+                            <a class="treeviewLink" asp-controller="GenericFolders" asp-action="Details" asp-route-id="@node.GenericFolderID" name="@genericFolderName">@node.Name</a>
+
+                            @Html.Partial("_TreeviewNode", inner)
+
+                            @Html.Partial("_TestEnvironmentNode", node)
+                           
                         </div>
                     </div>
                 </div>
@@ -22,27 +28,34 @@
             else
             {
                 var toggleID = "collapseFolders" + node.GenericFolderID;
-                string classExpandedOrNot;
-                if(node.isExpanded)
+                string classExpandedOrNotPanel;
+                string classExpandedOrNotLink;
+                if (node.isExpanded)
                 {
-                    classExpandedOrNot = "collapse in";
+                    classExpandedOrNotPanel = "collapse in";
+                    classExpandedOrNotLink = "treeviewLink";
                 }
                 else
                 {
-                    classExpandedOrNot = "collapse";
+                    classExpandedOrNotPanel = "collapse";
+                    classExpandedOrNotLink = "treeviewLink collapsed";
                 }
 
                 <div class='treeview panel-group'>
                     <div class='treeview panel panel-default'>
                         <div class='treeview panel-heading'>
-                            <a class="treeview" data-toggle='collapse' id='Toggle' href='#@toggleID' name="@node.GenericFolderID">@node.Name</a>
+                            <a class="@classExpandedOrNotLink" data-toggle='collapse' id='Toggle' href='#@toggleID' name="@genericFolderName">@node.Name</a>
                         </div>
 
-
-                        <div id='@toggleID' class='treeview panel-collapse collapsed @classExpandedOrNot' name="@node.GenericFolderID">
+                        <div id='@toggleID' class='treeview panel-collapse collapsed @classExpandedOrNotPanel' name="@genericFolderName">
                             <div class='treeview panel-body' name="@node.GenericFolderID">
 
                                 @Html.Partial("_TreeviewNode", inner)
+
+                                @if (node.TestEnvironments.Any())
+                                {
+                                    @Html.Partial("_TestEnvironmentNode", node)
+                                }
 
                             </div>
                         </div>
